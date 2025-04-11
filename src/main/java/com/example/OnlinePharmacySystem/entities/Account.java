@@ -31,6 +31,7 @@ public class Account {
 	@Column(nullable = false, unique = true)
 	private String username;
 	private String password;
+	private int role;
 	@Column(nullable = false,  unique = true)
 	private String email;
 	private boolean status;
@@ -40,7 +41,7 @@ public class Account {
 	private LocalDateTime updated_at;
 	private LocalDateTime last_login_at;
 	private LocalDate dob;
-	private char gender;
+	private int gender;
 	
 	 @PrePersist
 	 protected void onCreate() {
@@ -138,6 +139,14 @@ public class Account {
 		this.created_at = created_at;
 	}
 
+	public int getRole() {
+		return role;
+	}
+
+	public void setRole(int role) {
+		this.role = role;
+	}
+
 	public LocalDateTime getDeleted_at() {
 		return deleted_at;
 	}
@@ -170,11 +179,11 @@ public class Account {
 		this.dob = dob;
 	}
 
-	public char getGender() {
+	public int getGender() {
 		return gender;
 	}
 
-	public void setGender(char gender) {
+	public void setGender(int gender) {
 		this.gender = gender;
 	}
 	

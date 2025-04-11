@@ -2,10 +2,15 @@ package com.example.OnlinePharmacySystem.service;
 
 import java.util.List;
 
+import com.example.OnlinePharmacySystem.DTO.AccountDTO;
 import com.example.OnlinePharmacySystem.entities.Account;
 
 public interface AccountService {
 	public List<Account> findAll();
 	
-	public Account login(String username,String password);
+	public AccountDTO login(String username,String password);
+	 
+	public boolean save(AccountDTO accountDTO);
+	
+	public AccountDTO findByUsername (String username);
 }
