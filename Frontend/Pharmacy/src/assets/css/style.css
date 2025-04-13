@@ -4299,7 +4299,9 @@ ul.wp-block-latest-posts.is-grid.alignwide {
 .header-menu-2 {
   text-align: center; }
   .header-menu-2 .ltn__main-menu > ul {
-    display: inline-block; }
+    display: inline-block;
+
+   }
 
 /* ----------------------------------------------
     Header Feature Area
@@ -4686,20 +4688,74 @@ ul.wp-block-latest-posts.is-grid.alignwide {
     position: inherit !important; } }
 
 /* Menu Icon */
-.menu-icon > a {
-  position: relative; }
-  .menu-icon > a::before {
-    content: "\f067";
-    font-size: 8px;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    font-family: 'Font Awesome\ 5 Free';
-    font-weight: 900; }
+.menu-icon {
+   color: #000000;
+  cursor: pointer; /* Đảm bảo toàn bộ thẻ <li> hiển thị con trỏ chuột kiểu pointer */
+}
 
+/* Kiểu cho thẻ <a> trực tiếp bên trong .menu-icon */
+.menu-icon > a {
+  position: relative;
+  display: block; /* Đảm bảo thẻ <a> chiếm toàn bộ không gian của <li> */
+  padding-right: 15px; /* Thêm khoảng cách cho biểu tượng mũi tên */
+  color: #000000; /* Màu đen cho tất cả các liên kết */
+  text-decoration: none; /* Bỏ gạch chân nếu có */
+  cursor: pointer; /* Đảm bảo thẻ <a> cũng có con trỏ chuột */
+}
+
+/* Đảm bảo các trạng thái của liên kết không làm thay đổi màu */
+.menu-icon > a:hover,
+.menu-icon > a:active,
+.menu-icon > a:visited {
+  color: #000000; /* Giữ màu đen khi hover, active, hoặc visited */
+  cursor: pointer;
+}
+
+/* Biểu tượng dropdown */
+.menu-icon > a::after {
+  content: "\f067";
+  font-size: 8px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  color: #000000; /* Biểu tượng giữ màu đen */
+  cursor: pointer;
+}
+
+/* Ẩn biểu tượng cho các mục không có menu con */
+.menu-icon:not(:has(ul)) > a::after {
+  content: none;
+}
+
+/* Đảm bảo các mục con trong dropdown */
+.menu-icon ul li {
+  cursor: pointer; /* Đảm bảo các <li> trong menu con cũng hiển thị con trỏ chuột */
+  position: relative; /* Để định vị đường gạch chân nếu cần */
+}
+
+/* Hiệu ứng hover: thêm đường gạch chân màu xanh cho thẻ <li> con */
+.menu-icon ul li:hover {
+ color: var(--ltn__secondary-color);
+}
+
+/* Kiểu cho thẻ <a> trong menu con */
+.menu-icon ul li a {
+  display: block; /* Đảm bảo thẻ <a> trong menu con chiếm toàn bộ không gian */
+  color: #000000; /* Màu đen cho các liên kết trong menu con */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Đảm bảo các trạng thái của liên kết trong menu con */
+.menu-icon ul li a:hover,
+.menu-icon ul li a:active,
+.menu-icon ul li a:visited {
+  color: #000000; /* Giữ màu đen cho các trạng thái */
+  cursor: pointer;
+}
 /* Menu Item Badge */
 .menu-item-badge {
   position: absolute;

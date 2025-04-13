@@ -10,45 +10,51 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   goToHome() {
-    this.router.navigate(['/home']);
+    window.location.href = '/home';
   }
 
   goToAbout() {
-    this.router.navigate(['/about']);
+    window.location.href = '/about';
   }
   goToServices() {
-    this.router.navigate(['/services']);
+    window.location.href = '/service';
+  }
+  goToNews() {
+    window.location.href = '/news';
   }
 
   goToServiceDetails() {
-    this.router.navigate(['/service-details']);
+    window.location.href = '/about';
+  }
+  goToContact() {
+    window.location.href = '/contact';
   }
 
   goToPortfolio() {
-    this.router.navigate(['/portfolio']);
+    window.location.href = '/about';
   }
 
   goToPortfolio2() {
-    this.router.navigate(['/portfolio-2']);
+    window.location.href = '/about';
   }
 
   goToPortfolioDetails() {
-    this.router.navigate(['/portfolio-details']);
+    window.location.href = '/about';
   }
 
   goToTeam() {
-    this.router.navigate(['/team']);
+    window.location.href = '/about';
   }
 
   goToTeamDetails() {
-    this.router.navigate(['/team-details']);
+    window.location.href = '/about';
   }
 
   goToFAQ() {
-    this.router.navigate(['/faq']);
+    window.location.href = '/about';
   }
 
   goToLocations() {
-    this.router.navigate(['/locations']);
+    window.location.href = '/about';
   }
 }

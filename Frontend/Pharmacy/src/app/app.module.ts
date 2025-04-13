@@ -7,6 +7,7 @@ import { HomeComponent } from './components/home.component/home.component';
 import { AboutUsComponent } from './components/aboutUs.component/aboutUs.component';
 import { ServiceComponent } from './components/service.component/service.component';
 import { NewsComponent } from './components/news.component/news.component';
+import { ContactComponent } from './components/contact.component/contact.component';
 
 @NgModule({
   declarations: [
@@ -14,13 +15,11 @@ import { NewsComponent } from './components/news.component/news.component';
     HomeComponent,
     AboutUsComponent,
     ServiceComponent,
-    NewsComponent
+    NewsComponent,
+    ContactComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
