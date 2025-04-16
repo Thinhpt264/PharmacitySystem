@@ -8,6 +8,9 @@ import { AboutUsComponent } from './components/aboutUs.component/aboutUs.compone
 import { ServiceComponent } from './components/service.component/service.component';
 import { NewsComponent } from './components/news.component/news.component';
 import { ContactComponent } from './components/contact.component/contact.component';
+import { BaseUrlService } from './service/baseUrl.service';
+import { CategoryService } from './service/category.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,8 +21,16 @@ import { ContactComponent } from './components/contact.component/contact.compone
     NewsComponent,
     ContactComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    
+  ],
+  providers: [
+    BaseUrlService,
+    CategoryService
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
