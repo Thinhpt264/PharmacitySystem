@@ -21,5 +21,5 @@ public class ProductController {
 	 @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<List<ProductDTO>> getAll() {
 	        return ResponseEntity.ok(productService.findAll());
-	    }
+	}
 }
