@@ -14681,3 +14681,11 @@ input.cart-plus-minus-box {
 
 /*# sourceMappingURL=style.css.map */
 
+.ltn__category-submenu-children::-webkit-scrollbar {
+  width: 9px;
+}
+
+.ltn__category-submenu-children::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}

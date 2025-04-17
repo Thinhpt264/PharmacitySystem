@@ -1,4 +1,4 @@
-package com.example.OnlinePharmacySystem.controller;
+package com.example.OnlinePharmacySystem.controllers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,11 +11,10 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.OnlinePharmacySystem.entities.Category;
-import com.example.OnlinePharmacySystem.service.CategoryService;
+import com.example.OnlinePharmacySystem.services.CategoryService;
 
 @RestController
 @RequestMapping("/categories")

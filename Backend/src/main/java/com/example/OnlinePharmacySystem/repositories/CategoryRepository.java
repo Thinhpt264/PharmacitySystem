@@ -1,4 +1,4 @@
-package com.example.OnlinePharmacySystem.Repositories;
+package com.example.OnlinePharmacySystem.repositories;
 
 import java.util.List;
 

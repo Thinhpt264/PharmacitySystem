@@ -1,4 +1,4 @@
-package com.example.OnlinePharmacySystem.service;
+package com.example.OnlinePharmacySystem.services;
 
 import java.util.List;
 

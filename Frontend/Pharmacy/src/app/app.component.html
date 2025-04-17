@@ -201,30 +201,34 @@
               <h2 class="section-bg-1--- ltn__secondary-bg text-color-white">Danh Mục </h2>
             </div>
             <div class="ltn__category-menu-toggle ltn__one-line-active">
-              <ul>
-               <ng-container *ngFor="let cate of categories"> 
-                <!-- Submenu Column - unlimited -->
-                <li class="ltn__category-menu-item ltn__category-menu-drop"  (mouseover)="findCategoryByCategoryParent(cate.id)">
-                  <a href="#"><i class="icon-shopping-bags"></i>{{cate.categoryName}} </a>
-                  <ul class="ltn__category-submenu ltn__category-column" style="width: 400px;">
-                    <li class="ltn__category-submenu-title ltn__category-menu-drop" value="{{cate.id}}" style="width: 350px;">
-                      <a href="#">{{cate.categoryName}}</a>
-                      <ul class="ltn__category-submenu-children">
-                      <ng-container *ngFor=" let cate1 of listChildrenCategory" >
-                        <li>
-                          <a href="#">
-                            <img src="assets/img/gallery/3.jpg" alt="Clutches" style="width: 70px; height: 70px;">
-                            <span>{{cate1.categoryName}}</span>
-                          </a>
-                        </li>
-                      </ng-container>
-                        <li>
+       
+              <ul >
+              <ng-container *ngFor="let cate of categories">
+                <li class="ltn__category-menu-item ltn__category-menu-drop" (mouseover)="findCategoryByCategoryParent(cate.id)">
+                  <a href="#">
+                    <img [src]="cate.imageUrl" alt="" style="width: 35px; height: 35px; margin-right: 10px;">
+                    {{ cate.categoryName }}
+                  </a>
+              
+                  <ul class="ltn__category-submenu ltn__category-column" style="width: 420px;">
+                    <li class="ltn__category-submenu-title ltn__category-menu-drop" style="width: 380px;">
+                      <a href="#">{{ cate.categoryName }}</a>
+                      <ul class="ltn__category-submenu-children" style="max-height: 390px; overflow-y: auto;">
+                        <ng-container *ngFor="let cate1 of listChildrenCategory">
+                          <li>
+                            <a href="#">
+                              <img [src]="cate1.imageUrl" alt="" style="width: 70px; height: 70px; margin-right: 10px;">
+                              <span>{{ cate1.categoryName }}</span>
+                            </a>
+                          </li>
+                        </ng-container>
                       </ul>
                     </li>
                   </ul>
                 </li>
-               </ng-container>
-           
+              </ng-container>
+
+          
                 <li class="ltn__category-menu-more-item-parent">
                   <a class="rx-default">
                     More categories <span class="cat-thumb  icon-plus"></span>
@@ -234,7 +238,7 @@
                   </a>
                 </li>
                 <!-- Single menu end -->
-              </ul>
+                </ul>
             </div>
           </div>
           <!-- END CATEGORY-MENU-LIST -->

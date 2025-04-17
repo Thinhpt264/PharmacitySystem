@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CategoryService } from './service/category.service';
+import { BaseUrlService } from './service/baseUrl.service';
 
 @Component({
   selector: 'app-root',
@@ -9,29 +10,79 @@ import { CategoryService } from './service/category.service';
 })
 export class AppComponent implements OnInit {
   categories: any;
-  childrenCategory: any;
+  imageOfObjectId: any;
   listChildrenCategory: any;
+  path: string;
+  src: string;
+  cateId: any;
   constructor(
     private router: Router,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private baseUrl: BaseUrlService
   ) {}
   ngOnInit(): void {
     this.findAll();
   }
 
+  // findAll() {
+  //   this.categoryService.findAllCategory().then((res) => {
+  //     this.categories = res.categories;
+
+  //     // for (let i = 0; i < res.categories.length; i++) {
+  //     //   this.cateId = this.categories[i].id;
+  //     //   console.log(this.cateId);
+
+  //     // }
+  //     //  this.findImageOfObjId(this.cateId);
+  //   });
+  // }
+
   findAll() {
     this.categoryService.findAllCategory().then((res) => {
-      console.log(res.categories);
       this.categories = res.categories;
+
+      for (let i = 0; i < this.categories.length; i++) {
+        const cateId = this.categories[i].id;
+
+        this.categoryService.findImageOfObjId(cateId).then((imgRes) => {
+          const fullPath =
+            this.baseUrl.getBaseUrl() +
+            imgRes.image.path +
+            imgRes.image.imageName;
+          this.categories[i].imageUrl = fullPath;
+        });
+      }
     });
   }
+
+  cachedChildren: { [key: number]: any[] } = {};
+
   findCategoryByCategoryParent(id: number) {
-    this.categoryService.findCategoryByCategoryParent(id).then(
-      res => {
-        console.log(res.categories);
-        this.listChildrenCategory = res.categories;;
+    // Nếu đã có dữ liệu con rồi thì không gọi lại API nữa
+    if (this.cachedChildren[id]) {
+      this.listChildrenCategory = this.cachedChildren[id];
+      return;
+    }
+
+    this.categoryService.findCategoryByCategoryParent(id).then((res) => {
+      this.listChildrenCategory = res.categories;
+
+      // Gọi ảnh cho từng danh mục con
+      for (let i = 0; i < this.listChildrenCategory.length; i++) {
+        const cateId = this.listChildrenCategory[i].id;
+
+        this.categoryService.findImageOfObjId(cateId).then((imgRes) => {
+          const fullPath =
+            this.baseUrl.getBaseUrl() +
+            imgRes.image.path +
+            imgRes.image.imageName;
+          this.listChildrenCategory[i].imageUrl = fullPath;
+        });
       }
-    );
+
+      // Cache kết quả lại để lần sau không cần gọi lại
+      this.cachedChildren[id] = this.listChildrenCategory;
+    });
   }
 
   goToHome() {

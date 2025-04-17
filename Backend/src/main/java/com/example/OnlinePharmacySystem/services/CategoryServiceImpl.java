@@ -1,11 +1,11 @@
-package com.example.OnlinePharmacySystem.service;
+package com.example.OnlinePharmacySystem.services;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.OnlinePharmacySystem.Repositories.CategoryRepository;
+import com.example.OnlinePharmacySystem.repositories.CategoryRepository;
 import com.example.OnlinePharmacySystem.entities.Category;
 
 @Service

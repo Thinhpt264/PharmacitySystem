@@ -1,4 +1,4 @@
-package com.example.OnlinePharmacySystem.service;
+package com.example.OnlinePharmacySystem.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.OnlinePharmacySystem.DTO.AccountDTO;
-import com.example.OnlinePharmacySystem.Repositories.AccountRepository;
+import com.example.OnlinePharmacySystem.repositories.AccountRepository;
 import com.example.OnlinePharmacySystem.entities.Account;
 
 @Service
