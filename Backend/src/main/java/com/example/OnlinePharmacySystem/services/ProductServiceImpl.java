@@ -1,4 +1,4 @@
-package com.example.OnlinePharmacySystem.service;
+package com.example.OnlinePharmacySystem.services;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.OnlinePharmacySystem.DTO.ProductDTO;
-import com.example.OnlinePharmacySystem.Repositories.ProductRepository;
+import com.example.OnlinePharmacySystem.repositories.ProductRepository;
 import com.example.OnlinePharmacySystem.entities.Product;
 
 @Service

@@ -1,4 +1,4 @@
-package com.example.OnlinePharmacySystem.configuration;
+package com.example.OnlinePharmacySystem.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

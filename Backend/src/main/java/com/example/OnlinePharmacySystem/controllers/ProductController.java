@@ -1,4 +1,4 @@
-package com.example.OnlinePharmacySystem.controller;
+package com.example.OnlinePharmacySystem.controllers;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.OnlinePharmacySystem.DTO.ProductDTO;
-import com.example.OnlinePharmacySystem.service.ProductService;
+import com.example.OnlinePharmacySystem.services.ProductService;
 
 @RestController
 @RequestMapping("/products")
