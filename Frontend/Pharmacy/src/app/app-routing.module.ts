@@ -5,6 +5,7 @@ import { AboutUsComponent } from './components/aboutUs.component/aboutUs.compone
 import { ServiceComponent } from './components/service.component/service.component';
 import { NewsComponent } from './components/news.component/news.component';
 import { ContactComponent } from './components/contact.component/contact.component';
+import { productCategoryComponent } from './components/productCategory.component/productCategory.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
     path: 'contact',
     component: ContactComponent,
   },
+  {
+    path: 'productCategory/:id',
+    component: productCategoryComponent,
+  }
 ];
 
 @NgModule({

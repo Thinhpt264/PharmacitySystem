@@ -43,8 +43,8 @@ export class AppComponent implements OnInit {
 
       for (let i = 0; i < this.categories.length; i++) {
         const cateId = this.categories[i].id;
-
-        this.categoryService.findImageOfObjId(cateId).then((imgRes) => {
+        const tableName = "Category"
+        this.categoryService.findImageOfObjId(cateId, tableName).then((imgRes) => {
           const fullPath =
             this.baseUrl.getBaseUrl() +
             imgRes.image.path +
@@ -70,8 +70,9 @@ export class AppComponent implements OnInit {
       // Gọi ảnh cho từng danh mục con
       for (let i = 0; i < this.listChildrenCategory.length; i++) {
         const cateId = this.listChildrenCategory[i].id;
+        const tableName = "Category"
 
-        this.categoryService.findImageOfObjId(cateId).then((imgRes) => {
+        this.categoryService.findImageOfObjId(cateId, tableName).then((imgRes) => {
           const fullPath =
             this.baseUrl.getBaseUrl() +
             imgRes.image.path +
@@ -84,7 +85,10 @@ export class AppComponent implements OnInit {
       this.cachedChildren[id] = this.listChildrenCategory;
     });
   }
-
+  goToCategoryById(id : number){
+    this.router.navigate(['/productCategory/', id]);
+    
+  }
   goToHome() {
     window.location.href = '/home';
   }

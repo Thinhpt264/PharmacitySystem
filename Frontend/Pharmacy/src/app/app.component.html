@@ -216,7 +216,7 @@
                       <ul class="ltn__category-submenu-children" style="max-height: 390px; overflow-y: auto;">
                         <ng-container *ngFor="let cate1 of listChildrenCategory">
                           <li>
-                            <a href="#">
+                            <a (click)="goToCategoryById(cate1.id)">
                               <img [src]="cate1.imageUrl" alt="" style="width: 70px; height: 70px; margin-right: 10px;">
                               <span>{{ cate1.categoryName }}</span>
                             </a>

@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MimeTypeUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,10 +22,11 @@ public class ImageController {
 	@Autowired
 	private ImageService imageService;
 	
-	@GetMapping(value = "findImageByObjectId/{id}" , produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> findAllParentCategories(@PathVariable int id) {
+	@GetMapping(value = "findImageByObject" , produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> findAllParentCategories( @RequestParam("objectId") Integer objectId,
+														   @RequestParam("tableName") String tableName) {
 		try {
-			Image img = imageService.getImageByObjectId(id);
+			Image img = imageService.getImageByObjectId(objectId, tableName);
 			
 			if (img == null) {
 	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Khong có image");

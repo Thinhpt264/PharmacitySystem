@@ -27,4 +27,12 @@ public class ProductServiceImpl implements ProductService {
 		            .collect(Collectors.toList());
 	}
 
+	@Override
+	public List<ProductDTO> findByCategotyId(int id) {
+		List<Product> products = productRepository.findByCategory_Id(id);
+		return products.stream()
+				.map(product -> mapper.map(product, ProductDTO.class))
+				.collect(Collectors.toList());
+	}
+
 }

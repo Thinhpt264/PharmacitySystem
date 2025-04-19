@@ -6,4 +6,8 @@ import com.example.OnlinePharmacySystem.DTO.ProductDTO;
 
 public interface ProductService {
 	public List<ProductDTO> findAll();
+
+	public List<ProductDTO> findByCategotyId(int id);
+
+
 }

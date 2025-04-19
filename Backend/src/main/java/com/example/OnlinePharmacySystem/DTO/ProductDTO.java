@@ -2,6 +2,7 @@ package com.example.OnlinePharmacySystem.DTO;
 
 import java.time.LocalDateTime;
 
+import com.example.OnlinePharmacySystem.entities.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -44,9 +45,12 @@ public class ProductDTO {
 
     private Boolean status;
 
+	private Integer categoryId;
+	private String categoryName;
+
 	public ProductDTO(Integer id, String name, String description, Double price, String image, LocalDateTime created_at,
 			LocalDateTime updated_at, Integer type, String manufacturer, String ingredient, String note, String use,
-			String packaging, Boolean status) {
+			String packaging, Boolean status, Integer categoryId, String categoryName) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -178,5 +182,11 @@ public class ProductDTO {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
-	}	
+	}
+
+	public Integer getCategoryId() { return categoryId; }
+	public void setCategoryId(Integer categoryId) { this.categoryId = categoryId; }
+
+	public String getCategoryName() { return categoryName; }
+	public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
 }

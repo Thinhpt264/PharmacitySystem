@@ -10,4 +10,5 @@ public interface CategoryService {
 	public List<Category> findByIdCategoriesParent(int id);	
 	
 	public List<Category> findParentCategories();
+
 }

@@ -1,14 +1,12 @@
 package com.example.OnlinePharmacySystem.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micrometer.common.lang.Nullable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
+
 @Entity
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,6 +22,9 @@ public class Category implements Serializable {
 	@Column(name="category_parent_id")
 	@Nullable
 	private Integer categoryParentId;
+	@OneToMany(mappedBy="category")
+	@JsonIgnore
+	private List<Product> products;
 
 	private byte status;
 
@@ -57,6 +58,13 @@ public class Category implements Serializable {
 
 	public void setStatus(byte status) {
 		this.status = status;
+	}
+
+	public List<Product> getProducts() {
+		return this.products;
+	}
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 
 	public Category(int id, String categoryName, Integer categoryParentId, byte status) {

@@ -11,7 +11,7 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     private ImageRepository imageRepository;
     @Override
-    public Image getImageByObjectId(Integer id) {
-        return imageRepository.findByObjectId(id);
+    public Image getImageByObjectId(Integer id, String tableName) {
+        return imageRepository.findByObjectId(id, tableName);
     }
 }

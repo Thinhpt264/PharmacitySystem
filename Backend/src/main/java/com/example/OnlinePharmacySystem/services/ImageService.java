@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
 public interface ImageService {
 
 
-    public Image getImageByObjectId(Integer id);
+    public Image getImageByObjectId(Integer id, String tableName);
 }

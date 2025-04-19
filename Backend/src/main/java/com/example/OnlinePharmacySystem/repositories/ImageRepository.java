@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface ImageRepository extends JpaRepository<Image, Integer> {
 
-    @Query("SELECT i FROM Image i WHERE i.objectId = :objectId")
-    public Image findByObjectId(@Param("objectId") Integer objectId);
+    @Query("SELECT i FROM Image i WHERE i.objectId = :objectId AND i.tableName = :tableName")
+    public Image findByObjectId(@Param("objectId") Integer objectId, @Param("tableName") String tableName);
 	
 
 }

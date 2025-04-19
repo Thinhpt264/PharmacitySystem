@@ -2,11 +2,7 @@ package com.example.OnlinePharmacySystem.entities;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Product {
@@ -52,6 +48,9 @@ public class Product {
 
 	    @Column
 	    private Boolean status;
+
+		@ManyToOne(fetch = FetchType.LAZY)
+		private Category category;
 
 		public Product() {
 			super();
@@ -189,7 +188,14 @@ public class Product {
 			this.status = status;
 		}
 
-		@Override
+	public Category getCategory() {
+		return category;
+	}
+	public void setCategory(Category category) {
+			this.category = category;
+	}
+
+	@Override
 		public String toString() {
 			return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
 					+ ", image=" + image + ", created_at=" + created_at + ", updated_at=" + updated_at + ", type="
