@@ -28,7 +28,7 @@ public class ProductController {
 	}
 
 	@GetMapping(value = "/by-category/{categoryId}",produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> findByCategotyId(@PathVariable int categoryId) {
+	public ResponseEntity<Object> findByCategoryId(@PathVariable int categoryId) {
 		 try {
 			 List<ProductDTO> products = productService.findByCategotyId(categoryId);
 			 if(products.isEmpty() ) {
