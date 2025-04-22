@@ -43,14 +43,16 @@ export class AppComponent implements OnInit {
 
       for (let i = 0; i < this.categories.length; i++) {
         const cateId = this.categories[i].id;
-        const tableName = "Category"
-        this.categoryService.findImageOfObjId(cateId, tableName).then((imgRes) => {
-          const fullPath =
-            this.baseUrl.getBaseUrl() +
-            imgRes.image.path +
-            imgRes.image.imageName;
-          this.categories[i].imageUrl = fullPath;
-        });
+        const tableName = 'Category';
+        this.categoryService
+          .findImageOfObjId(cateId, tableName)
+          .then((imgRes) => {
+            const fullPath =
+              this.baseUrl.getBaseUrl() +
+              imgRes.image.path +
+              imgRes.image.imageName;
+            this.categories[i].imageUrl = fullPath;
+          });
       }
     });
   }
@@ -70,25 +72,29 @@ export class AppComponent implements OnInit {
       // Gọi ảnh cho từng danh mục con
       for (let i = 0; i < this.listChildrenCategory.length; i++) {
         const cateId = this.listChildrenCategory[i].id;
-        const tableName = "Category"
+        const tableName = 'Category';
 
-        this.categoryService.findImageOfObjId(cateId, tableName).then((imgRes) => {
-          const fullPath =
-            this.baseUrl.getBaseUrl() +
-            imgRes.image.path +
-            imgRes.image.imageName;
-          this.listChildrenCategory[i].imageUrl = fullPath;
-        });
+        this.categoryService
+          .findImageOfObjId(cateId, tableName)
+          .then((imgRes) => {
+            const fullPath =
+              this.baseUrl.getBaseUrl() +
+              imgRes.image.path +
+              imgRes.image.imageName;
+            this.listChildrenCategory[i].imageUrl = fullPath;
+          });
       }
 
       // Cache kết quả lại để lần sau không cần gọi lại
       this.cachedChildren[id] = this.listChildrenCategory;
     });
   }
-  goToCategoryById(id : number){
-    this.router.navigate(['/productCategory/', id]);
-    
+  goToCategoryById(categoryId: number) {
+    console.log(categoryId);
+    window.location.href = '/productCategory/' + categoryId;
+    // this.router.navigate(['/productCategory', categoryId]);
   }
+
   goToHome() {
     window.location.href = '/home';
   }

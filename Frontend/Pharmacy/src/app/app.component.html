@@ -205,7 +205,7 @@
               <ul >
               <ng-container *ngFor="let cate of categories">
                 <li class="ltn__category-menu-item ltn__category-menu-drop" (mouseover)="findCategoryByCategoryParent(cate.id)">
-                  <a href="#">
+                  <a (click)="goToHome()">
                     <img [src]="cate.imageUrl" alt="" style="width: 35px; height: 35px; margin-right: 10px;">
                     {{ cate.categoryName }}
                   </a>
