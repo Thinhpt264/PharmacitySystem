@@ -11,9 +11,12 @@ import { ContactComponent } from './components/contact.component/contact.compone
 import { BaseUrlService } from './service/baseUrl.service';
 import { CategoryService } from './service/category.service';
 import { HttpClientModule } from '@angular/common/http';
-import { productCategoryComponent } from './components/productCategory.component/productCategory.component';
+
 import { ProductService } from './service/product.service';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+
+import { RouterModule } from '@angular/router';
+import { ProductCategoryComponent } from './components/productCategory.component/productCategory.component';
+// import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -23,20 +26,14 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
     ServiceComponent,
     NewsComponent,
     ContactComponent,
-    productCategoryComponent,
-    
+    ProductCategoryComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    
-  ],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, RouterModule],
   providers: [
     BaseUrlService,
     CategoryService,
     ProductService,
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
+    // { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent],
 })
