@@ -20,7 +20,7 @@ import lombok.ToString;
 
 @Entity
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Table(name = "account")
@@ -42,6 +42,8 @@ public class Account {
 	private LocalDateTime last_login_at;
 	private LocalDate dob;
 	private int gender;
+	@Column(name = "security_expiration")
+	private LocalDateTime securityExpiration;
 	
 	 @PrePersist
 	 protected void onCreate() {
@@ -59,28 +61,6 @@ public class Account {
 				+ ", status=" + status + ", security_code=" + security_code + ", created_at=" + created_at
 				+ ", deleted_at=" + deleted_at + ", updated_at=" + updated_at + ", last_login_at=" + last_login_at
 				+ ", dob=" + dob + ", gender=" + gender + "]";
-	}
-
-	public Account(int id, String username, String password, String email, boolean status, String security_code,
-			LocalDateTime created_at, LocalDateTime deleted_at, LocalDateTime updated_at, LocalDateTime last_login_at,
-			LocalDate dob, char gender) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.status = status;
-		this.security_code = security_code;
-		this.created_at = created_at;
-		this.deleted_at = deleted_at;
-		this.updated_at = updated_at;
-		this.last_login_at = last_login_at;
-		this.dob = dob;
-		this.gender = gender;
-	}
-
-	public Account() {
-		super();
 	}
 
 	public int getId() {
