@@ -13,4 +13,8 @@ public interface AccountService {
 	public boolean save(AccountDTO accountDTO);
 	
 	public AccountDTO findByUsername (String username);
+
+	public boolean verify(String email, String securityCode);
+
+	public AccountDTO findByEmail(String email);
 }
