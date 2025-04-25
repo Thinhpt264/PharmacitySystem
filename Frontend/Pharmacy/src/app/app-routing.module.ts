@@ -1,17 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { HomeComponent } from './components/home.component/home.component';
-import { AboutUsComponent } from './components/aboutUs.component/aboutUs.component';
-import { ServiceComponent } from './components/service.component/service.component';
-import { NewsComponent } from './components/news.component/news.component';
-import { ContactComponent } from './components/contact.component/contact.component';
-import { ProductCategoryComponent } from './components/productCategory.component/productCategory.component';
+
+
+import { ProductComponent } from './components/product/product.component';
+import { ProductCategoryComponent } from './components/productCategory/productCategory.component';
+import { AboutUsComponent } from './components/aboutUs/aboutUs.component';
+import { ServiceComponent } from './components/service/service.component';
+import { NewsComponent } from './components/news/news.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
@@ -25,6 +30,18 @@ const routes: Routes = [
   {
     path: 'about',
     component: AboutUsComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
+  {
+    path: 'product',
+    component: ProductComponent,
   },
   {
     path: 'service',
