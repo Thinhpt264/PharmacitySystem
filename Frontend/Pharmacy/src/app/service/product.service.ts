@@ -16,6 +16,10 @@ export class ProductService {
 
     async findProductByCategoryId(id : number) : Promise<any>{
         return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "api/products/by-category/" + id));
-}
+    }
+
+      async findAll() : Promise<any>{
+        return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "api/products" ));
+    }
 
 }

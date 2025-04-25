@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   path: string;
   src: string;
   cateId: any;
+  account = JSON.parse(sessionStorage.getItem('account') || '{}');
   constructor(
     private router: Router,
     private categoryService: CategoryService,
@@ -23,19 +24,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.findAll();
   }
-
-  // findAll() {
-  //   this.categoryService.findAllCategory().then((res) => {
-  //     this.categories = res.categories;
-
-  //     // for (let i = 0; i < res.categories.length; i++) {
-  //     //   this.cateId = this.categories[i].id;
-  //     //   console.log(this.cateId);
-
-  //     // }
-  //     //  this.findImageOfObjId(this.cateId);
-  //   });
-  // }
 
   findAll() {
     this.categoryService.findAllCategory().then((res) => {
@@ -97,6 +85,9 @@ export class AppComponent implements OnInit {
 
   goToHome() {
     window.location.href = '/home';
+  }
+  goToProducts() {
+    window.location.href = '/product';
   }
 
   goToAbout() {

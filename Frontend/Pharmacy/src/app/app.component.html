@@ -153,7 +153,7 @@
                       <i class="icon-shopping-cart"></i>
                       <sup>2</sup>
                     </span>
-                    <h6><span>Your Cart</span> <span class="ltn__secondary-color">$89.25</span></h6>
+                    <h6><span>Hello {{account.username}}</span> <span class="ltn__secondary-color">$89.25</span></h6>
                   </a>
                 </div>
               </li>
@@ -204,14 +204,14 @@
        
               <ul >
               <ng-container *ngFor="let cate of categories">
-                <li class="ltn__category-menu-item ltn__category-menu-drop" (mouseover)="findCategoryByCategoryParent(cate.id)">
+                <li class="ltn__category-menu-item ltn__category-menu-drop" (mouseover)="findCategoryByCategoryParent(cate.id)" style="cursor: pointer;">
                   <a (click)="goToHome()">
                     <img [src]="cate.imageUrl" alt="" style="width: 35px; height: 35px; margin-right: 10px;">
                     {{ cate.categoryName }}
                   </a>
               
                   <ul class="ltn__category-submenu ltn__category-column" style="width: 420px;">
-                    <li class="ltn__category-submenu-title ltn__category-menu-drop" style="width: 380px;">
+                    <li class="ltn__category-submenu-title ltn__category-menu-drop" style="width: 380px; cursor: pointer;">
                       <a href="#">{{ cate.categoryName }}</a>
                       <ul class="ltn__category-submenu-children" style="max-height: 390px; overflow-y: auto;">
                         <ng-container *ngFor="let cate1 of listChildrenCategory">
@@ -271,15 +271,15 @@
                   </li>
 
 
-                    <li class="menu-icon"><a (click)="goToLocations()">Sản phẩm</a>
-                      <ul>
+                    <li class="menu-icon"><a (click)="goToProducts()">Sản phẩm</a>
+                      <!-- <ul>
                         <li><a (click)="goToServices()">Thuốc</a></li>
                         <li><a (click)="goToServices()">Thực Phẩm Chức Năng</a></li>
                         <li><a (click)="goToServices()">Thực Phẩm Bổ Sung</a></li>
                         <li><a (click)="goToServices()">Mỹ Phẩm</a></li>
                         <li><a (click)="goToServices()">Y tế</a></li>
                    
-                      </ul>
+                      </ul> -->
                     </li>
                     <li class="menu-icon"><a (click)="goToLocations()">Thông tin</a>
                       <ul>

@@ -43,7 +43,7 @@ public class AccountController {
 	        }
 
 	        Map<String, Object> response = new HashMap<>();
-	        response.put("message", "Thanh Cong");
+	        response.put("message", true);
 	        response.put("account", account);
 
 	        return new ResponseEntity<>(response, HttpStatus.OK);

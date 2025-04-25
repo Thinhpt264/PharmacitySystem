@@ -1,0 +1,159 @@
+<!-- PRODUCT AREA START (product-item-3) -->
+<div class="ltn__product-area ltn__product-gutter  no-product-ratting pt-20--- pt-65  pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title-area ltn__section-title-2 text-center">
+                    <h1 class="section-title">Sản phẩm</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Search -->
+            <div class="col-lg-3">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-6">
+                        <div class="ltn__filter">
+                            <!-- <div class="input-group">
+                            <input type="text" id="search" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+                        </div> -->
+                            <!-- <div class="card flex justify-content-center"> -->
+                            <div class="price-filter mb-4">
+                                <span class="font-bold mb-2 block"><b>Giá thành</b></span>
+                                <div class="flex gap-2 align-items-center mb-4">
+
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <label class="mr-2">Từ</label>
+                                            </td>
+                                            <td>
+                                                <input type="text" [(ngModel)]="displayMinPrice"
+                                                    (ngModelChange)="onMinPriceChange($event)" class="w-6 h-3 p-2"
+                                                    placeholder="Tối thiểu" style="border-radius: 10px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label class="mr-2">Đến</label>
+                                            </td>
+
+                                            <td>
+                                                <input type="text" [(ngModel)]="displayMaxPrice"
+                                                    (ngModelChange)="onMaxPriceChange($event)" class="w-6 h-3 p-2"
+                                                    placeholder="Tối đa" style="border-radius: 10px;" />
+                                            </td>
+
+                                        </tr>
+
+                                    </table>
+                                </div>
+                                <p-slider [(ngModel)]="priceRange" [range]="true" [min]="0" [max]="1000000"
+                                    [step]="20000" (ngModelChange)="onSliderChange()" styleClass="w-14rem" />
+                            </div>
+                            <!-- <p-slider [(ngModel)]="value" class="w-full" /> -->
+
+                            <!-- </div> -->
+
+                            <div class="checkbox-group">
+                                <span><b>Nhà cung cấp</b></span>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="filter1" value="category1">
+                                    <label class="form-check-label" for="filter1">Danh mục 1</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="filter2" value="category2">
+                                    <label class="form-check-label" for="filter2">Danh mục 2</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="filter3" value="category3">
+                                    <label class="form-check-label" for="filter3">Danh mục 3</label>
+                                </div>
+                            </div>
+
+                            <div class="checkbox-group">
+                                <span><b>Thương hiệu</b></span>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="filter1" value="category1">
+                                    <label class="form-check-label" for="filter1">Danh mục 1</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="filter2" value="category2">
+                                    <label class="form-check-label" for="filter2">Danh mục 2</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="filter3" value="category3">
+                                    <label class="form-check-label" for="filter3">Danh mục 3</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Search End -->
+
+            <div class="col-lg-9">
+                <div class="row ltn__tab-product-slider-one-active--- slick-arrow-1">
+                    <!-- ltn__product-item -->
+                    <ng-container *ngFor="let product of products">
+                        <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
+                            <div class="ltn__product-item ltn__product-item-2 text-left">
+                                <div class="product-img">
+                                    <a [routerLink]="['/product', product.id]"><img [src]="product.imageUrl" alt="#"
+                                            style="width: 400px; height: 350px;"></a>
+                                    <div class="product-badge">
+                                        <ul>
+                                            <li class="sale-badge">New</li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-hover-action">
+                                        <ul>
+                                            <li>
+                                                <a href="#" title="Quick View" data-bs-toggle="modal"
+                                                    data-bs-target="#quick_view_modal">
+                                                    <i class="far fa-eye"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" title="Add to Cart" data-bs-toggle="modal"
+                                                    data-bs-target="#add_to_cart_modal">
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" title="Wishlist" data-bs-toggle="modal"
+                                                    data-bs-target="#liton_wishlist_modal">
+                                                    <i class="far fa-heart"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-ratting">
+                                        <ul>
+                                            <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                            <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                            <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                            <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
+                                            <li><a href="#"><i class="far fa-star"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <h2 class="product-title"><a
+                                            [routerLink]="['/product', product.id]">{{product.name}}</a></h2>
+                                    <div class="product-price">
+                                        <span>${{ product.price }}</span>
+                                        <del>${{ product.price }}</del>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!--  -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- PRODUCT AREA END -->

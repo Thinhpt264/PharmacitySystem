@@ -1,0 +1,38 @@
+.price-filter {
+    max-width: 300px;
+}
+
+input[type="text"] {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #0A9A73;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+label {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Nếu dùng CSS */
+:host ::ng-deep .p-slider .p-slider-range {
+  background-color: #0A9A73 !important; /* Màu của phần range đã chọn */
+}
+
+:host ::ng-deep .p-slider .p-slider-handle {
+  background-color: #0A9A73 !important; /* Màu của nút trượt */
+  border-color: #0A9A73 !important; /* Viền của nút trượt */
+}
+
+:host ::ng-deep .p-slider:not(.p-disabled) .p-slider-handle:hover {
+  background-color: #087f5b !important; /* Màu khi hover (tùy chọn, đậm hơn) */
+}
+
+/* Nếu cần tùy chỉnh màu nền của toàn bộ thanh trượt */
+:host ::ng-deep .p-slider {
+  background-color: #e0e0e0; /* Màu nền của thanh trượt (tùy chọn) */
+}
