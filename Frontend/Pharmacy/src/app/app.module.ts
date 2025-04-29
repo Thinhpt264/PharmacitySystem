@@ -28,6 +28,7 @@ import { AccountService } from './service/account.service';
 import { DropdownModule } from 'primeng/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { RegisterSuccessComponent } from './components/register-success/register-success';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     ProductComponent,
     LoginComponent,
     RegisterComponent,
+    RegisterSuccessComponent
   ],
   imports: [
     BrowserModule,

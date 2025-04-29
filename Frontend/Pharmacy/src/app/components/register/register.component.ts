@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AccountService } from 'src/app/service/account.service';
 
 @Component({
   selector: 'app-root',
@@ -19,11 +21,36 @@ export class RegisterComponent implements OnInit {
     { name: 'Nữ', value: '0' },
   ];
 
+  constructor(
+    private accountService: AccountService, private router: Router
+  ){}
+
   ngOnInit(): void {}
 
   checkRegister(evt: any) {
     evt.preventDefault();
     console.log('Account:', this.account);
     console.log('Gender:', this.account.gender);
+
+    try {
+      // Gọi hàm findImageOfObjId từ service
+      this.accountService.register(this.account).then((response) => {
+        console.log(response);
+        // Xử lý phản hồi từ backend
+        if (response.status === true) {
+          console.log('Đăng Kí tài khoản thành công!', response.account);
+          // Xử lý đăng nhập thành công (ví dụ: lưu token, chuyển hướng)
+          window.location.href = '/register-success';
+          sessionStorage.setItem('account', JSON.stringify(response.account));
+        } else {
+          console.error('Đăng kí thất bại:', response);
+          alert('');
+        }
+      });
+    } catch (error) {
+      console.error('Lỗi đăng nhập:', error);
+      alert('Lỗi nội bộ server');
+    }
+
   }
 }
