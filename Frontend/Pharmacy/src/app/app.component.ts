@@ -83,6 +83,10 @@ export class AppComponent implements OnInit {
     // this.router.navigate(['/productCategory', categoryId]);
   }
 
+  goToRegisterSucces() {
+    window.location.href = '/register-success';
+  }
+
   goToHome() {
     window.location.href = '/home';
   }

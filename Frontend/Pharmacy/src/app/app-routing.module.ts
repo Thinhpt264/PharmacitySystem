@@ -12,6 +12,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { RegisterSuccessComponent } from './components/register-success/register-success';
 
 const routes: Routes = [
   {
@@ -54,6 +55,10 @@ const routes: Routes = [
   {
     path: 'contact',
     component: ContactComponent,
+  },
+  {
+    path: 'register-success',
+    component: RegisterSuccessComponent,
   },
   // {
   //   path: '**',

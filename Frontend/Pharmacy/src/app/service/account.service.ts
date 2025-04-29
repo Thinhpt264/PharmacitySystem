@@ -13,5 +13,8 @@ export class AccountService {
     async login(account : any) : Promise<any>{
             return await lastValueFrom(this.httpClient.post(this.baseUrl.getBaseUrl() + "accounts/process_login" , account));
     }
+    async register(account: any) : Promise<any>{
+            return await lastValueFrom(this.httpClient.post(this.baseUrl.getBaseUrl() + "accounts/register" , account));
+    }
 
 }
