@@ -42,4 +42,7 @@ export class LoginComponent implements OnInit {
   goToRegister() {
     window.location.href = '/register';
   }
+  goToHome() {
+     window.location.href = '/home';
+  }
 }

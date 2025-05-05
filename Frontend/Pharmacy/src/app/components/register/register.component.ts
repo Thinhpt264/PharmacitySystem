@@ -16,14 +16,12 @@ export class RegisterComponent implements OnInit {
   };
 
   genders: any = [
-    { name: 'Giới tính', value: '-1' },
     { name: 'Nam', value: '1' },
     { name: 'Nữ', value: '0' },
+    { name: 'Giới tính', value: '-1' },
   ];
 
-  constructor(
-    private accountService: AccountService, private router: Router
-  ){}
+  constructor(private accountService: AccountService, private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -51,6 +49,9 @@ export class RegisterComponent implements OnInit {
       console.error('Lỗi đăng nhập:', error);
       alert('Lỗi nội bộ server');
     }
+  }
 
+  goToHome() {
+    window.location.href = '/home';
   }
 }

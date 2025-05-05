@@ -14701,3 +14701,36 @@ input.cart-plus-minus-box {
   background-color: #ccc;
   border-radius: 3px;
 }
+::ng-deep .gender-dropdown {
+  font-size: 14px;
+  border-radius: 6px !important;
+  width: 180px !important;
+}
+
+::ng-deep .gender-dropdown-panel {
+  max-height: unset !important;        /* Bỏ giới hạn chiều cao */
+  overflow-y: hidden !important;       /* Ẩn thanh cuộn dọc */
+  overflow-x: hidden !important;       /* Ẩn thanh cuộn ngang */
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .p-dropdown-items-wrapper {
+  max-height: unset !important;
+  overflow-y: hidden !important;
+}
+
+
+::ng-deep .p-dropdown-item {
+  font-size: 14px;
+ 
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+::ng-deep .p-dropdown-item.p-highlight {
+  background-color: #007bff !important;
+  color: #fff !important;
+}
+
+

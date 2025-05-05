@@ -17,7 +17,7 @@ import { RegisterSuccessComponent } from './components/register-success/register
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {

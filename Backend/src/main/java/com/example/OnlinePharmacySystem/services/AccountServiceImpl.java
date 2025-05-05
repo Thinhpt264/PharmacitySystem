@@ -60,13 +60,13 @@ public class AccountServiceImpl implements AccountService {
 			account.setRole(1);
 			account.setPassword(encoder.encode(accountDTO.getPassword()));
 			account.setStatus(false);
-			account.setSecurity_code(RandomHelper.random());
+			account.setSecurity_code(RandomHelper.random6Digits());
 			account.setSecurityExpiration(LocalDateTime.now().plusMinutes(15));
 			// Lưu tài khoản và xử lý nếu thành công
 			Account savedAccount = accountRepository.save(account);
 				String from = environment.getProperty("spring.mail.username");
 				String to = account.getEmail();
-				String verifyLink = environment.getProperty("BASE_URL") + "accounts/verify?email=" + account.getEmail() + "&securityCode=" + account.getSecurity_code();
+				String verifyLink = environment.getProperty("BASE_URL") + "/accounts/verify?email=" + account.getEmail() + "&securityCode=" + account.getSecurity_code();
 
 				String content = "<!DOCTYPE html>" +
 						"<html>" +
@@ -83,11 +83,12 @@ public class AccountServiceImpl implements AccountService {
 						"<p>Xin chào,</p>" +
 						"<p>Vui lòng nhấp vào nút bên dưới để xác minh tài khoản của bạn:</p>" +
 						"<a href='" + verifyLink + "' class='btn'>Xác minh tài khoản</a>" +
-						"<b> Đường dẫn sẽ hết hạn sau 15 phút </b>"+
+						"" +
+						"<br><br><br><b> Đường dẫn sẽ hết hạn sau 15 phút </b>"+
 						"</div>" +
 						"</body>" +
 						"</html>";
-
+			System.out.println(verifyLink);
 				mailService.send(from, to, "Xác minh tài khoản", content);
 
 			return true;
@@ -115,17 +116,20 @@ public class AccountServiceImpl implements AccountService {
 	public boolean verify(String email, String securityCode) {
 		try {
 			Account account = accountRepository.findByEmail(email);
-			boolean verified = false;
-			if(account != null) {
-				verified = account.getSecurity_code().equals(securityCode);
+			if (account != null && securityCode.equals(account.getSecurity_code())) {
+				account.setStatus(true);
+				account.setSecurity_code(securityCode);
+				account.setCreated_at(LocalDateTime.now());
+				accountRepository.save(account);
+				return true;
 			}
-			return verified;
-
-		}catch (Exception e){
+			return false;
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
+
 
 	@Override
 	public AccountDTO findByEmail(String email) {
