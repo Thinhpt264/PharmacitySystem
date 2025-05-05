@@ -6,8 +6,16 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -28,56 +36,7 @@ public class Category implements Serializable {
 
 	private byte status;
 
-	public int getId() {
-		return this.id;
-	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getCategoryName() {
-		return this.categoryName;
-	}
-
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
-	}
-
-	public Integer getCategoryParentId() {
-		return this.categoryParentId;
-	}
-
-	public void setCategoryParentId(Integer categoryParentId) {
-		this.categoryParentId = categoryParentId;
-	}
-
-	public byte getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(byte status) {
-		this.status = status;
-	}
-
-	public List<Product> getProducts() {
-		return this.products;
-	}
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-
-	public Category(int id, String categoryName, Integer categoryParentId, byte status) {
-		super();
-		this.id = id;
-		this.categoryName = categoryName;
-		this.categoryParentId = categoryParentId;
-		this.status = status;
-	}
-
-	public Category() {
-		super();
-	}
 	
 	
 
