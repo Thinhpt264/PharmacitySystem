@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { CategoryService } from './service/category.service';
 import { BaseUrlService } from './service/baseUrl.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,12 +16,22 @@ export class AppComponent implements OnInit {
   path: string;
   src: string;
   cateId: any;
+  showLayout = true;
   account = JSON.parse(sessionStorage.getItem('account') || '{}');
   constructor(
     private router: Router,
     private categoryService: CategoryService,
     private baseUrl: BaseUrlService
-  ) {}
+  ) {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        // Ẩn layout khi ở trang login hoặc register
+        this.showLayout = !['/login', '/register', '/register-success'].includes(
+          event.urlAfterRedirects
+        );
+      });
+  }
   ngOnInit(): void {
     this.findAll();
   }

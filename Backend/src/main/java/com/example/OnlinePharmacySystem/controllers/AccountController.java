@@ -95,7 +95,4 @@ public class AccountController {
 					.body("Lỗi nội bộ server");
 		}
 	}
-	
-	
-	
 }
