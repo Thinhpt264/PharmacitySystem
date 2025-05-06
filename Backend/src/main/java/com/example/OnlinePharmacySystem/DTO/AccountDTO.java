@@ -20,7 +20,7 @@ public class AccountDTO {
 	private LocalDateTime deleted_at;
 	private LocalDateTime updated_at;
 	private LocalDateTime last_login_at;
-	private String securityCode;
+	private String security_code;
 
 	public int getId() {
 		return id;
@@ -102,11 +102,11 @@ public class AccountDTO {
 		this.last_login_at = last_login_at;
 	}
 
-	public String getSecurityCode() {
-		return securityCode;
+	public String getSecurity_code() {
+		return security_code;
 	}
 
-	public void setSecurityCode(String securityCode) {
-		this.securityCode = securityCode;
+	public void setSecurity_code(String security_code) {
+		this.security_code = security_code;
 	}
 }
