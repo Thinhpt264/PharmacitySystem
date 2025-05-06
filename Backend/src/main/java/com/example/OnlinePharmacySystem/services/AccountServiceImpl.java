@@ -88,7 +88,7 @@ public class AccountServiceImpl implements AccountService {
 						"</div>" +
 						"</body>" +
 						"</html>";
-			System.out.println(verifyLink);
+				System.out.println(verifyLink);
 				mailService.send(from, to, "Xác minh tài khoản", content);
 
 			return true;
