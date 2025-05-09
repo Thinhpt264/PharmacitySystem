@@ -1,4 +1,6 @@
 <div *ngIf="showLayout">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
   <!-- HEADER AREA START (header-3) -->
   <header class="ltn__header-area ltn__header-3 section-bg-6---">
     <!-- ltn__header-top-area start -->
@@ -132,15 +134,24 @@
                   <!-- user-menu -->
                   <div class="ltn__drop-menu user-menu">
                     <ul>
-                      <li>
-                        <a><i class="icon-user"></i></a>
+                    <li>
+                      <a><i class="icon-user"></i></a>
+                    
+                      <!-- Nếu account có username thì là đã đăng nhập -->
+                      <ul *ngIf="account?.username; else guestMenu">
+                        <li><a href="account.html">Tài khoản của tôi</a></li>
+                        <li><a href="#" (click)="logout()">Đăng xuất</a></li>
+                      </ul>
+                    
+                      <!-- Nếu chưa đăng nhập -->
+                      <ng-template #guestMenu>
                         <ul>
-                          <li><a [routerLink]="['/login']">Log in</a></li>
-                          <li><a [routerLink]="['/register']">Register</a></li>
-                          <li><a href="account.html">My Account</a></li>
-                          <li><a href="wishlist.html">Wishlist</a></li>
+                          <li><a [routerLink]="['/login']">Đăng nhập</a></li>
+                          <!-- <li><a [routerLink]="['/register']">Đăng kí</a></li> -->
                         </ul>
-                      </li>
+                      </ng-template>
+                    </li>
+
                     </ul>
                   </div>
                 </li>
@@ -453,4 +464,5 @@
   </footer>
   <!-- FOOTER AREA END -->
 </div>
+
 <router-outlet *ngIf="!showLayout"></router-outlet>

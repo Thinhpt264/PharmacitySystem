@@ -66,7 +66,7 @@ public class AccountServiceImpl implements AccountService {
 			Account savedAccount = accountRepository.save(account);
 				String from = environment.getProperty("spring.mail.username");
 				String to = account.getEmail();
-				String verifyLink = environment.getProperty("BASE_URL") + "/accounts/verify?email=" + account.getEmail() + "&securityCode=" + account.getSecurity_code();
+				String verifyLink = environment.getProperty("BASE_URL") + "/verify?email=" + account.getEmail() + "&securityCode=" + account.getSecurity_code();
 
 				String content = "<!DOCTYPE html>" +
 						"<html>" +
@@ -119,6 +119,7 @@ public class AccountServiceImpl implements AccountService {
 			if (account != null && securityCode.equals(account.getSecurity_code())) {
 				account.setStatus(true);
 				account.setSecurity_code(securityCode);
+
 				account.setCreated_at(LocalDateTime.now());
 				accountRepository.save(account);
 				return true;
@@ -138,6 +139,62 @@ public class AccountServiceImpl implements AccountService {
 			return mapper.map(account, AccountDTO.class);
 		}
 		return null;
+	}
+
+	@Override
+	public boolean reSendCode(String email) {
+		try {
+			Account account = accountRepository.findByEmail(email);
+			if (account != null) {
+				String securityCode = RandomHelper.random6Digits();
+				account.setSecurity_code(securityCode);
+				account.setSecurityExpiration(LocalDateTime.now().plusMinutes(15));
+//				accountRepository.save(account);
+//				return true;
+				try {
+					// Lưu tài khoản và xử lý nếu thành công
+					Account savedAccount = accountRepository.save(account);
+					String from = environment.getProperty("spring.mail.username");
+					String to = account.getEmail();
+					String verifyLink = environment.getProperty("BASE_URL") + "/verify?email=" + account.getEmail() + "&securityCode=" + account.getSecurity_code();
+
+					String content = "<!DOCTYPE html>" +
+							"<html>" +
+							"<head>" +
+							"<style>" +
+							"body { font-family: Arial, sans-serif; }" +
+							".container { max-width: 600px; margin: 0 auto; padding: 20px; }" +
+							".btn { background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; }" +
+							"</style>" +
+							"</head>" +
+							"<body>" +
+							"<div class='container'>" +
+							"<h2>Xác minh tài khoản của bạn</h2>" +
+							"<p>Xin chào,</p>" +
+							"<p>Vui lòng nhấp vào nút bên dưới để xác minh tài khoản của bạn:</p>" +
+							"<a href='" + verifyLink + "' class='btn'>Xác minh tài khoản</a>" +
+							"" +
+							"<br><br><br><b> Đường dẫn sẽ hết hạn sau 15 phút </b>"+
+							"</div>" +
+							"</body>" +
+							"</html>";
+					System.out.println(verifyLink);
+					mailService.send(from, to, "Xác minh tài khoản", content);
+
+					return true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					// TODO: handle exception
+					return false;
+				}
+				// TODO Auto-generated method stub
+
+			}
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 

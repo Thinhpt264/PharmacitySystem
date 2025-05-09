@@ -3,44 +3,62 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-               
+
                 <div class="section-title-area text-center">
                     <div class="btn-wrapper" (click)="goToHome()">
                         <a class="theme-btn-1 btn black-btn">Trang chủ</a>
                     </div>
-                    <h1 class="section-title">Sign In <br>To Your Account</h1>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. <br>
-                        Sit aliquid, Non distinctio vel iste.</p>
+                    <br>
+                    <p>*Chúng tôi muốn biết rằng bạn là ai bằng cách</p>
+                    <br>
+                    <h1 class="section-title">ĐĂNG NHẬP </h1>
+
                 </div>
-               
+
             </div>
         </div>
         <div class="row">
             <div class="col-lg-6">
                 <div class="account-login-inner">
-                    <form action="#" class="ltn__form-box contact-form-box" (ngSubmit)="checkLogin($event)">
-                        <input type="text"  name="username" placeholder="Tên đăng nhập*" [(ngModel)]="account.username">
-                        <input type="password" name="password" placeholder="Mật khẩu*" [(ngModel)]="account.password">
+                    <form class="ltn__form-box contact-form-box" (ngSubmit)="checkLogin($event)">
+                        <div class="form-group mb-3">
+                            <div>Tài khoản <span style="color: red;">*</span></div>
+                            <input type="text" id="username" name="username" placeholder="Tên đăng nhập*"
+                                class="form-control" [(ngModel)]="account.username">
+                        </div>
+                        <div class="form-group mb-3">
+                            <div>Mật khẩu<span style="color: red;">*</span></div>
+                            <input [type]="show ? 'text' : 'password'" id="password" name="password"
+                                placeholder="Mật khẩu*" class="form-control" [(ngModel)]="account.password" />
+                            <div class="mt-2 ">
+                                <input type="checkbox" id="showPass" (change)="showPassword()" /> Xem mật khẩu
+                            </div>
+                        </div>
                         <div class="btn-wrapper mt-0">
-                            <button class="theme-btn-1 btn btn-block" type="submit" >SIGN IN</button>
+                            <button class="theme-btn-1 btn btn-block" type="submit">Đăng Nhập</button>
                         </div>
                         <div class="go-to-btn mt-20">
-                            <a href="#" ><small>FORGOTTEN YOUR PASSWORD?</small></a>
+                            <a href="#"><small>Quên mật khẩu?</small></a>
                         </div>
                     </form>
                 </div>
             </div>
+
             <div class="col-lg-6">
-                <div class="account-create text-center pt-50" >
-                    <h4>DON'T HAVE AN ACCOUNT?</h4>
-                    <p>Add items to your wishlistget personalised recommendations <br>
-                        check out more quickly track your orders register</p>
+                <div class="account-create text-center pt-50">
+                    <h4>Nếu chưa có tài khoản?</h4>
+                    <p>
+                        Chúng tôi hiểu rằng bạn đang<br>
+                        muốn tạo mới tài khoản bằng cách
+                    </p>
                     <div class="btn-wrapper" (click)="goToRegister()">
-                        <a   class="theme-btn-1 btn black-btn">CREATE ACCOUNT</a>
+                        <a class="theme-btn-1 btn black-btn">ĐĂNG KÍ TẠI ĐÂY</a>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
+<p-toast></p-toast>
 <!-- LOGIN AREA END -->

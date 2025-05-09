@@ -29,6 +29,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { RegisterSuccessComponent } from './components/register-success/register-success';
+import { VerifyComponent } from './components/verify/verify.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { AuthService } from './service/auth.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
+import { ValidationService } from './service/validation.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +49,8 @@ import { RegisterSuccessComponent } from './components/register-success/register
     ProductComponent,
     LoginComponent,
     RegisterComponent,
-    RegisterSuccessComponent
+    RegisterSuccessComponent,
+    VerifyComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +63,8 @@ import { RegisterSuccessComponent } from './components/register-success/register
     DropdownModule,
     BrowserAnimationsModule,
     OverlayPanelModule,
+    ToastModule,
+    ConfirmDialogModule,
   ],
   providers: [
     BaseUrlService,
@@ -62,6 +72,10 @@ import { RegisterSuccessComponent } from './components/register-success/register
     ProductService,
     CurrencyPipe,
     AccountService,
+    MessageService,
+    AuthService,
+    ConfirmationService,
+    ValidationService,
     // { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent],

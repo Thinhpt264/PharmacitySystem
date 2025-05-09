@@ -39,7 +39,10 @@ public class AccountController {
 	        AccountDTO account = accountService.login(accountDTO.getUsername(), accountDTO.getPassword());
 
 	        if (account == null) {
-	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sai tài khoản hoặc mật khẩu");
+				Map<String, Object> response = new HashMap<>();
+				response.put("message", false);
+
+	            return new ResponseEntity<>(response, HttpStatus.OK);
 	        }
 
 	        Map<String, Object> response = new HashMap<>();
@@ -86,7 +89,26 @@ public class AccountController {
 				response.put("verified", false);
 				response.put("message", "Mã xác minh không hợp lệ hoặc đã hết hạn.");
 
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Lỗi nội bộ server");
+		}
+	}
+	@GetMapping(value = "/reSendCode")
+	public ResponseEntity<Object> reSendCode(@RequestParam String email) {
+		try {
+			boolean verified = accountService.reSendCode(email);
+
+			if (verified) {
+				boolean status = true;
+				return ResponseEntity.ok(status);
+			} else {
+				boolean status = false;
+				return ResponseEntity.status(HttpStatus.OK).body(status);
 			}
 
 		} catch (Exception e) {
