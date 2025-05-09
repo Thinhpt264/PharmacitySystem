@@ -17,4 +17,6 @@ public interface AccountService {
 	public boolean verify(String email, String securityCode);
 
 	public AccountDTO findByEmail(String email);
+
+	public boolean reSendCode(String email);
 }

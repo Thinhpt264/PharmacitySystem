@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { CategoryService } from './service/category.service';
 import { BaseUrlService } from './service/baseUrl.service';
 import { filter } from 'rxjs';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -17,23 +18,42 @@ export class AppComponent implements OnInit {
   src: string;
   cateId: any;
   showLayout = true;
-  account = JSON.parse(sessionStorage.getItem('account') || '{}');
+  account: any = {};
   constructor(
     private router: Router,
     private categoryService: CategoryService,
-    private baseUrl: BaseUrlService
+    private baseUrl: BaseUrlService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         // Ẩn layout khi ở trang login hoặc register
-        this.showLayout = !['/login', '/register', '/register-success'].includes(
-          event.urlAfterRedirects
-        );
+        this.showLayout = ![
+          '/login',
+          '/register',
+          '/register-success',
+        ].includes(event.urlAfterRedirects);
       });
   }
   ngOnInit(): void {
     this.findAll();
+    this.loadSession();
+  }
+
+  loadSession() {
+    const acc = sessionStorage.getItem('account');
+    this.account = acc ? JSON.parse(acc) : {};
+  }
+
+  logout() {
+    const confirmed = confirm('Bạn có chắc chắn muốn đăng xuất không?');
+    if (confirmed) {
+      sessionStorage.removeItem('account');
+      this.account = {};
+      window.location.href = '/login'; // hoặc this.router.navigate(['/login']);
+    }
   }
 
   findAll() {
