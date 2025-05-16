@@ -2,6 +2,7 @@ import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseUrlService } from 'src/app/service/baseUrl.service';
+import { CategoryService } from 'src/app/service/category.service';
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
@@ -20,11 +21,15 @@ export class ProductComponent implements OnInit {
   displayMaxPrice: any;
   displayMinPrice: any;
 
+  categoryParent: any[] = [];
+  imageUrl: any;
+
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private baseUrl: BaseUrlService,
-    private currencyPipe: CurrencyPipe
+    private currencyPipe: CurrencyPipe,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
@@ -51,13 +56,37 @@ export class ProductComponent implements OnInit {
           });
       }
     });
+
+    this.findCategory();
   }
 
- 
- // Hàm định dạng giá trị bằng CurrencyPipe
+  findCategory() {
+    this.categoryService.findCategoryByCategoryParent(1).then((res) => {
+      const categories = res.categories;
+
+      // Gán danh sách tạm vào categoryParent
+      this.categoryParent = categories;
+
+      // Lặp từng category để gọi API lấy ảnh tương ứng
+      this.categoryParent.forEach((category) => {
+        this.categoryService.findImageOfObjId(category.id, 'Category').then(
+          (res) => {
+            const fullPath =
+              this.baseUrl.getBaseUrl() + res.image.path + res.image.imageName;
+            category.imgUrl = fullPath; // Gán vào đối tượng category
+           
+          });
+      });
+    });
+  }
+
+  // Hàm định dạng giá trị bằng CurrencyPipe
   private formatPrice(value: number | null): string {
     if (value === null || isNaN(value)) return '';
-    return this.currencyPipe.transform(value, 'VND', 'symbol', '1.0-0')!.replace('₫', '').trim();
+    return this.currencyPipe
+      .transform(value, 'VND', 'symbol', '1.0-0')!
+      .replace('₫', '')
+      .trim();
   }
 
   // Hàm xử lý khi minPrice thay đổi
@@ -70,7 +99,11 @@ export class ProductComponent implements OnInit {
       newMinPrice = 0; // Không cho phép giá trị âm
     }
     // Ràng buộc: minPrice <= maxPrice
-    if (newMinPrice !== null && this.maxPrice !== null && newMinPrice > this.maxPrice) {
+    if (
+      newMinPrice !== null &&
+      this.maxPrice !== null &&
+      newMinPrice > this.maxPrice
+    ) {
       newMinPrice = this.maxPrice;
     }
 
@@ -90,13 +123,15 @@ export class ProductComponent implements OnInit {
     const rawValue = value.replace(/[^0-9]/g, '');
     let newMaxPrice = rawValue ? parseInt(rawValue, 10) : null;
 
-    
-
     // Ràng buộc: maxPrice <= 1000000 và maxPrice >= minPrice
     if (newMaxPrice !== null && newMaxPrice > 1800000) {
       newMaxPrice = 1800000;
     }
-    if (newMaxPrice !== null && this.minPrice !== null && newMaxPrice < this.minPrice) {
+    if (
+      newMaxPrice !== null &&
+      this.minPrice !== null &&
+      newMaxPrice < this.minPrice
+    ) {
       newMaxPrice = this.minPrice;
     }
 
@@ -120,5 +155,4 @@ export class ProductComponent implements OnInit {
     this.displayMinPrice = this.formatPrice(this.minPrice);
     this.displayMaxPrice = this.formatPrice(this.maxPrice);
   }
-
 }
