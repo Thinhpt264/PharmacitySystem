@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseUrlService } from 'src/app/service/baseUrl.service';
+import { CategoryService } from 'src/app/service/category.service';
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
@@ -10,12 +11,14 @@ import { ProductService } from 'src/app/service/product.service';
 export class ProductCategoryComponent implements OnInit {
   categoryId: any;
   products: any = [];
+  category: any;
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private baseUrl: BaseUrlService
-  ) {}
+    private baseUrl: BaseUrlService,
+    private categoryService: CategoryService
+  ) { }
 
   ngOnInit(): void {
     console.log('aaa');
@@ -26,6 +29,7 @@ export class ProductCategoryComponent implements OnInit {
       // Gọi API theo id hoặc làm gì tùy ý
     });
     this.findAll();
+    this.findByCategoryId(this.categoryId);
   }
 
   findAll() {
@@ -48,5 +52,16 @@ export class ProductCategoryComponent implements OnInit {
           });
       }
     });
+   
+    
+  }
+
+  findByCategoryId(id: any) {
+    this.categoryService.findByCategoryId(id).then(
+      res => {
+        console.log(res.category);
+        this.category = res.category.categoryName;
+      }
+    );
   }
 }

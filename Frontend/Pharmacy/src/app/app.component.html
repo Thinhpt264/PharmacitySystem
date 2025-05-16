@@ -216,7 +216,7 @@
                   <ng-container *ngFor="let cate of categories">
                     <li class="ltn__category-menu-item ltn__category-menu-drop"
                       (mouseover)="findCategoryByCategoryParent(cate.id)" style="cursor: pointer;">
-                      <a (click)="goToHome()">
+                      <a (click)="goToProducts()">
                         <img [src]="cate.imageUrl" alt="" style="width: 35px; height: 35px; margin-right: 10px;">
                         {{ cate.categoryName }}
                       </a>

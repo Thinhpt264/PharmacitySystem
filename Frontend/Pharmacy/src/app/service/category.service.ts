@@ -23,4 +23,8 @@ export class CategoryService {
      async findImageOfObjId(id : number, tableName: String) : Promise<any>{
         return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "image/findImageByObject?objectId=" + id +"&tableName=" +tableName));
     }
+
+    async findByCategoryId(id : number) : Promise<any>{
+        return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "categories/findByCategoryId/" + id));
+    }
 }

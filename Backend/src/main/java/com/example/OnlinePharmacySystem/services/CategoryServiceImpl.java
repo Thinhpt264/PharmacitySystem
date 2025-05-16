@@ -2,6 +2,7 @@ package com.example.OnlinePharmacySystem.services;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import com.example.OnlinePharmacySystem.entities.Category;
 public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	private CategoryRepository categoryRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
 	@Override
 	public List<Category> findAll() {
@@ -29,6 +32,11 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<Category> findParentCategories() {
 		// TODO Auto-generated method stub
 		return categoryRepository.findByCategoryParentIdIsNull();
+	}
+
+	@Override
+	public Category findById(int id) {
+		return modelMapper.map(categoryRepository.findById(id), Category.class);
 	}
 
 }

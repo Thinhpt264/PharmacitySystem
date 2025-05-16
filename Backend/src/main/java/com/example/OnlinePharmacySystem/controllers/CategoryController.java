@@ -65,5 +65,27 @@ public class CategoryController {
 			}
 			
 		}
+
+	@GetMapping(value = "/findByCategoryId/{id}" , produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> findByCategoryId(@PathVariable int id) {
+		try {
+			Category category = categoryService.findById(id);
+
+			if (category == null) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Khong có category");
+			}
+
+			Map<String, Object> response = new HashMap<>();
+			response.put("message", "Thanh Cong");
+			response.put("category", category);
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return  new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+		}
+
+	}
 	
 }

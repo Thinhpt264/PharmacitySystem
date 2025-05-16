@@ -1,5 +1,5 @@
 <!-- PRODUCT AREA START (product-item-3) -->
-<div class="ltn__product-area ltn__product-gutter  no-product-ratting pt-20--- pt-65  pb-70">
+<div class="ltn__product-area ltn__product-gutter  no-product-ratting pt-10--- pt-25  pb-70">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -9,7 +9,7 @@
             </div>
           
             
-            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <div style="display: flex; gap: 100px; flex-wrap: wrap;">
                 <div *ngFor="let category of categoryParent"
                     style="display: flex; flex-direction: column; align-items: center; width: 150px;">
             
@@ -109,11 +109,10 @@
                 <div class="row ltn__tab-product-slider-one-active--- slick-arrow-1">
                     <!-- ltn__product-item -->
                     <ng-container *ngFor="let product of products">
-                        <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
+                        <div class="col-lg-3--- col-md-4 col-sm-6 col-6" style="height: 450px; width: 300px; margin-bottom: 20px;">
                             <div class="ltn__product-item ltn__product-item-2 text-left">
                                 <div class="product-img">
-                                    <a [routerLink]="['/product', product.id]"><img [src]="product.imageUrl" alt="#"
-                                            style="width: 400px; height: 350px;"></a>
+                                    <a [routerLink]="['/product', product.id]"><img [src]="product.imageUrl" style="height: 300px; width: 300px;"></a>
                                     <div class="product-badge">
                                         <ul>
                                             <li class="sale-badge">New</li>
