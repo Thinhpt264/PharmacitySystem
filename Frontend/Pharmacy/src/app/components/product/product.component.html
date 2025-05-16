@@ -7,6 +7,19 @@
                     <h1 class="section-title">Sản phẩm</h1>
                 </div>
             </div>
+          
+            
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <div *ngFor="let category of categoryParent"
+                    style="display: flex; flex-direction: column; align-items: center; width: 150px;">
+            
+                    <a [routerLink]="['/productCategory/', category.id]"> <img [src]="category.imgUrl" alt="{{ category.categoryName }}" style="width: 100%; height: auto; border-radius: 8px;" /></a>
+            
+                    <p style="margin-top: 8px; text-align: center;">{{ category.categoryName }}</p>
+                </div>
+            </div>
+              
+              
         </div>
         <div class="row">
             <!-- Search -->
