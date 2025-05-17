@@ -16,7 +16,7 @@ export class ProductComponent implements OnInit {
   value: number[] = [0, 1000000];
 
   minPrice: number = 0;
-  maxPrice: number = 1800000;
+  maxPrice: number = 2000000;
   priceRange: number[] = [this.minPrice, this.maxPrice];
   displayMaxPrice: any;
   displayMinPrice: any;
@@ -30,7 +30,10 @@ export class ProductComponent implements OnInit {
     private baseUrl: BaseUrlService,
     private currencyPipe: CurrencyPipe,
     private categoryService: CategoryService
-  ) {}
+  ) {
+    this.displayMinPrice = this.formatPrice(this.priceRange[0]);
+    this.displayMaxPrice = this.formatPrice(this.priceRange[1]);
+  }
 
   ngOnInit(): void {
     this.findAll();
@@ -69,90 +72,83 @@ export class ProductComponent implements OnInit {
 
       // Lặp từng category để gọi API lấy ảnh tương ứng
       this.categoryParent.forEach((category) => {
-        this.categoryService.findImageOfObjId(category.id, 'Category').then(
-          (res) => {
+        this.categoryService
+          .findImageOfObjId(category.id, 'Category')
+          .then((res) => {
             const fullPath =
               this.baseUrl.getBaseUrl() + res.image.path + res.image.imageName;
             category.imgUrl = fullPath; // Gán vào đối tượng category
-           
           });
       });
     });
   }
 
   // Hàm định dạng giá trị bằng CurrencyPipe
-  private formatPrice(value: number | null): string {
-    if (value === null || isNaN(value)) return '';
-    return this.currencyPipe
-      .transform(value, 'VND', 'symbol', '1.0-0')!
-      .replace('₫', '')
-      .trim();
+  // private formatPrice(value: number | null): string {
+  //   if (value === null || isNaN(value)) return '';
+  //   return this.currencyPipe
+  //     .transform(value, 'VND', 'symbol', '1.0-0')!
+  //     .replace('₫', '')
+  //     .trim();
+  // }
+
+  // Format number to string with thousand separators using CurrencyPipe
+  private formatPrice(value: number): string {
+    return (
+      this.currencyPipe
+        .transform(value, 'VND', 'symbol', '1.0-0')
+        ?.replace('₫', '')
+        ?.trim() || '0'
+    );
   }
 
-  // Hàm xử lý khi minPrice thay đổi
-  onMinPriceChange(value: string): void {
-    // Loại bỏ ký tự không phải số
-    const rawValue = value.replace(/[^0-9]/g, '');
-    let newMinPrice = rawValue ? parseInt(rawValue, 10) : null;
-
-    if (newMinPrice !== null && newMinPrice < 0) {
-      newMinPrice = 0; // Không cho phép giá trị âm
-    }
-    // Ràng buộc: minPrice <= maxPrice
-    if (
-      newMinPrice !== null &&
-      this.maxPrice !== null &&
-      newMinPrice > this.maxPrice
-    ) {
-      newMinPrice = this.maxPrice;
-    }
-
-    this.minPrice = newMinPrice;
-    this.displayMinPrice = this.formatPrice(this.minPrice);
-
-    // Cập nhật priceRange cho slider
-    this.priceRange = [
-      this.minPrice !== null ? this.minPrice : 0,
-      this.maxPrice !== null ? this.maxPrice : 1800000,
-    ];
+  // Parse string to number, removing non-numeric characters
+  private parsePrice(value: string): number {
+    return parseInt(value.replace(/[^0-9]/g, '')) || 0;
   }
 
-  // Hàm xử lý khi maxPrice thay đổi
-  onMaxPriceChange(value: string): void {
-    // Loại bỏ ký tự không phải số
-    const rawValue = value.replace(/[^0-9]/g, '');
-    let newMaxPrice = rawValue ? parseInt(rawValue, 10) : null;
-
-    // Ràng buộc: maxPrice <= 1000000 và maxPrice >= minPrice
-    if (newMaxPrice !== null && newMaxPrice > 1800000) {
-      newMaxPrice = 1800000;
-    }
-    if (
-      newMaxPrice !== null &&
-      this.minPrice !== null &&
-      newMaxPrice < this.minPrice
-    ) {
-      newMaxPrice = this.minPrice;
-    }
-
-    this.maxPrice = newMaxPrice;
-    this.displayMaxPrice = this.formatPrice(this.maxPrice);
-
-    // Cập nhật priceRange cho slider
-    this.priceRange = [
-      this.minPrice !== null ? this.minPrice : 0,
-      this.maxPrice !== null ? this.maxPrice : 1800000,
-    ];
+  // Update display prices when slider changes
+  onSliderChange(range: number[]) {
+    this.priceRange = range;
+    this.updateDisplayPrices();
   }
 
-  // Hàm xử lý khi slider thay đổi
-  onSliderChange(): void {
-    // Cập nhật minPrice và maxPrice từ priceRange
-    this.minPrice = this.priceRange[0];
-    this.maxPrice = this.priceRange[1];
+  // Update slider and display when min price input changes
+  onMinPriceChange(value: string) {
+    let minPrice = this.parsePrice(value);
+    let maxPrice = this.priceRange[1];
 
-    // Cập nhật giá trị hiển thị cho input
-    this.displayMinPrice = this.formatPrice(this.minPrice);
-    this.displayMaxPrice = this.formatPrice(this.maxPrice);
+    // Ensure minPrice <= maxPrice
+    if (minPrice > maxPrice) {
+      minPrice = maxPrice;
+    }
+
+    this.priceRange = [minPrice, maxPrice];
+    this.updateDisplayPrices();
+  }
+
+  // Update slider and display when max price input changes
+  onMaxPriceChange(value: string) {
+    let maxPrice = this.parsePrice(value);
+    let minPrice = this.priceRange[0];
+
+    // Cap maxPrice at 2,000,000
+    if (maxPrice > 2000000) {
+      maxPrice = 2000000;
+    }
+
+    // Ensure maxPrice >= minPrice
+    if (maxPrice < minPrice) {
+      maxPrice = minPrice;
+    }
+
+    this.priceRange = [minPrice, maxPrice];
+    this.updateDisplayPrices();
+  }
+
+  // Update input display values
+  private updateDisplayPrices() {
+    this.displayMinPrice = this.formatPrice(this.priceRange[0]);
+    this.displayMaxPrice = this.formatPrice(this.priceRange[1]);
   }
 }

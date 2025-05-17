@@ -37,6 +37,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ValidationService } from './service/validation.service';
 
+
 @NgModule({
   declarations: [
     AppComponent,
