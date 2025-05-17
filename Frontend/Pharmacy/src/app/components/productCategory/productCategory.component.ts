@@ -12,6 +12,7 @@ export class ProductCategoryComponent implements OnInit {
   categoryId: any;
   products: any = [];
   category: any;
+  categoryParent: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,9 +60,16 @@ export class ProductCategoryComponent implements OnInit {
   findByCategoryId(id: any) {
     this.categoryService.findByCategoryId(id).then(
       res => {
-        console.log(res.category);
-        this.category = res.category.categoryName;
+       
+        this.category = res.category;
+        this.categoryService.findByCategoryId(res.category.categoryParentId).then(
+          result => {
+            this.categoryParent = result.category.categoryName;
+          }
+        );
       }
     );
   }
+
+
 }

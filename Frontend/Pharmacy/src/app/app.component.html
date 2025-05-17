@@ -3,6 +3,7 @@
   <p-confirmDialog></p-confirmDialog>
   <!-- HEADER AREA START (header-3) -->
   <header class="ltn__header-area ltn__header-3 section-bg-6---">
+
     <!-- ltn__header-top-area start -->
     <div class="ltn__header-top-area border-bottom top-area-color-white---">
       <div class="container">
@@ -11,8 +12,8 @@
             <div class="ltn__top-bar-menu">
               <ul>
                 <li><a href="mailto:info@webmail.com?Subject=Flower%20greetings%20to%20you"><i class="icon-mail"></i>
-                    info.com</a></li>
-                <li><a href="locations.html"><i class="icon-placeholder"></i> 15/A, Nest Tower, NYC</a></li>
+                    trungtamthongbaoso15&#64;gmail.com</a></li>
+                <li><a href="locations.html"><i class="icon-placeholder"></i> Thu Duc, Ho Chi Minh </a></li>
               </ul>
             </div>
           </div>
@@ -24,14 +25,12 @@
                     <!-- ltn__language-menu -->
                     <div class="ltn__drop-menu ltn__currency-menu ltn__language-menu">
                       <ul>
-                        <li><a href="#" class="dropdown-toggle"><span class="active-currency">English</span></a>
+                        <li><a href="#" class="dropdown-toggle"><span class="active-currency">Tiếng Việt</span></a>
                           <ul>
-                            <li><a href="#">Arabic</a></li>
-                            <li><a href="#">Bengali</a></li>
-                            <li><a href="#">Chinese</a></li>
                             <li><a href="#">English</a></li>
-                            <li><a href="#">French</a></li>
-                            <li><a href="#">Hindi</a></li>
+                            <li><a href="#">France</a></li>
+                            <li><a href="#">Chinese</a></li>
+                            
                           </ul>
                         </li>
                       </ul>
@@ -56,6 +55,69 @@
       </div>
     </div>
     <!-- ltn__header-top-area end -->
+        <!-- Utilize Cart Menu Start -->
+        <div id="ltn__utilize-cart-menu" class="ltn__utilize ltn__utilize-cart-menu">
+          <div class="ltn__utilize-menu-inner ltn__scrollbar">
+            <div class="ltn__utilize-menu-head">
+              <span class="ltn__utilize-menu-title">Cart</span>
+              <button class="ltn__utilize-close">×</button>
+            </div>
+            <div class="mini-cart-product-area ltn__scrollbar">
+              <div class="mini-cart-item clearfix">
+                <div class="mini-cart-img">
+                  <a href="#"><img src="assets/img/product/1.png" alt="Image"></a>
+                  <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
+                </div>
+                <div class="mini-cart-info">
+                  <h6><a href="#">Antiseptic Spray</a></h6>
+                  <span class="mini-cart-quantity">1 x $65.00</span>
+                </div>
+              </div>
+              <div class="mini-cart-item clearfix">
+                <div class="mini-cart-img">
+                  <a href="#"><img src="assets/img/product/2.png" alt="Image"></a>
+                  <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
+                </div>
+                <div class="mini-cart-info">
+                  <h6><a href="#">Digital Stethoscope</a></h6>
+                  <span class="mini-cart-quantity">1 x $85.00</span>
+                </div>
+              </div>
+              <div class="mini-cart-item clearfix">
+                <div class="mini-cart-img">
+                  <a href="#"><img src="assets/img/product/3.png" alt="Image"></a>
+                  <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
+                </div>
+                <div class="mini-cart-info">
+                  <h6><a href="#">Cosmetic Containers</a></h6>
+                  <span class="mini-cart-quantity">1 x $92.00</span>
+                </div>
+              </div>
+              <div class="mini-cart-item clearfix">
+                <div class="mini-cart-img">
+                  <a href="#"><img src="assets/img/product/4.png" alt="Image"></a>
+                  <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
+                </div>
+                <div class="mini-cart-info">
+                  <h6><a href="#">Thermometer Gun</a></h6>
+                  <span class="mini-cart-quantity">1 x $68.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="mini-cart-footer">
+              <div class="mini-cart-sub-total">
+                <h5>Subtotal: <span>$310.00</span></h5>
+              </div>
+              <div class="btn-wrapper">
+                <a href="cart.html" class="theme-btn-1 btn btn-effect-1">View Cart</a>
+                <a href="cart.html" class="theme-btn-2 btn btn-effect-2">Checkout</a>
+              </div>
+              <p>Free Shipping on All Orders Over $100!</p>
+            </div>
+        
+          </div>
+        </div>
+        <!-- Utilize Cart Menu End -->
     <!-- ltn__header-middle-area start -->
     <div class="ltn__header-middle-area">
       <div class="container">
@@ -80,7 +142,7 @@
               <!-- header-search-2 -->
               <div class="header-search-2">
                 <form id="#123" method="get" action="#">
-                  <input type="text" name="search" value="" placeholder="Search here..." />
+                  <input type="text" name="search" value="" placeholder="Tìm kiếm..." />
                   <button type="submit">
                     <span><i class="icon-search"></i></span>
                   </button>
@@ -163,7 +225,7 @@
                         <i class="icon-shopping-cart"></i>
                         <sup>2</sup>
                       </span>
-                      <h6><span>Hello {{account.username}}</span> <span class="ltn__secondary-color">$89.25</span></h6>
+                      <h6><span>Xin chào {{account.username}}</span> <span class="ltn__secondary-color">$89.25</span></h6>
                     </a>
                   </div>
                 </li>
@@ -239,14 +301,14 @@
                       </ul>
                     </li>
                   </ng-container>
-                  <li class="ltn__category-menu-more-item-parent">
+                  <!-- <li class="ltn__category-menu-more-item-parent">
                     <a class="rx-default">
                       More categories <span class="cat-thumb icon-plus"></span>
                     </a>
                     <a class="rx-show">
                       Close menu <span class="cat-thumb icon-remove"></span>
                     </a>
-                  </li>
+                  </li> -->
                 </ul>
               </div>
             </div>
@@ -264,26 +326,16 @@
                       </li>
                       <li class="menu-icon">
                         <a (click)="goToAbout()">Chúng tôi</a>
-                        <ul>
-                          <li><a (click)="goToAbout()">About</a></li>
-                          <li><a (click)="goToServices()">Services</a></li>
-                          <li><a (click)="goToServiceDetails()">Service Details</a></li>
-                          <li><a (click)="goToPortfolio()">Gallery</a></li>
-                          <li><a (click)="goToNews()">News</a></li>
-                          <li><a (click)="goToPortfolioDetails()">Gallery Details</a></li>
-                          <li><a (click)="goToTeam()">Team</a></li>
-                          <li><a (click)="goToTeamDetails()">Team Details</a></li>
-                          <li><a (click)="goToFAQ()">FAQ</a></li>
-                          <li><a (click)="goToLocations()">Google Map Locations</a></li>
-                        </ul>
+                        
                       </li>
-                      <li class="menu-icon"><a (click)="goToProducts()">Sản phẩm</a></li>
+                      <li class="menu-icon"><a (click)="goToProducts()">Sản phẩm</a>
+                        
+                      </li>
                       <li class="menu-icon"><a (click)="goToLocations()">Thông tin</a>
                         <ul>
-                          <li><a (click)="goToServices()">Thuốc</a></li>
-                          <li><a (click)="goToServices()">Thực Phẩm Chức Năng</a></li>
-                          <li><a (click)="goToServices()">Thực Phẩm Bổ Sung</a></li>
-                          <li><a (click)="goToServices()">Mỹ Phẩm</a></li>
+                          <li><a (click)="goToServices()">Cửa hàng gần bạn</a></li>
+                          <li><a (click)="goToServices()">Giấy phép kinh doanh</a></li>
+                          <li><a (click)="goToServices()">Hệ thống bán lẻ</a></li>
                           <li><a (click)="goToServices()">Y tế</a></li>
                         </ul>
                       </li>
@@ -297,7 +349,7 @@
           <div class="col-lg-2 align-self-center d-none d-xl-block">
             <div class="header-contact-info text-end">
               <a class="font-weight-6 ltn__primary-color" href="tel:+123456789"><span class="ltn__secondary-color"><i
-                    class="icon-call font-weight-7"></i></span> +123-456-789-10</a>
+                    class="icon-call font-weight-7"></i></span> +84 843 281 139</a>
             </div>
           </div>
         </div>
@@ -337,8 +389,7 @@
                   <img [src]="'assets/img/logo-2.png'" alt="Logo">
                 </div>
               </div>
-              <p>Lorem Ipsum is simply dummy text of the and typesetting industry. Lorem Ipsum is dummy text of the
-                printing.</p>
+              <p>T-Medicine luôn đặt sức khỏe của bạn lên hàng đầu. </p>
               <div class="footer-address">
                 <ul>
                   <li>
@@ -346,7 +397,7 @@
                       <i class="icon-placeholder"></i>
                     </div>
                     <div class="footer-address-info">
-                      <p>Brooklyn, New York, United States</p>
+                      <p>Thu Duc, Ho Chi Minh</p>
                     </div>
                   </li>
                   <li>
@@ -362,7 +413,7 @@
                       <i class="icon-mail"></i>
                     </div>
                     <div class="footer-address-info">
-                      <p><a href="mailto:example@example.com">example.com</a></p>
+                      <p><a href="mailto:example@example.com">trungtamthongbaoso15&#64;gmail.com</a></p>
                     </div>
                   </li>
                 </ul>
@@ -379,62 +430,68 @@
           </div>
           <div class="col-xl-2 col-md-6 col-sm-6 col-12">
             <div class="footer-widget footer-menu-widget clearfix">
-              <h4 class="footer-title">Company</h4>
+              <h4 class="footer-title">Khắp cả nước</h4>
               <div class="footer-menu">
                 <ul>
-                  <li><a href="about.html">About</a></li>
-                  <li><a href="blog.html">Blog</a></li>
-                  <li><a href="shop.html">All Products</a></li>
-                  <li><a href="locations.html">Locations Map</a></li>
-                  <li><a href="faq.html">FAQ</a></li>
-                  <li><a href="contact.html">Contact us</a></li>
+                  <li><a href="about.html">Hà Nội</a></li>
+                  <li><a href="blog.html">Hải Phòng</a></li>
+                  <li><a href="shop.html">Huế</a></li>
+                  <li><a href="locations.html">Đà Nẵng</a></li>
+                  <li><a href="faq.html">Tp.Hồ Chí Minh</a></li>
+                  <li><a href="contact.html">Cần Thơ</a></li>
+                  <li><a href="contact.html">...</a></li>
                 </ul>
               </div>
             </div>
           </div>
           <div class="col-xl-2 col-md-6 col-sm-6 col-12">
             <div class="footer-widget footer-menu-widget clearfix">
-              <h4 class="footer-title">Services</h4>
+              <h4 class="footer-title">Dịch vụ</h4>
               <div class="footer-menu">
                 <ul>
-                  <li><a href="order-tracking.html">Order tracking</a></li>
-                  <li><a href="wishlist.html">Wish List</a></li>
-                  <li><a href="login.html">Login</a></li>
-                  <li><a href="account.html">My account</a></li>
-                  <li><a href="about.html">Terms & Conditions</a></li>
-                  <li><a href="about.html">Promotional Offers</a></li>
+                  <li><a href="order-tracking.html">Hỗ trợ 24/24 </a></li>
+                  <li><a href="wishlist.html">Tư vấn triệu chứng bệnh</a></li>
+                  <li><a href="login.html">Bán lẻ trên toàn quốc</a></li>
+                  <li><a href="account.html">Thành viên</a></li>
+                  <li><a href="about.html">Đa dạng thuốc</a></li>
+                  <li><a href="about.html">Toa thuốc đặc trị</a></li>
+                  <li><a href="about.html">Đội ngũ bác sĩ </a></li>
                 </ul>
               </div>
             </div>
           </div>
           <div class="col-xl-2 col-md-6 col-sm-6 col-12">
             <div class="footer-widget footer-menu-widget clearfix">
-              <h4 class="footer-title">Customer Care</h4>
+              <h4 class="footer-title">Quyền lợi</h4>
               <div class="footer-menu">
                 <ul>
-                  <li><a href="login.html">Login</a></li>
-                  <li><a href="account.html">My account</a></li>
-                  <li><a href="wishlist.html">Wish List</a></li>
-                  <li><a href="order-tracking.html">Order tracking</a></li>
-                  <li><a href="faq.html">FAQ</a></li>
-                  <li><a href="contact.html">Contact us</a></li>
+                  <li><a href="login.html">Miễn phí vận chuyển</a></li>
+                  <li><a href="account.html">Theo dõi tình trạng bệnh</a></li>
+                  <li><a href="wishlist.html">Thanh toán nhanh chóng</a></li>
+                  <li><a href="order-tracking.html">Nhận hàng và thanh toán</a></li>
+                  <li><a href="order-tracking.html">Đội ngũ dược sĩ chuyên</a></li>
+                  <li><a href="faq.html">Bảo mật</a></li>
+                  <li><a href="contact.html">Giải đáp thắc mắc</a></li>
                 </ul>
               </div>
             </div>
           </div>
           <div class="col-xl-3 col-md-6 col-sm-12 col-12">
             <div class="footer-widget footer-newsletter-widget">
-              <h4 class="footer-title">Newsletter</h4>
-              <p>Subscribe to our weekly Newsletter and receive updates via email.</p>
-              <div class="footer-newsletter">
+              <h4 class="footer-title">Đội ngũ chúng tôi gồm</h4>
+              <ul>
+                <li><a href="login.html">Phan The Thinh </a></li>
+                <li><a href="account.html">Nguyen Tran Phuc Thanh</a></li>
+              </ul>
+              <!-- <div class="footer-newsletter">
                 <form action="#">
                   <input type="email" name="email" placeholder="Email*">
                   <div class="btn-wrapper">
                     <button class="theme-btn-1 btn" type="submit"><i class="fas fa-location-arrow"></i></button>
                   </div>
                 </form>
-              </div>
-              <h5 class="mt-30">We Accept</h5>
+              </div> -->
+              <h5 class="mt-30">Hỗ trợ thanh toán</h5>
               <img src="assets/img/icons/payment-4.png" alt="Payment Image">
             </div>
           </div>
@@ -452,9 +509,9 @@
           <div class="col-md-6 col-12 align-self-center">
             <div class="ltn__copyright-menu text-end">
               <ul>
-                <li><a href="#">Terms & Conditions</a></li>
-                <li><a href="#">Claim</a></li>
-                <li><a href="#">Privacy & Policy</a></li>
+                <li><a href="#">Điều khoản & điều kiện</a></li>
+                <li><a href="#">Bản quyền</a></li>
+                <li><a href="#">Chính sách</a></li>
               </ul>
             </div>
           </div>
