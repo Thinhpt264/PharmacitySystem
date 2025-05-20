@@ -9,5 +9,8 @@ public interface ProductService {
 
 	public List<ProductDTO> findByCategotyId(int id);
 
+	public ProductDTO save (ProductDTO product);
+
+
 
 }

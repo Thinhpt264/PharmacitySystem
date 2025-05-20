@@ -41,7 +41,6 @@ public class AccountController {
 	        if (account == null) {
 				Map<String, Object> response = new HashMap<>();
 				response.put("message", false);
-
 	            return new ResponseEntity<>(response, HttpStatus.OK);
 	        }
 

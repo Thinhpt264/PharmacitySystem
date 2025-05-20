@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 public interface ImageService {
+    Image getImageByObjectId(Integer id, String tableName);
+    boolean saveImage(Image image);
 
-
-    public Image getImageByObjectId(Integer id, String tableName);
 }

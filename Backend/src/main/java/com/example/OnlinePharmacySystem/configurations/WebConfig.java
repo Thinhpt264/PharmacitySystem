@@ -17,4 +17,11 @@ public class WebConfig implements WebMvcConfigurer {
 	 public BCryptPasswordEncoder passwordEncoder() {
 			return new BCryptPasswordEncoder();
 		}
+
+
+	@Override
+	public void addResourceHandlers(org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/images/product/**")
+				.addResourceLocations("file:uploads/images/product/");
+	}
 }
