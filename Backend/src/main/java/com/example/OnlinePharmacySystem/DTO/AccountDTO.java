@@ -2,6 +2,8 @@ package com.example.OnlinePharmacySystem.DTO;
 
 import lombok.*;
 
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 @NoArgsConstructor
@@ -11,11 +13,25 @@ import java.time.LocalDateTime;
 @Setter
 public class AccountDTO {
 	private int id;
+
+	@NotBlank(message = "{username.not.blank}")
+	@Size(min = 5, max = 20, message = "{username.size}")
 	private String username;
+
+	@NotBlank(message = "{password.not.blank}")
+	@Size(min = 8, message = "{password.size}")
 	private String password;
+
+	@NotBlank(message = "{email.not.blank}")
+	@Email(message = "{email.invalid}")
 	private String email;
+
 	private boolean status;
+
+	@NotNull(message = "{dob.not.null}")
+	@Past(message = "{dob.past}")
 	private LocalDate dob;
+
 	private LocalDateTime created_at;
 	private LocalDateTime deleted_at;
 	private LocalDateTime updated_at;

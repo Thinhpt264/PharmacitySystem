@@ -14,6 +14,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { RegisterSuccessComponent } from './components/register-success/register-success';
 import { VerifyComponent } from './components/verify/verify.component';
+import { ProductCategoryParentComponent } from './components/productCategoryParent/productCategoryParent.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,10 @@ const routes: Routes = [
     component: ProductCategoryComponent,
   },
   {
+    path: 'productCategoryParent/:id',
+    component: ProductCategoryParentComponent,
+  },
+  {
     path: 'about',
     component: AboutUsComponent,
   },
@@ -38,11 +43,11 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent,
   },
- 
+
   {
     path: 'register',
     component: RegisterComponent,
-  }, 
+  },
   {
     path: 'verify',
     component: VerifyComponent,

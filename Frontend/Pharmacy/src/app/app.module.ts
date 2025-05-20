@@ -36,6 +36,7 @@ import { AuthService } from './service/auth.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ValidationService } from './service/validation.service';
+import { ProductCategoryParentComponent } from './components/productCategoryParent/productCategoryParent.component';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { ValidationService } from './service/validation.service';
     RegisterComponent,
     RegisterSuccessComponent,
     VerifyComponent,
+    ProductCategoryParentComponent,
   ],
   imports: [
     BrowserModule,
