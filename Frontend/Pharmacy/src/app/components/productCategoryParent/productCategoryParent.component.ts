@@ -6,15 +6,13 @@ import { ProductService } from 'src/app/service/product.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './productCategory.component.html',
+  templateUrl: './productCategoryParent.component.html',
 })
-export class ProductCategoryComponent implements OnInit {
+export class ProductCategoryParentComponent implements OnInit {
   categoryId: any;
   products: any = [];
-  category: any = {};
-  categoryGrandParent: any;
-  categoryParent: any;
-  originCategoryId : any;
+  category: any;
+  categoryParent: any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +27,6 @@ export class ProductCategoryComponent implements OnInit {
       const id = params.get('id');
       console.log('ID thay đổi:', id);
       this.categoryId = id;
-
       // Gọi API theo id hoặc làm gì tùy ý
     });
     this.findAll();
@@ -41,12 +38,11 @@ export class ProductCategoryComponent implements OnInit {
         const categories = res.categories;
 
         // Gán danh sách tạm vào categoryParent
-        this.categoryGrandParent = categories;
-
-        console.log(this.categoryGrandParent);
+        this.categoryParent = categories;
+        console.log(res.categories);
 
         // Lặp từng category để gọi API lấy ảnh tương ứng
-        this.categoryGrandParent.forEach((category) => {
+        this.categoryParent.forEach((category) => {
           this.categoryService
             .findImageOfObjId(category.id, 'Category')
             .then((res) => {
@@ -90,6 +86,26 @@ export class ProductCategoryComponent implements OnInit {
         .then((result) => {
           this.categoryParent = result.category.categoryName;
         });
+    });
+  }
+
+  findCategory() {
+    this.categoryService.findCategoryByCategoryParent(1).then((res) => {
+      const categories = res.categories;
+
+      // Gán danh sách tạm vào categoryParent
+      this.categoryParent = categories;
+
+      // Lặp từng category để gọi API lấy ảnh tương ứng
+      this.categoryParent.forEach((category) => {
+        this.categoryService
+          .findImageOfObjId(category.id, 'Category')
+          .then((res) => {
+            const fullPath =
+              this.baseUrl.getBaseUrl() + res.image.path + res.image.imageName;
+            category.imgUrl = fullPath; // Gán vào đối tượng category
+          });
+      });
     });
   }
 
