@@ -14,4 +14,10 @@ public class ImageServiceImpl implements ImageService {
     public Image getImageByObjectId(Integer id, String tableName) {
         return imageRepository.findByObjectId(id, tableName);
     }
+
+    @Override
+    public boolean saveImage(Image image) {
+        imageRepository.save(image);
+        return true;
+    }
 }

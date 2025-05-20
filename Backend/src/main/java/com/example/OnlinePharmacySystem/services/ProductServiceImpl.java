@@ -3,6 +3,7 @@ package com.example.OnlinePharmacySystem.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.OnlinePharmacySystem.entities.Account;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,12 @@ public class ProductServiceImpl implements ProductService {
 		return products.stream()
 				.map(product -> mapper.map(product, ProductDTO.class))
 				.collect(Collectors.toList());
+	}
+
+	public ProductDTO save(ProductDTO product) {
+		Product product1 = mapper.map(product, Product.class);
+		Product saved = productRepository.save(product1);
+		return mapper.map(saved, ProductDTO.class);
 	}
 
 }

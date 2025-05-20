@@ -19,10 +19,10 @@ public class Product {
 	    @Column(nullable = false)
 	    private Double price;
 
-	    @Column(nullable = false, columnDefinition = "TEXT")
+	    @Column(nullable = true, columnDefinition = "TEXT")
 	    private String image;
 
-	    @Column(nullable = false, columnDefinition = "timestamp default current_timestamp")
+	    @Column(nullable = true, columnDefinition = "timestamp default current_timestamp")
 	    private LocalDateTime created_at;
 
 	    @Column
@@ -201,5 +201,12 @@ public class Product {
 					+ ", image=" + image + ", created_at=" + created_at + ", updated_at=" + updated_at + ", type="
 					+ type + ", manufacturer=" + manufacturer + ", ingredient=" + ingredient + ", note=" + note
 					+ ", use=" + use + ", packaging=" + packaging + ", status=" + status + "]";
-		}	
+		}
+
+	@PrePersist
+	public void prePersist() {
+		if (created_at == null) {
+			created_at = LocalDateTime.now();
+		}
+	}
 }
