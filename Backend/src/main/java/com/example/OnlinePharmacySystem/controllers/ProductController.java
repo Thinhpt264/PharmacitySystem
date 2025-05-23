@@ -95,4 +95,22 @@ public class ProductController {
 					.body(new ApiResponse<>(false, "Lỗi khi lưu sản phẩm", null));
 		}
 	}
+
+	@GetMapping(value = "/{id}" ,produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse<ProductDTO>> getById(@PathVariable int id) {
+		try {
+			ProductDTO product = productService.findById(id);
+			if (product != null) {
+				return ResponseEntity.ok(new ApiResponse<>(true, "Product found", product));
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body(new ApiResponse<>(false, "Product not found"));
+			}
+
+		}catch (Exception e){
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse<>(false, "An error occurred while retrieving the product"));
+		}
+	}
 }

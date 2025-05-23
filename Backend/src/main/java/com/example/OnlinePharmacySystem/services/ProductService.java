@@ -11,6 +11,8 @@ public interface ProductService {
 
 	public ProductDTO save (ProductDTO product);
 
+	ProductDTO findById(int id);
+
 
 
 }

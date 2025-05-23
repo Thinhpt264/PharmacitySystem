@@ -42,4 +42,9 @@ public class ProductServiceImpl implements ProductService {
 		return mapper.map(saved, ProductDTO.class);
 	}
 
+	@Override
+	public ProductDTO findById(int id) {
+        return mapper.map(productRepository.findById(id), ProductDTO.class);
+	}
+
 }
