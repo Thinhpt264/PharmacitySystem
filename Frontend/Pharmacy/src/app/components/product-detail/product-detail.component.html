@@ -29,8 +29,8 @@
                             <div class="ltn__shop-details-img-gallery">
                                 <div class="ltn__shop-details-large-img">
                                     <div class="single-large-img">
-                                        <a href="img/product/1.png" data-rel="lightcase:myCollection">
-                                            <img [src]="product.image" alt="Image">
+                                        <a [href]="product.imgUrl" data-rel="lightcase:myCollection">
+                                            <img [src]="product.imgUrl" alt="Image">
                                         </a>
                                     </div>
                                     <div class="single-large-img">
@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="ltn__shop-details-small-img slick-arrow-2">
                                     <div class="single-small-img">
-                                        <img src="/assets/img/product/1.png" alt="Image">
+                                        <img [src]="product.imgUrl" alt="Image">
                                     </div>
                                     <div class="single-small-img">
                                         <img src="/assets/img/product/2.png" alt="Image">
@@ -340,10 +340,10 @@
                     <div class="widget ltn__top-rated-product-widget">
                         <h4 class="ltn__widget-title ltn__widget-title-border">Top Rated Product</h4>
                         <ul>
-                            <li>
+                            <li  *ngFor="let product1 of topProducts | slice:0:3">
                                 <div class="top-rated-product-item clearfix">
                                     <div class="top-rated-product-img">
-                                        <a href="product-details.html"><img src="/assets/img/product/1.png" alt="#"></a>
+                                        <a href="product-details.html"><img [src]="product1.imgUrl" alt="Image"></a>
                                     </div>
                                     <div class="top-rated-product-info">
                                         <div class="product-ratting">
@@ -357,58 +357,13 @@
                                         </div>
                                         <h6><a href="product-details.html">Mixel Solid Seat Cover</a></h6>
                                         <div class="product-price">
-                                            <span>${{ product.price }}</span>
+                                            <span>{{ product1.price }}</span>
                                             <del>$65.00</del>
                                         </div>
                                     </div>
                                 </div>
                             </li>
-                            <li>
-                                <div class="top-rated-product-item clearfix">
-                                    <div class="top-rated-product-img">
-                                        <a href="product-details.html"><img src="/assets/img/product/2.png" alt="#"></a>
-                                    </div>
-                                    <div class="top-rated-product-info">
-                                        <div class="product-ratting">
-                                            <ul>
-                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <h6><a href="product-details.html">Thermometer Gun</a></h6>
-                                        <div class="product-price">
-                                            <span>$49.00</span>
-                                            <del>$65.00</del>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="top-rated-product-item clearfix">
-                                    <div class="top-rated-product-img">
-                                        <a href="product-details.html"><img src="/assets/img/product/3.png" alt="#"></a>
-                                    </div>
-                                    <div class="top-rated-product-info">
-                                        <div class="product-ratting">
-                                            <ul>
-                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                                <li><a href="#"><i class="far fa-star"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <h6><a href="product-details.html">Coil Spring Conversion</a></h6>
-                                        <div class="product-price">
-                                            <span>$49.00</span>
-                                            <del>$65.00</del>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                            
                         </ul>
                     </div>
                     <!-- Banner Widget -->
