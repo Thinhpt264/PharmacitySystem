@@ -24,5 +24,8 @@ export class ProductService {
     async findById(id : number) : Promise<any>{
         return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "api/products/" + id))
     }
+    async getTopProduct() : Promise<any>{
+        return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "api/products/getListTop" ));
+    }
 
 }

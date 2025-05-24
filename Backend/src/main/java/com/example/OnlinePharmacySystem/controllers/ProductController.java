@@ -12,6 +12,7 @@ import com.example.OnlinePharmacySystem.Ultis.ApiResponse;
 import com.example.OnlinePharmacySystem.entities.Image;
 import com.example.OnlinePharmacySystem.services.ImageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/products")
+@Slf4j
 public class ProductController {
 	@Autowired
 	private ProductService productService;
@@ -54,7 +56,7 @@ public class ProductController {
 
 			 return new ResponseEntity<>(response, HttpStatus.OK);
 		 } catch (Exception e) {
-			 e.printStackTrace();
+			 log.error(e.getMessage());
 			 return  new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
 		 }
 
@@ -90,7 +92,7 @@ public class ProductController {
 			return ResponseEntity.ok(new ApiResponse<>(true, "Lưu sản phẩm thành công", product));
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ApiResponse<>(false, "Lỗi khi lưu sản phẩm", null));
 		}
@@ -108,9 +110,24 @@ public class ProductController {
 			}
 
 		}catch (Exception e){
-			e.printStackTrace();
+			log.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ApiResponse<>(false, "An error occurred while retrieving the product"));
+		}
+	}
+	@GetMapping(value = "getListTop", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse<List<ProductDTO>>> findTopProductByView() {
+		try {
+			List<ProductDTO> products = productService.findTopProductByView();
+			if(products.isEmpty() ) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(false, "Product not found"));
+			}
+			return ResponseEntity.ok(new ApiResponse<>(true, "Top products found", products));
+
+		}catch (Exception e){
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse<>(false, "An error occurred while retrieving the products"));
 		}
 	}
 }
