@@ -63,34 +63,12 @@
                          
 
                             <div class="checkbox-group">
-                                <span><b>Nhà cung cấp</b></span>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="filter1" value="category1">
-                                    <label class="form-check-label" for="filter1">Danh mục 1</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="filter2" value="category2">
-                                    <label class="form-check-label" for="filter2">Danh mục 2</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="filter3" value="category3">
-                                    <label class="form-check-label" for="filter3">Danh mục 3</label>
-                                </div>
-                            </div>
-
-                            <div class="checkbox-group">
                                 <span><b>Thương hiệu</b></span>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="filter1" value="category1">
-                                    <label class="form-check-label" for="filter1">Danh mục 1</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="filter2" value="category2">
-                                    <label class="form-check-label" for="filter2">Danh mục 2</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="filter3" value="category3">
-                                    <label class="form-check-label" for="filter3">Danh mục 3</label>
+                                <div *ngFor="let brand of listBrand">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="filter1" value="{{brand.id}}">
+                                        <label class="form-check-label" for="filter1">{{brand.name}}</label>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -106,7 +84,7 @@
                         <div class="col-lg-3--- col-md-4 col-sm-6 col-6" style="height: 450px; width: 300px; margin-bottom: 20px;">
                             <div class="ltn__product-item ltn__product-item-2 text-left">
                                 <div class="product-img">
-                                    <a [routerLink]="['/product', product.id]"><img [src]="product.imageUrl" style="height: 300px; width: 300px;"></a>
+                                    <a (click)="gotoProductDetails(product.id)"><img [src]="product.imageUrl" style="height: 300px; width: 300px;"></a>
                                     <div class="product-badge">
                                         <ul>
                                             <li class="sale-badge">New</li>
@@ -144,8 +122,7 @@
                                             <li><a href="#"><i class="far fa-star"></i></a></li>
                                         </ul>
                                     </div>
-                                    <h2 class="product-title"><a
-                                            [routerLink]="['/product', product.id]">{{product.name}}</a></h2>
+                                    <h2 style="cursor: pointer;" class="product-title"><a (click)="gotoProductDetails(product.id)">{{product.name}}</a></h2>
                                     <div class="product-price">
                                         <span>${{ product.price }}</span>
                                         <del>${{ product.price +30 }}</del>

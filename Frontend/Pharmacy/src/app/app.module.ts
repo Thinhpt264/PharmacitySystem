@@ -38,6 +38,7 @@ import { ConfirmationService } from 'primeng/api';
 import { ValidationService } from './service/validation.service';
 import { ProductCategoryParentComponent } from './components/productCategoryParent/productCategoryParent.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+import { BrandService } from './service/brand.service';
 
 
 @NgModule({
@@ -81,6 +82,7 @@ import { ProductDetailComponent } from './components/product-detail/product-deta
     AuthService,
     ConfirmationService,
     ValidationService,
+    BrandService,
     // { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent],

@@ -14,7 +14,7 @@ export class ProductCategoryComponent implements OnInit {
   category: any = {};
   categoryGrandParent: any;
   categoryParent: any;
-  originCategoryId : any;
+  originCategoryId: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -95,5 +95,8 @@ export class ProductCategoryComponent implements OnInit {
 
   gotoHome() {
     window.location.href = 'home';
+  }
+  gotoProductDetails(id: number) {
+    window.location.href = 'product/'+ id;
   }
 }

@@ -2,6 +2,7 @@ import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseUrlService } from 'src/app/service/baseUrl.service';
+import { BrandService } from 'src/app/service/brand.service';
 import { CategoryService } from 'src/app/service/category.service';
 import { ProductService } from 'src/app/service/product.service';
 
@@ -20,7 +21,8 @@ export class ProductComponent implements OnInit {
   priceRange: number[] = [this.minPrice, this.maxPrice];
   displayMaxPrice: any;
   displayMinPrice: any;
-
+  listBrand: any = {};
+  listProd: any[] = [];
   categoryParent: any[] = [];
   imageUrl: any;
 
@@ -29,7 +31,8 @@ export class ProductComponent implements OnInit {
     private productService: ProductService,
     private baseUrl: BaseUrlService,
     private currencyPipe: CurrencyPipe,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private brandService: BrandService
   ) {
     this.displayMinPrice = this.formatPrice(this.priceRange[0]);
     this.displayMaxPrice = this.formatPrice(this.priceRange[1]);
@@ -37,6 +40,7 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.findAll();
+    this.findAllBrand();
   }
 
   findAll() {
@@ -63,6 +67,13 @@ export class ProductComponent implements OnInit {
     this.findCategory();
   }
 
+  findAllBrand() {
+    this.brandService.findAll().then((res) => {
+      console.log(res);
+      this.listBrand = res;
+    });
+  }
+
   findCategory() {
     this.categoryService.findCategoryByCategoryParent(1).then((res) => {
       const categories = res.categories;
@@ -83,15 +94,6 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  // Hàm định dạng giá trị bằng CurrencyPipe
-  // private formatPrice(value: number | null): string {
-  //   if (value === null || isNaN(value)) return '';
-  //   return this.currencyPipe
-  //     .transform(value, 'VND', 'symbol', '1.0-0')!
-  //     .replace('₫', '')
-  //     .trim();
-  // }
-
   // Format number to string with thousand separators using CurrencyPipe
   private formatPrice(value: number): string {
     return (
@@ -111,6 +113,12 @@ export class ProductComponent implements OnInit {
   onSliderChange(range: number[]) {
     this.priceRange = range;
     this.updateDisplayPrices();
+    console.log(this.priceRange[0]);
+    console.log(this.priceRange[1]);
+
+    this.productService.filterProducts(this.priceRange[0], this.priceRange[1]);
+    this.listProd = this.productService.filterProducts(this.priceRange[0], this.priceRange[1]);
+    console.log(this.listProd);
   }
 
   // Update slider and display when min price input changes
@@ -125,6 +133,7 @@ export class ProductComponent implements OnInit {
 
     this.priceRange = [minPrice, maxPrice];
     this.updateDisplayPrices();
+    console.log(minPrice);
   }
 
   // Update slider and display when max price input changes
@@ -144,11 +153,17 @@ export class ProductComponent implements OnInit {
 
     this.priceRange = [minPrice, maxPrice];
     this.updateDisplayPrices();
+    console.log('aaaaa');
+    console.log(maxPrice);
   }
 
   // Update input display values
   private updateDisplayPrices() {
     this.displayMinPrice = this.formatPrice(this.priceRange[0]);
     this.displayMaxPrice = this.formatPrice(this.priceRange[1]);
+  }
+
+  gotoProductDetails(id: number) {
+    window.location.href = 'product/' + id;
   }
 }
