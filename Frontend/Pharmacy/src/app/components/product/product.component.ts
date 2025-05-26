@@ -24,6 +24,7 @@ export class ProductComponent implements OnInit {
   listBrand: any = {};
   listProd: any[] = [];
   categoryParent: any[] = [];
+  selectedBrandIds: number[] = []
   imageUrl: any;
 
   constructor(
@@ -47,21 +48,10 @@ export class ProductComponent implements OnInit {
     this.productService.findAll().then((res) => {
       console.log(res);
       this.products = res;
+      this.listProd = res;
 
       // Nếu bạn muốn load hình ảnh của từng product
-      for (let i = 0; i < this.products.length; i++) {
-        const productId = this.products[i].id;
-        const tableName = 'Product';
-        this.productService
-          .findImageOfObjId(productId, tableName)
-          .then((imgRes) => {
-            const fullPath =
-              this.baseUrl.getBaseUrl() +
-              imgRes.image.path +
-              imgRes.image.imageName;
-            this.products[i].imageUrl = fullPath;
-          });
-      }
+      this.findImageForObj();
     });
 
     this.findCategory();
@@ -109,16 +99,33 @@ export class ProductComponent implements OnInit {
     return parseInt(value.replace(/[^0-9]/g, '')) || 0;
   }
 
-  // Update display prices when slider changes
-  onSliderChange(range: number[]) {
+  // Update display prices when slider changes  
+  async onSliderChange(range: number[]) {
     this.priceRange = range;
     this.updateDisplayPrices();
-    console.log(this.priceRange[0]);
-    console.log(this.priceRange[1]);
+    await this.applyFilters();
+    
+  }
+   async onBrandChange(brandId: number, event: Event) {
+  const input = event.target as HTMLInputElement;
+  const checked = input.checked;
 
-    this.productService.filterProducts(this.priceRange[0], this.priceRange[1]);
-    this.listProd = this.productService.filterProducts(this.priceRange[0], this.priceRange[1]);
-    console.log(this.listProd);
+  if (checked) {
+    this.selectedBrandIds.push(brandId);
+  } else {
+    this.selectedBrandIds = this.selectedBrandIds.filter(id => id !== brandId);
+  }
+
+  this.applyFilters();
+}
+  async applyFilters() {
+    this.listProd = await this.productService.filterProducts(
+      this.priceRange[0],
+      this.priceRange[1],
+      this.selectedBrandIds
+    );
+    this.products = this.listProd;
+    this.findImageForObj();
   }
 
   // Update slider and display when min price input changes
@@ -153,8 +160,6 @@ export class ProductComponent implements OnInit {
 
     this.priceRange = [minPrice, maxPrice];
     this.updateDisplayPrices();
-    console.log('aaaaa');
-    console.log(maxPrice);
   }
 
   // Update input display values
@@ -165,5 +170,24 @@ export class ProductComponent implements OnInit {
 
   gotoProductDetails(id: number) {
     window.location.href = 'product/' + id;
+  }
+  findImageForObj() {
+    this.products.forEach((product, index) => {
+    if (!product || !product.id) return;
+
+    const tableName = 'Product';
+    this.productService.findImageOfObjId(product.id, tableName)
+      .then((imgRes) => {
+        if (!this.products[index]) return; // Kiểm tra lại trước khi gán
+        const fullPath =
+          this.baseUrl.getBaseUrl() +
+          imgRes.image.path +
+          imgRes.image.imageName;
+        this.products[index].imageUrl = fullPath;
+      })
+      .catch(err => {
+        console.error('Image fetch error for product', product.id, err);
+      });
+  });
   }
 }
