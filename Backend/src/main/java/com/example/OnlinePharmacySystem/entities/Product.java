@@ -6,51 +6,61 @@ import jakarta.persistence.*;
 
 @Entity
 public class Product {
-	 	@Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Integer id;
 
-	    @Column(nullable = false, length = 300)
-	    private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-	    @Column(nullable = false, columnDefinition = "TEXT")
-	    private String description;
+	@Column(nullable = false, length = 300)
+	private String name;
 
-	    @Column(nullable = false)
-	    private Double price;
+	@Column(nullable = false, columnDefinition = "TEXT")
+	private String description;
 
-	    @Column(nullable = true, columnDefinition = "TEXT")
-	    private String image;
+	@Column(nullable = false)
+	private Double price;
 
-	    @Column(nullable = true, columnDefinition = "timestamp default current_timestamp")
-	    private LocalDateTime created_at;
+	@Column(nullable = true, columnDefinition = "TEXT")
+	private String image;
 
-	    @Column
-	    private LocalDateTime updated_at;
+	@Column(nullable = true, columnDefinition = "timestamp default current_timestamp")
+	private LocalDateTime created_at;
 
-	    @Column
-	    private Integer type;
+	@Column
+	private LocalDateTime updated_at;
 
-	    @Column(length = 200)
-	    private String manufacturer;
+	@Column
+	private Integer type;
 
-	    @Column(length = 200)
-	    private String ingredient;
+	@Column(length = 200)
+	private String manufacturer;
 
-	    @Column(columnDefinition = "TEXT")
-	    private String note;
+	@Column(length = 200)
+	private String ingredient;
 
-	    @Column(name = "`use`", columnDefinition = "TEXT") // `use` là từ khóa SQL → cần dùng backtick
-	    private String use;
+	@Column(columnDefinition = "TEXT")
+	private String note;
 
-	    @Column(columnDefinition = "TEXT")
-	    private String packaging;
+	@Column(name = "`use`", columnDefinition = "TEXT")
+	private String use;
 
-	    @Column
-	    private Boolean status;
+	@Column(columnDefinition = "TEXT")
+	private String packaging;
 
-		@ManyToOne(fetch = FetchType.LAZY)
-		private Category category;
+	@Column
+	private Boolean status;
+
+	// Quan hệ với Brand
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "brand_id", referencedColumnName = "id", insertable = false, updatable = false)
+	private Brand brand;
+
+	@Column(name = "brand_id")
+	private Integer brandId;
+
+	// Quan hệ với Category
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Category category;
 
 		public Product() {
 			super();
@@ -58,7 +68,7 @@ public class Product {
 
 		public Product(Integer id, String name, String description, Double price, String image,
 				LocalDateTime created_at, LocalDateTime updated_at, Integer type, String manufacturer,
-				String ingredient, String note, String use, String packaging, Boolean status) {
+				String ingredient, String note, String use, String packaging, Boolean status, Integer brandId) {
 			super();
 			this.id = id;
 			this.name = name;
@@ -74,6 +84,7 @@ public class Product {
 			this.use = use;
 			this.packaging = packaging;
 			this.status = status;
+			this.brandId = brandId;
 		}
 
 		public Integer getId() {
@@ -208,5 +219,13 @@ public class Product {
 		if (created_at == null) {
 			created_at = LocalDateTime.now();
 		}
+	}
+
+	public Integer getBrandId() {
+		return brandId;
+	}
+
+	public void setBrandId(Integer brandId) {
+		this.brandId = brandId;
 	}
 }

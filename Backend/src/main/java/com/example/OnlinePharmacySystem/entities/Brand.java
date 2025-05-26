@@ -1,14 +1,13 @@
 package com.example.OnlinePharmacySystem.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -20,7 +19,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
+
 public class Brand implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -33,6 +34,10 @@ public class Brand implements Serializable {
 	private String name;
 
 	private byte status;
+
+	// Quan hệ ngược lại với Product (không bắt buộc nhưng hữu ích nếu cần)
+	@OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Product> products;
 
 
 

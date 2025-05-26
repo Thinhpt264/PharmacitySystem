@@ -112,4 +112,8 @@ export class ProductCategoryParentComponent implements OnInit {
   gotoHome() {
     window.location.href = 'home';
   }
+
+  gotoProductDetails(id: number) {
+    window.location.href = 'product/' + id;
+  }
 }

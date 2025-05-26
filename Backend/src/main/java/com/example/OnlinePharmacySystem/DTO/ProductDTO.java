@@ -2,55 +2,33 @@ package com.example.OnlinePharmacySystem.DTO;
 
 import java.time.LocalDateTime;
 
-import com.example.OnlinePharmacySystem.entities.Category;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
 public class ProductDTO {
-    private Integer id;
-    private String name;
-    private String description;
-   
-    private Double price;
 
-
-    private String image;
-
-   
-    private LocalDateTime created_at;
-
-   
-    private LocalDateTime updated_at;
-
-   
-    private Integer type;
-
-   
-    private String manufacturer;
-
- 
-    private String ingredient;
-
-    
-    private String note;
-
-   
-    private String use;
-
- 
-    private String packaging;
-
-    private Boolean status;
+	private Integer id;
+	private String name;
+	private String description;
+	private Double price;
+	private String image;
+	private LocalDateTime created_at;
+	private LocalDateTime updated_at;
+	private Integer type;
+	private String manufacturer;
+	private String ingredient;
+	private String note;
+	private String use;
+	private String packaging;
+	private Boolean status;
 
 	private Integer categoryId;
 	private String categoryName;
 
+	private Integer brandId; // mới thêm: đối tượng brand lồng vào
+
+	public ProductDTO() {}
+
 	public ProductDTO(Integer id, String name, String description, Double price, String image, LocalDateTime created_at,
-			LocalDateTime updated_at, Integer type, String manufacturer, String ingredient, String note, String use,
-			String packaging, Boolean status, Integer categoryId, String categoryName) {
-		super();
+					  LocalDateTime updated_at, Integer type, String manufacturer, String ingredient, String note, String use,
+					  String packaging, Boolean status, Integer categoryId, String categoryName, Integer brandId) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -65,11 +43,12 @@ public class ProductDTO {
 		this.use = use;
 		this.packaging = packaging;
 		this.status = status;
+		this.categoryId = categoryId;
+		this.categoryName = categoryName;
+		this.brandId = brandId;
 	}
 
-	public ProductDTO() {
-		super();
-	}
+	// Getters and Setters
 
 	public Integer getId() {
 		return id;
@@ -183,9 +162,27 @@ public class ProductDTO {
 		this.status = status;
 	}
 
-	public Integer getCategoryId() { return categoryId; }
-	public void setCategoryId(Integer categoryId) { this.categoryId = categoryId; }
+	public Integer getCategoryId() {
+		return categoryId;
+	}
 
-	public String getCategoryName() { return categoryName; }
-	public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public Integer getBrandId() {
+		return brandId;
+	}
+
+	public void setBrandId(Integer brandId) {
+		this.brandId = brandId;
+	}
 }

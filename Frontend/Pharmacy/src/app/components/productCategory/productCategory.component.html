@@ -60,7 +60,7 @@
                     <div class="col-lg-3--- col-md-4 col-sm-6 col-6" style="height: 450px; width: 300px; margin-bottom: 20px;">
                         <div class="ltn__product-item ltn__product-item-2 text-left">
                             <div class="product-img">
-                                <a [routerLink]="['/product', product.id]"><img [src]="product.imageUrl" style="height: 300px; width: 300px;"></a>
+                                <a (click)="gotoProductDetails(product.id)"><img [src]="product.imageUrl" style="height: 300px; width: 300px;"></a>
                                 <div class="product-badge">
                                     <ul>
                                         <li class="sale-badge">Mới</li>
@@ -94,7 +94,7 @@
                                         <li><a href="#"><i class="far fa-star"></i></a></li>
                                     </ul>
                                 </div>
-                                <h2 class="product-title"><a  [routerLink]="['/product', product.id]">{{product.name}}</a></h2>
+                                <h2 style="cursor: pointer;" class="product-title"><a (click)="gotoProductDetails(product.id)">{{product.name}}</a></h2>
                                 <div class="product-price">
                                     <span>Giá : {{ product.price }}</span>
                                     <del>{{ product.price+30 }}</del>
