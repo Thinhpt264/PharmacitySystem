@@ -66,7 +66,8 @@
                                 <span><b>Thương hiệu</b></span>
                                 <div *ngFor="let brand of listBrand">
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="filter1" value="{{brand.id}}">
+                                        <input type="checkbox" class="form-check-input" id="filter1" value="{{brand.id}}" (change)="onBrandChange(brand.id, $event)"
+ />
                                         <label class="form-check-label" for="filter1">{{brand.name}}</label>
                                         </div>
                                 </div>

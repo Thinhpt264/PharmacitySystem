@@ -49,28 +49,22 @@ export class ProductService {
   }
   // Lọc sản phẩm theo giá và thương hiệu
   // Hàm lọc sản phẩm theo giá và thương hiệu
-    filterProducts(minPrice: number, maxPrice: number): any[] {
-        this.findAll().then(
-            res => {
-                res = this.products;
-           }
-       );
-    let filteredProducts = [...this.products]; // Sao chép danh sách sản phẩm gốc
+  async filterProducts(minPrice: number, maxPrice: number, brandIds: number[] = []): Promise<any[]> {
+  
+  const allProducts = await this.findAll(); // Lấy danh sách từ API
+  this.products = allProducts; 
 
-    // Lọc theo giá
-    filteredProducts = filteredProducts.filter(
-      (product) => product.price >= minPrice && product.price <= maxPrice
-    );
+  let filteredProducts = [...allProducts];
 
-    // Lọc theo thương hiệu (nếu có chọn thương hiệu)
-    // if (brandIds && brandIds.length > 0) {
-    //   filteredProducts = filteredProducts.filter((product) =>
-    //     brandIds.includes(product.brandId)
-    //   );
-    // }
-
-    return filteredProducts;
+  filteredProducts = filteredProducts.filter(
+    (product) => product.price >= minPrice && product.price <= maxPrice
+  );
+  if (brandIds.length > 0) {
+    filteredProducts = filteredProducts.filter((p) => brandIds.includes(p.brandId));
   }
+
+  return filteredProducts;
+}
 
   // Lấy danh sách sản phẩm đã lưu
   getCachedProducts(): any[] {
