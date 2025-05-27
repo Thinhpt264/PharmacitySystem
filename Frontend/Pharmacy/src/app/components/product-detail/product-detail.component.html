@@ -86,17 +86,16 @@
                                 </div>
                                 <h3>{{ product.name }}</h3>
                                 <div class="product-price">
-                                    <span>{{product.price}} VNĐ</span>
+                                    <span>{{product.price | customCurrency }} </span>
                                     <del>$65.00</del>
                                 </div>
                                 <div class="modal-product-meta ltn__product-details-menu-1">
                                     <ul>
                                         <li>
-                                            <strong>Categories:</strong>
+                                            <strong>Danh mục:</strong>
                                             <span>
                                                 <a href="#">{{product.categoryName}}</a>
-                                                <a href="#">ppe-kit</a>
-                                                <a href="#">safety-suits</a>
+                                             
                                             </span>
                                         </li>
                                     </ul>
@@ -110,10 +109,10 @@
                                             </div>
                                         </li>
                                         <li>
-                                            <a href="#" class="theme-btn-1 btn btn-effect-1" title="Add to Cart"
+                                            <a (click)="addToCart(product)" class="theme-btn-1 btn btn-effect-1" title="Add to Cart"
                                                 data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
                                                 <i class="fas fa-shopping-cart"></i>
-                                                <span>ADD TO CART</span>
+                                                <span>Thêm vào giỏ hàng</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -675,4 +674,6 @@
         </div>
     </div>
 </div>
+
+<p-toast></p-toast>
 <!-- PRODUCT SLIDER AREA END -->

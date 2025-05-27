@@ -162,8 +162,8 @@ export class AppComponent implements OnInit {
     window.location.href = '/about';
   }
 
-  goToFAQ() {
-    window.location.href = '/about';
+  goToCart() {
+    window.location.href = '/cart';
   }
 
   goToLocations() {

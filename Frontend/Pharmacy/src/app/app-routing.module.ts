@@ -16,6 +16,7 @@ import { RegisterSuccessComponent } from './components/register-success/register
 import { VerifyComponent } from './components/verify/verify.component';
 import { ProductCategoryParentComponent } from './components/productCategoryParent/productCategoryParent.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+import { CartComponent } from './components/cart/cart.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,10 @@ const routes: Routes = [
   {
     path: 'product/:id',
     component: ProductDetailComponent,
+  },
+  {
+    path: 'cart',
+    component: CartComponent,
   },
   {
     path: 'about',
