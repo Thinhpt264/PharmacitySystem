@@ -56,7 +56,9 @@
     </div>
     <!-- ltn__header-top-area end -->
         <!-- Utilize Cart Menu Start -->
-        <div id="ltn__utilize-cart-menu" class="ltn__utilize ltn__utilize-cart-menu">
+
+        <!-- gio hang -->
+        <!-- <div id="ltn__utilize-cart-menu" class="ltn__utilize ltn__utilize-cart-menu">
           <div class="ltn__utilize-menu-inner ltn__scrollbar">
             <div class="ltn__utilize-menu-head">
               <span class="ltn__utilize-menu-title">Cart</span>
@@ -116,7 +118,7 @@
             </div>
         
           </div>
-        </div>
+        </div> -->
         <!-- Utilize Cart Menu End -->
     <!-- ltn__header-middle-area start -->
     <div class="ltn__header-middle-area">
@@ -220,7 +222,7 @@
                 <li>
                   <!-- mini-cart 2 -->
                   <div class="mini-cart-icon mini-cart-icon-2">
-                    <a href="#ltn__utilize-cart-menu" class="ltn__utilize-toggle">
+                    <a (click)="goToCart()" class="ltn__utilize-toggle">
                       <span class="mini-cart-icon">
                         <i class="icon-shopping-cart"></i>
                         <sup>2</sup>

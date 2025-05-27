@@ -39,6 +39,9 @@ import { ValidationService } from './service/validation.service';
 import { ProductCategoryParentComponent } from './components/productCategoryParent/productCategoryParent.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { BrandService } from './service/brand.service';
+import { CartComponent } from './components/cart/cart.component';
+import { CartService } from './service/cart.service';
+import { CustomCurrencyPipe } from './custom-currency.pipe';
 
 
 @NgModule({
@@ -57,6 +60,8 @@ import { BrandService } from './service/brand.service';
     VerifyComponent,
     ProductCategoryParentComponent,
     ProductDetailComponent,
+    CartComponent,
+    CustomCurrencyPipe,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +88,7 @@ import { BrandService } from './service/brand.service';
     ConfirmationService,
     ValidationService,
     BrandService,
+    CartService,
     // { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent],
