@@ -8,6 +8,8 @@ import com.example.OnlinePharmacySystem.repositories.ViewStatRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.example.OnlinePharmacySystem.DTO.ProductDTO;
@@ -22,8 +24,10 @@ public class ProductServiceImpl implements ProductService {
 	private final ViewStatRepository viewStatRepository;
 
 	@Override
+	@Cacheable(value = "PRODUCT_CACHE", key = "'allProducts'")
 	public List<ProductDTO> findAll() {
 		// TODO Auto-generated method stub
+		 System.out.println("🔍 Truy vấn DB thật sự!");
 		 List<Product> products = productRepository.findAll();
 		 return products.stream()
 		            .map(product -> mapper.map(product, ProductDTO.class))
@@ -31,13 +35,14 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Cacheable(value = "PRODUCT_CACHE", key = "'category_'+#id")
 	public List<ProductDTO> findByCategotyId(int id) {
 		List<Product> products = productRepository.findByCategory_Id(id);
 		return products.stream()
 				.map(product -> mapper.map(product, ProductDTO.class))
 				.collect(Collectors.toList());
 	}
-
+	@CachePut(value = "PRODUCT_CACHE", key = "#result.id")
 	public ProductDTO save(ProductDTO product) {
 		Product product1 = mapper.map(product, Product.class);
 		Product saved = productRepository.save(product1);
@@ -45,11 +50,13 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Cacheable(value = "PRODUCT_CACHE", key = "#id")
 	public ProductDTO findById(int id) {
         return mapper.map(productRepository.findById(id), ProductDTO.class);
 	}
 
 	@Override
+	@Cacheable(value = "PRODUCT_CACHE", key = "'topViewed'")
 	public List<ProductDTO> findTopProductByView() {
 		List<Product> products = viewStatRepository.findTopProductByView();
 		return products.stream()
