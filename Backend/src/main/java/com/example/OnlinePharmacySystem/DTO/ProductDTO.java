@@ -1,9 +1,10 @@
 package com.example.OnlinePharmacySystem.DTO;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class ProductDTO {
-
+public class ProductDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String name;
 	private String description;

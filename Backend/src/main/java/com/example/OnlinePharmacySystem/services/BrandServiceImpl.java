@@ -19,6 +19,7 @@ public class BrandServiceImpl implements BrandService {
     private ModelMapper modelMapper;
     @Override
     public List<BrandDTO> findAll() {
+        System.out.println("🔍 Truy vấn DB thật sự!");
         return modelMapper.map(brandRepository.findAll(), new TypeToken<List<BrandDTO>>() {}.getType());
     }
 }
