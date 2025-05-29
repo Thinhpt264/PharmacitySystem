@@ -17,7 +17,7 @@ import com.example.OnlinePharmacySystem.entities.Category;
 import com.example.OnlinePharmacySystem.services.CategoryService;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("api/v1/categories")
 public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;

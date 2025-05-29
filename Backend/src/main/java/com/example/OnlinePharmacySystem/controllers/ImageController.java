@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/image")
+@RequestMapping("api/v1/image")
 public class ImageController {
 	@Autowired
 	private CategoryService categoryService;

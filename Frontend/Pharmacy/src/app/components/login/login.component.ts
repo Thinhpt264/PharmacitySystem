@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
             detail: 'Đăng nhập thành công! Chuyển về trang chủ',
           });
 
+          sessionStorage.setItem('token', response.token);
           sessionStorage.setItem('account', JSON.stringify(response.account));
           // this.account = response.account
           setTimeout(() => {

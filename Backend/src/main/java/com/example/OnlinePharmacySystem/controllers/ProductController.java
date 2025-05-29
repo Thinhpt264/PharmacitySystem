@@ -27,7 +27,7 @@ import com.example.OnlinePharmacySystem.services.ProductService;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/v1/products")
 @Slf4j
 public class ProductController {
 	@Autowired

@@ -4,10 +4,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.OnlinePharmacySystem.DTO.JwtAuthRequest;
+import com.example.OnlinePharmacySystem.DTO.JwtAuthResponse;
+import com.example.OnlinePharmacySystem.Ultis.CustomUserDetails;
+import com.example.OnlinePharmacySystem.Ultis.JwtUtils;
+import com.example.OnlinePharmacySystem.configurations.CustomUserDetailsService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -18,12 +27,21 @@ import com.example.OnlinePharmacySystem.entities.Account;
 import com.example.OnlinePharmacySystem.services.AccountService;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("/api/v1/accounts")
 public class AccountController {
+	@Autowired
+	private  AccountService accountService;
 
 	@Autowired
-	private AccountService accountService;
+	private CustomUserDetailsService userDetailsService;
 
+	@Autowired
+	private JwtUtils jwtUtils;
+
+
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	@GetMapping(value = "/", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Account>> findAll() {
 		try {
@@ -35,25 +53,38 @@ public class AccountController {
 	}
 
 	@PostMapping(value = "process_login", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> login(@RequestBody @Valid AccountDTO accountDTO, BindingResult bindingResult) {
+	public ResponseEntity<Object> login(@RequestBody @Valid JwtAuthRequest accountDTO, BindingResult bindingResult) {
+
 		if (bindingResult.hasErrors()) {
 			return buildValidationErrors(bindingResult);
 		}
 
 		try {
-			AccountDTO account = accountService.login(accountDTO.getUsername(), accountDTO.getPassword());
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(accountDTO.getUsername(), accountDTO.getPassword())
+			);
+
+
+			// 2. Lấy thông tin người dùng từ DB
+			UserDetails userDetails = userDetailsService.loadUserByUsername(accountDTO.getUsername());
+			System.out.println(userDetails);
+			// 3. Sinh token JWT
+			String role = ((CustomUserDetails) userDetails).getRoleName();
+			System.out.println(role);
+			String token = jwtUtils.generateToken(userDetails.getUsername(), role);
+			AccountDTO account = accountService.findByUsername(accountDTO.getUsername());
+
 
 			Map<String, Object> response = new HashMap<>();
-			response.put("message", account != null);
-			if (account != null) {
-				response.put("account", account);
-			}
+			response.put("message", true);
+			response.put("token", token);
+			response.put("account", account);
 
 			return new ResponseEntity<>(response, HttpStatus.OK);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>("Lỗi nội bộ server", HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Tên đăng nhập hoặc mật khẩu không đúng");
 		}
 	}
 
@@ -64,13 +95,37 @@ public class AccountController {
 		}
 
 		try {
-			return new ResponseEntity<>(new Object() {
-				public boolean status = accountService.save(accountDTO);
-				public AccountDTO account = accountService.findByUsername(accountDTO.getUsername());
-			}, HttpStatus.OK);
+			boolean saved = accountService.save(accountDTO);
+			if (!saved) {
+				Map<String, Object> response = new HashMap<>();
+				response.put("message", false);
+				response.put("error", "Đăng ký thất bại. Tài khoản hoặc email đã tồn tại.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+			}
+
+			AccountDTO createdAccount = accountService.findByUsername(accountDTO.getUsername());
+
+			// Kiểm tra nếu tài khoản đã active thì mới sinh JWT
+			if (createdAccount.isStatus()) {
+				UserDetails userDetails = userDetailsService.loadUserByUsername(createdAccount.getUsername());
+				String role = ((CustomUserDetails) userDetails).getRoleName(); // sử dụng role đúng
+
+				String token = jwtUtils.generateToken(userDetails.getUsername(), role);
+				return ResponseEntity.ok(new JwtAuthResponse(token, createdAccount));
+			} else {
+				// Trả về thông báo yêu cầu xác thực tài khoản
+				Map<String, Object> response = new HashMap<>();
+				response.put("message", true);
+				response.put("account", createdAccount);
+				response.put("note", "Tài khoản đã được tạo. Vui lòng xác minh email trước khi đăng nhập.");
+				return ResponseEntity.status(HttpStatus.CREATED).body(response);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			Map<String, Object> response = new HashMap<>();
+			response.put("message", false);
+			response.put("error", "Lỗi hệ thống. Vui lòng thử lại sau.");
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
