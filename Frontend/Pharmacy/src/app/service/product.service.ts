@@ -16,7 +16,7 @@ export class ProductService {
     return await lastValueFrom(
       this.httpClient.get(
         this.baseUrl.getBaseUrl() +
-          'image/findImageByObject?objectId=' +
+          'api/v1/image/findImageByObject?objectId=' +
           id +
           '&tableName=' +
           tableName
@@ -27,24 +27,24 @@ export class ProductService {
   async findProductByCategoryId(id: number): Promise<any> {
     return await lastValueFrom(
       this.httpClient.get(
-        this.baseUrl.getBaseUrl() + 'api/products/by-category/' + id
+        this.baseUrl.getBaseUrl() + 'api/v1/products/by-category/' + id
       )
     );
   }
 
   async findAll(): Promise<any> {
     return await lastValueFrom(
-      this.httpClient.get(this.baseUrl.getBaseUrl() + 'api/products')
+      this.httpClient.get(this.baseUrl.getBaseUrl() + 'api/v1/products')
     );
   }
   async findById(id: number): Promise<any> {
     return await lastValueFrom(
-      this.httpClient.get(this.baseUrl.getBaseUrl() + 'api/products/' + id)
+      this.httpClient.get(this.baseUrl.getBaseUrl() + 'api/v1/products/' + id)
     );
   }
   async getTopProduct(): Promise<any> {
     return await lastValueFrom(
-      this.httpClient.get(this.baseUrl.getBaseUrl() + 'api/products/getListTop')
+      this.httpClient.get(this.baseUrl.getBaseUrl() + 'api/v1/products/getListTop')
     );
   }
   // Lọc sản phẩm theo giá và thương hiệu

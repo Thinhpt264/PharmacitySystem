@@ -11,17 +11,17 @@ export class AccountService {
     ){}
 
     async login(account : any) : Promise<any>{
-            return await lastValueFrom(this.httpClient.post(this.baseUrl.getBaseUrl() + "accounts/process_login" , account));
+            return await lastValueFrom(this.httpClient.post(this.baseUrl.getBaseUrl() + "api/v1/accounts/process_login" , account));
     }
     async register(account: any) : Promise<any>{
-            return await lastValueFrom(this.httpClient.post(this.baseUrl.getBaseUrl() + "accounts/register" , account));
+            return await lastValueFrom(this.httpClient.post(this.baseUrl.getBaseUrl() + "api/v1/accounts/register" , account));
     }
 
     async verify(email: any, securityCode : any) : Promise<any>{
-            return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "accounts/verify?email=" + email + "&securityCode=" + securityCode));
+            return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "api/v1/accounts/verify?email=" + email + "&securityCode=" + securityCode));
     }
      async reSendCode(email: any) : Promise<any>{
-            return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "accounts/reSendCode?email=" + email ));
+            return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "api/v1/accounts/reSendCode?email=" + email ));
     }
 
 }

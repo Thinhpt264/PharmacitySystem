@@ -28,8 +28,6 @@ public class AccountDTO {
 
 	private boolean status;
 
-	@NotNull(message = "{dob.not.null}")
-	@Past(message = "{dob.past}")
 	private LocalDate dob;
 
 	private LocalDateTime created_at;

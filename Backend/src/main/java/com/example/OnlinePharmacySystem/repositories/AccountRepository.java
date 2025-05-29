@@ -13,7 +13,7 @@ import com.example.OnlinePharmacySystem.entities.Account;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 	
 	@Query("from Account where username = :username and password = :password")
-	public Account login(@Param("username") String username, @Param("password") String password);
+	Account login(@Param("username") String username, @Param("password") String password);
 	
 	Optional<Account> findByUsername(String username);
 
