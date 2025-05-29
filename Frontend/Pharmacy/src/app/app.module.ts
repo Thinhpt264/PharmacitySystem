@@ -42,6 +42,8 @@ import { BrandService } from './service/brand.service';
 import { CartComponent } from './components/cart/cart.component';
 import { CartService } from './service/cart.service';
 import { CustomCurrencyPipe } from './custom-currency.pipe';
+import { DialogModule } from 'primeng/dialog';
+
 
 
 @NgModule({
@@ -76,6 +78,7 @@ import { CustomCurrencyPipe } from './custom-currency.pipe';
     OverlayPanelModule,
     ToastModule,
     ConfirmDialogModule,
+    DialogModule,
   ],
   providers: [
     BaseUrlService,

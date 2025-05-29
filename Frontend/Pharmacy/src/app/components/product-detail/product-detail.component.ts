@@ -65,10 +65,16 @@ export class ProductDetailComponent implements OnInit {
 
   addToCart(product: any) {
     try {
-      this.cartService.addToCart(product); // Gọi service để thêm sản phẩm
+      this.productService
+        .findImageOfObjId(this.product.id, 'Product')
+        .then((res) => {
+          const fullPath =
+            this.baseUrl.getBaseUrl() + res.image.path + res.image.imageName;
+          this.product.imgUrl = fullPath; // Gán vào đối tượng product
+          this.cartService.addToCart(this.product); // Cập nhật giỏ hàng với sản phẩm đã có ảnh
+        });
       this.cart = this.cartService.getCart(); // Lấy lại giỏ hàng đã cập nhật
-      console.log(this.cart); // Kiểm tra giỏ hàng (bao gồm totalPrice)
-
+      console.log('Giỏ hàng sau khi thêm sản phẩm:', this.cart);
       this.messageService.add({
         severity: 'success',
         summary: 'Added to cart',

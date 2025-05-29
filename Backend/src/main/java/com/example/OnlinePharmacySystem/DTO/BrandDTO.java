@@ -1,7 +1,9 @@
 package com.example.OnlinePharmacySystem.DTO;
 
-public class BrandDTO {
+import java.io.Serializable;
 
+public class BrandDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int id;
     private String description;
     private String name;

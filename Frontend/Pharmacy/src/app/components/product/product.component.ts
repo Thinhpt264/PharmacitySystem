@@ -1,8 +1,10 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { BaseUrlService } from 'src/app/service/baseUrl.service';
 import { BrandService } from 'src/app/service/brand.service';
+import { CartService } from 'src/app/service/cart.service';
 import { CategoryService } from 'src/app/service/category.service';
 import { ProductService } from 'src/app/service/product.service';
 
@@ -24,8 +26,9 @@ export class ProductComponent implements OnInit {
   listBrand: any = {};
   listProd: any[] = [];
   categoryParent: any[] = [];
-  selectedBrandIds: number[] = []
+  selectedBrandIds: number[] = [];
   imageUrl: any;
+  cart: any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -33,7 +36,9 @@ export class ProductComponent implements OnInit {
     private baseUrl: BaseUrlService,
     private currencyPipe: CurrencyPipe,
     private categoryService: CategoryService,
-    private brandService: BrandService
+    private brandService: BrandService,
+    private cartService: CartService,
+    private messageService: MessageService
   ) {
     this.displayMinPrice = this.formatPrice(this.priceRange[0]);
     this.displayMaxPrice = this.formatPrice(this.priceRange[1]);
@@ -99,25 +104,26 @@ export class ProductComponent implements OnInit {
     return parseInt(value.replace(/[^0-9]/g, '')) || 0;
   }
 
-  // Update display prices when slider changes  
+  // Update display prices when slider changes
   async onSliderChange(range: number[]) {
     this.priceRange = range;
     this.updateDisplayPrices();
     await this.applyFilters();
-    
   }
-   async onBrandChange(brandId: number, event: Event) {
-  const input = event.target as HTMLInputElement;
-  const checked = input.checked;
+  async onBrandChange(brandId: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const checked = input.checked;
 
-  if (checked) {
-    this.selectedBrandIds.push(brandId);
-  } else {
-    this.selectedBrandIds = this.selectedBrandIds.filter(id => id !== brandId);
+    if (checked) {
+      this.selectedBrandIds.push(brandId);
+    } else {
+      this.selectedBrandIds = this.selectedBrandIds.filter(
+        (id) => id !== brandId
+      );
+    }
+
+    this.applyFilters();
   }
-
-  this.applyFilters();
-}
   async applyFilters() {
     this.listProd = await this.productService.filterProducts(
       this.priceRange[0],
@@ -173,21 +179,49 @@ export class ProductComponent implements OnInit {
   }
   findImageForObj() {
     this.products.forEach((product, index) => {
-    if (!product || !product.id) return;
+      if (!product || !product.id) return;
 
-    const tableName = 'Product';
-    this.productService.findImageOfObjId(product.id, tableName)
-      .then((imgRes) => {
-        if (!this.products[index]) return; // Kiểm tra lại trước khi gán
-        const fullPath =
-          this.baseUrl.getBaseUrl() +
-          imgRes.image.path +
-          imgRes.image.imageName;
-        this.products[index].imageUrl = fullPath;
-      })
-      .catch(err => {
-        console.error('Image fetch error for product', product.id, err);
+      const tableName = 'Product';
+      this.productService
+        .findImageOfObjId(product.id, tableName)
+        .then((imgRes) => {
+          if (!this.products[index]) return; // Kiểm tra lại trước khi gán
+          const fullPath =
+            this.baseUrl.getBaseUrl() +
+            imgRes.image.path +
+            imgRes.image.imageName;
+          this.products[index].imageUrl = fullPath;
+        })
+        .catch((err) => {
+          console.error('Image fetch error for product', product.id, err);
+        });
+    });
+  }
+
+   addToCart(product: any) {
+    try {
+      this.productService
+        .findImageOfObjId(product.id, 'Product')
+        .then((res) => {
+          const fullPath = this.baseUrl.getBaseUrl() + res.image.path + res.image.imageName;
+          product.imgUrl = fullPath; // Gán vào đối tượng product
+          this.cartService.addToCart(product); // Cập nhật giỏ hàng với sản phẩm đã có ảnh
+        });
+      this.cart = this.cartService.getCart(); // Lấy lại giỏ hàng đã cập nhật
+      console.log('Giỏ hàng sau khi thêm sản phẩm:', this.cart);
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Added to cart',
+        detail: 'Added to your cart successfully',
       });
-  });
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Failed to add to cart',
+        detail:
+          'An error occurred while adding the product to your cart. Please try again.',
+      });
+      console.error('Error adding to cart:', error);
+    }
   }
 }

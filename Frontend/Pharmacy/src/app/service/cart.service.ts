@@ -41,4 +41,29 @@ export class CartService {
 
     sessionStorage.setItem('cart', JSON.stringify(cart));
   }
+
+  removeCart(productId: any) {
+    var cart = this.getCart();
+    cart = cart.filter((product) => product.id != productId);
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  updateQuantity(product: any, status: boolean) {
+    var cart = this.getCart();
+    var existingProduct = cart.find((item) => item.id === product.id);
+    if (status) {
+      existingProduct.quantity += 1;
+    } else {
+      if (existingProduct.quantity > 1) {
+        existingProduct.quantity -= 1;
+      }
+    }
+    existingProduct.totalPrice =
+      existingProduct.quantity * existingProduct.price; // Cập nhật totalPrice
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  saveCart(cart: any) {
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+  }
 }

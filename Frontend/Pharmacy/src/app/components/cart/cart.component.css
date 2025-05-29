@@ -748,3 +748,28 @@
 .cta-btn:active {
     transform: translateY(0) scale(0.98);
 }
+
+:host ::ng-deep .p-toast {
+    opacity: 1 !important; /* Đảm bảo không trong suốt */
+    background-color: rgba(255, 255, 255, 0.95) !important; /* Nền trắng với độ mờ nhẹ */
+    z-index: 9999 !important; /* Đảm bảo hiển thị trên cùng */
+  }
+  
+  /* Tùy chỉnh từng loại thông báo để không bị trong suốt */
+  :host ::ng-deep .p-toast.p-toast-info {
+    background-color: #e1f3f8 !important; /* Màu nền cho info */
+  }
+  
+  :host ::ng-deep .p-toast.p-toast-warn {
+    background-color: #fff3e6 !important; /* Màu nền cho warn */
+  }
+  
+  :host ::ng-deep .p-toast.p-toast-success {
+    background-color: #e6f4e6 !important; /* Màu nền cho success */
+  }
+  
+  :host ::ng-deep .p-toast.p-toast-error {
+    background-color: #f8e1e1 !important; /* Màu nền cho error */
+  }
+
+  
