@@ -1,0 +1,81 @@
+/* Tùy chỉnh dialog */
+:host ::ng-deep .p-confirm-dialog {
+    border-radius: 12px !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
+    border: none !important;
+    overflow: hidden !important;
+    width: 400px !important; /* Điều chỉnh chiều rộng */
+  }
+  
+  /* Tùy chỉnh tiêu đề */
+  :host ::ng-deep .p-confirm-dialog .p-dialog-header {
+    background-color: #f8f9fa !important; /* Màu nền nhạt cho header */
+    color: #333 !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    padding: 15px 20px !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+  }
+  
+  /* Tùy chỉnh nội dung */
+  :host ::ng-deep .p-confirm-dialog .p-dialog-content {
+    padding: 20px !important;
+    text-align: center !important;
+    background-color: #ffffff !important;
+  }
+  
+  /* Tùy chỉnh icon */
+  :host ::ng-deep .p-confirm-dialog .p-dialog-content .pi {
+    font-size: 2.5rem !important;
+    color: #ff9800 !important; /* Màu cam cho icon */
+    margin-bottom: 15px !important;
+  }
+  
+  /* Tùy chỉnh thông điệp */
+  :host ::ng-deep .p-confirm-dialog .p-dialog-content {
+    font-size: 1.1rem !important;
+    color: #555 !important;
+    line-height: 1.5 !important;
+  }
+  
+  /* Tùy chỉnh footer (chứa các nút) */
+  :host ::ng-deep .p-confirm-dialog .p-dialog-footer {
+    padding: 15px 20px !important;
+    background-color: #f8f9fa !important;
+    border-top: 1px solid #e0e0e0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 15px !important; /* Khoảng cách giữa hai nút */
+  }
+  
+  /* Tùy chỉnh nút "Có" */
+  :host ::ng-deep .p-confirm-dialog-accept {
+    background-color: #ff4d4f !important; /* Màu đỏ */
+    color: white !important;
+    border: none !important;
+    padding: 10px 25px !important;
+    border-radius: 8px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    transition: background-color 0.3s ease !important;
+  }
+  
+  :host ::ng-deep .p-confirm-dialog-accept:hover {
+    background-color: #e6393d !important; /* Hiệu ứng hover */
+  }
+  
+  /* Tùy chỉnh nút "Không" */
+  :host ::ng-deep .p-confirm-dialog-reject {
+    background-color: #e0e0e0 !important; /* Màu xám */
+    color: #333 !important;
+    border: none !important;
+    padding: 10px 25px !important;
+    border-radius: 8px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    transition: background-color 0.3s ease !important;
+  }
+  
+  :host ::ng-deep .p-confirm-dialog-reject:hover {
+    background-color: #d0d0d0 !important; /* Hiệu ứng hover */
+  }

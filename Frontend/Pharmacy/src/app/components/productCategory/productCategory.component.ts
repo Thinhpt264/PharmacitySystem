@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { BaseUrlService } from 'src/app/service/baseUrl.service';
+import { CartService } from 'src/app/service/cart.service';
 import { CategoryService } from 'src/app/service/category.service';
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './productCategory.component.html',
+  styleUrls: ['./productCategory.component.css'],
 })
 export class ProductCategoryComponent implements OnInit {
   categoryId: any;
@@ -15,12 +18,14 @@ export class ProductCategoryComponent implements OnInit {
   categoryGrandParent: any;
   categoryParent: any;
   originCategoryId: any;
-
+  cart: any = {};
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private baseUrl: BaseUrlService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private cartService: CartService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -97,6 +102,33 @@ export class ProductCategoryComponent implements OnInit {
     window.location.href = 'home';
   }
   gotoProductDetails(id: number) {
-    window.location.href = 'product/'+ id;
+    window.location.href = 'product/' + id;
+  }
+  addToCart(product: any) {
+    try {
+      this.productService
+        .findImageOfObjId(product.id, 'Product')
+        .then((res) => {
+          const fullPath =
+            this.baseUrl.getBaseUrl() + res.image.path + res.image.imageName;
+          product.imgUrl = fullPath; // Gán vào đối tượng product
+          this.cartService.addToCart(product); // Cập nhật giỏ hàng với sản phẩm đã có ảnh
+        });
+      this.cart = this.cartService.getCart(); // Lấy lại giỏ hàng đã cập nhật
+      console.log('Giỏ hàng sau khi thêm sản phẩm:', this.cart);
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Added to cart',
+        detail: 'Added to your cart successfully',
+      });
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Failed to add to cart',
+        detail:
+          'An error occurred while adding the product to your cart. Please try again.',
+      });
+      console.error('Error adding to cart:', error);
+    }
   }
 }

@@ -1,8 +1,10 @@
 <br><br>
+
+<p-toast position="top-right"></p-toast>
 <div class="cart-container">
     <div class="cart-header">
         <h2><i class="fas fa-shopping-cart"></i> Giỏ hàng của bạn</h2>
-        <span class="cart-count">3 sản phẩm</span>
+        <span class="cart-count">{{ cart.length }} sản phẩm</span>
     </div>
 
     <div class="cart-content">
@@ -11,17 +13,18 @@
             <div *ngFor="let c of cart">
                 <div class="cart-item">
                     <div class="item-checkbox">
-                        <input type="checkbox" id="item1" checked>
-                        <label for="item1"></label>
+                        <input type="checkbox" id="{{c.id}}" [(ngModel)]="c.isChecked"
+                            (ngModelChange)="onCheckboxChange()">
+                        <label for="{{c.id}}"></label>
                     </div>
                     <div class="item-image">
-                        <img src="/assets/img/banner/2.jpg">
+                        <img src="{{c.imageUrl}}" >
                         <div class="image-overlay">
                             <i class="fas fa-search-plus"></i>
                         </div>
                     </div>
                     <div class="item-info">
-                        <h4> {{c.name}}</h4>
+                        <h4>{{c.name}}</h4>
                         <p class="item-desc">Thiết bị y tế chất lượng cao</p>
                         <div class="item-tags">
                             <span class="tag">Bán chạy</span>
@@ -33,19 +36,24 @@
                         <span class="original-price">{{c.price + 30000 | customCurrency}}</span>
                     </div>
                     <div class="quantity-controls">
-                        <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
-                        <input type="number" value="{{c.quantity}}" min="1" class="qty-input">
-                        <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
+                        <button class="qty-btn minus" (click)="updateCart(c, false)"><i
+                                class="fas fa-minus"></i></button>
+                        <input type="number" [(ngModel)]="c.quantity" (ngModelChange)="onQuantityChange(c)" min="1"
+                            class="qty-input">
+                        <button class="qty-btn plus" (click)="updateCart(c, true)"><i class="fas fa-plus"></i></button>
                     </div>
                     <div class="item-subtotal">
-
                         <span class="subtotal-amount">{{c.totalPrice | customCurrency}}</span>
                     </div>
                     <div class="item-actions">
                         <button class="action-btn favorite"><i class="fas fa-heart"></i></button>
-                        <button class="action-btn remove"><i class="fas fa-trash"></i></button>
+                        <button class="action-btn remove" (click)="deleteItem(c.id)"><i
+                                class="fas fa-trash"></i></button>
                     </div>
                 </div>
+            </div>
+            <div class="cart-total">
+                <h5>Tổng giá trị giỏ hàng: {{total | customCurrency}}</h5>
             </div>
         </div>
 
@@ -72,16 +80,16 @@
 
                 <div class="summary-details">
                     <div class="summary-row">
-                        <span>Tạm tính (2 sản phẩm)</span>
-                        <span>$373.00</span>
+                        <span>Tạm tính ({{checkedItemCount}} sản phẩm)</span>
+                        <span>{{estimateCost | customCurrency}}</span>
                     </div>
                     <div class="summary-row">
                         <span>Phí vận chuyển</span>
-                        <span class="shipping-fee">$15.00</span>
+                        <span class="shipping-fee">{{shippingFee | customCurrency}}</span>
                     </div>
                     <div class="summary-row discount-row">
                         <span><i class="fas fa-tag"></i> Giảm giá</span>
-                        <span class="discount-amount">-$20.00</span>
+                        <span class="discount-amount">{{discount | customCurrency}}</span>
                     </div>
                     <div class="summary-row">
                         <span>VAT (0%)</span>
@@ -90,7 +98,7 @@
                     <div class="summary-divider"></div>
                     <div class="summary-row total-row">
                         <span><strong>Tổng cộng</strong></span>
-                        <span class="total-amount"><strong>$368.00</strong></span>
+                        <span class="total-amount"><strong>{{finalCost | customCurrency}}</strong></span>
                     </div>
                 </div>
 
@@ -113,14 +121,12 @@
                     </div>
                     <div class="badge">
                         <i class="fas fa-truck"></i>
-                        <span>Miễn phí vận chuyển từ $500</span>
+                        <span>Miễn phí vận chuyển từ 100.000 VND</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>
 
 <br><br>
@@ -136,53 +142,4 @@
             input.style.background = '';
         }, 1000);
     }
-
-    // Quantity controls
-    document.addEventListener('DOMContentLoaded', function () {
-        const qtyBtns = document.querySelectorAll('.qty-btn');
-
-        qtyBtns.forEach(btn => {
-            btn.addEventListener('click', function () {
-                const input = this.parentNode.querySelector('.qty-input');
-                const isPlus = this.classList.contains('plus');
-                const currentValue = parseInt(input.value);
-
-                if (isPlus) {
-                    input.value = currentValue + 1;
-                } else if (currentValue > 1) {
-                    input.value = currentValue - 1;
-                }
-
-                updateSubtotal(this.closest('.cart-item'));
-            });
-        });
-
-        function updateSubtotal(item) {
-            const price = parseFloat(item.querySelector('.current-price').textContent.replace('$', ''));
-            const qty = parseInt(item.querySelector('.qty-input').value);
-            const subtotal = item.querySelector('.subtotal-amount');
-
-            subtotal.textContent = '$' + (price * qty).toFixed(2);
-            updateTotal();
-        }
-
-        function updateTotal() {
-            const checkedItems = document.querySelectorAll('.item-checkbox input:checked');
-            let subtotal = 0;
-
-            checkedItems.forEach(checkbox => {
-                const item = checkbox.closest('.cart-item');
-                const amount = parseFloat(item.querySelector('.subtotal-amount').textContent.replace('$', ''));
-                subtotal += amount;
-            });
-
-            document.querySelector('.summary-row:first-child span:last-child').textContent = '$' + subtotal.toFixed(2);
-
-            const shipping = 15;
-            const discount = 20;
-            const total = subtotal + shipping - discount;
-
-            document.querySelector('.total-amount strong').textContent = '$' + total.toFixed(2);
-        }
-    });
 </script>

@@ -100,7 +100,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#" title="Add to Cart" data-bs-toggle="modal"
+                                                <a href="#" (click)="addToCart(product)" title="Add to Cart" data-bs-toggle="modal"
                                                     data-bs-target="#add_to_cart_modal">
                                                     <i class="fas fa-shopping-cart"></i>
                                                 </a>
@@ -140,4 +140,5 @@
         </div>
     </div>
 </div>
+<p-toast position="top-right"></p-toast>
 <!-- PRODUCT AREA END -->
