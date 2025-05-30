@@ -1,0 +1,355 @@
+<br>
+    <div class="container">
+        <div class="checkout-header">
+            <h1>Thanh Toán</h1>
+            <p>Vui lòng điền đầy đủ thông tin để hoàn tất đơn hàng</p>
+        </div>
+
+        <div class="form-container">
+            <div class="success-message" id="successMessage">
+                ✅ Đơn hàng của bạn đã được xử lý thành công!
+            </div>
+
+            <form id="checkoutForm">
+                <!-- Thông tin cá nhân -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">👤</span>
+                        Thông tin cá nhân
+                    </h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="firstName">Họ <span class="required">*</span></label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Tên <span class="required">*</span></label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Tên công ty (tùy chọn)</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Địa chỉ -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📍</span>
+                        Địa chỉ giao hàng
+                    </h2>
+                    <div class="address-grid">
+                        <div class="form-group">
+                            <label for="province">Tỉnh/Thành phố <span class="required">*</span></label>
+                            <select id="province" name="province" required>
+                                <option value="">Chọn tỉnh/thành phố</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="district">Quận/Huyện <span class="required">*</span></label>
+                            <select id="district" name="district" required disabled>
+                                <option value="">Chọn quận/huyện</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ward">Phường/Xã <span class="required">*</span></label>
+                            <select id="ward" name="ward" required disabled>
+                                <option value="">Chọn phường/xã</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="address">Địa chỉ cụ thể <span class="required">*</span></label>
+                        <input type="text" id="address" name="address" placeholder="Số nhà, tên đường..." required>
+                    </div>
+                </div>
+                
+
+                <!-- Phương thức thanh toán -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">💳</span>
+                        Phương thức thanh toán
+                    </h2>
+                    <div class="payment-methods">
+                        <div class="payment-option">
+                            <input type="radio" id="cash" name="paymentMethod" value="cash" required>
+                            <label for="cash">
+                                <div class="payment-card">
+                                    <div class="payment-icon">💵</div>
+                                    <div class="payment-title">Tiền mặt</div>
+                                    <div class="payment-desc">Thanh toán khi nhận hàng</div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="vnpay" name="paymentMethod" value="vnpay" required>
+                            <label for="vnpay">
+                                <div class="payment-card">
+                                    <div class="payment-icon">🏦</div>
+                                    <div class="payment-title">VNPay</div>
+                                    <div class="payment-desc">Thanh toán online qua VNPay</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ghi chú -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📝</span>
+                        Ghi chú đơn hàng (tùy chọn)
+                    </h2>
+                    <div class="form-group">
+                        <textarea id="notes" name="notes"
+                            placeholder="Ghi chú về đơn hàng của bạn, ví dụ: ghi chú đặc biệt cho việc giao hàng..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Hoàn tất đơn hàng</button>
+            </form>
+        </div>
+    </div>
+    <br>
+
+    <script>
+        // API Data for Vietnam provinces
+        let provinceData = {};
+        let isDataLoaded = false;
+    
+        // Load Vietnam address data
+        async function loadAddressData() {
+            try {
+                const response = await fetch('https://provinces.open-api.vn/api/?depth=3');
+                const data = await response.json();
+    
+                provinceData = {};
+                data.forEach(province => {
+                    provinceData[province.code] = {
+                        name: province.name,
+                        districts: {}
+                    };
+    
+                    province.districts.forEach(district => {
+                        provinceData[province.code].districts[district.code] = {
+                            name: district.name,
+                            wards: district.wards.map(ward => ({
+                                code: ward.code,
+                                name: ward.name
+                            }))
+                        };
+                    });
+                });
+    
+                populateProvinces(data);
+                isDataLoaded = true;
+            } catch (error) {
+                console.error('Error loading address data:', error);
+                // Fallback data
+                const fallbackData = [
+                    { code: 1, name: 'Hà Nội', districts: [{ code: 1, name: 'Ba Đình', wards: [{ code: 1, name: 'Phường Phúc Xá' }] }] },
+                    { code: 79, name: 'TP. Hồ Chí Minh', districts: [{ code: 760, name: 'Quận 1', wards: [{ code: 760101, name: 'Phường Bến Nghé' }] }] }
+                ];
+                populateProvinces(fallbackData);
+            }
+        }
+    
+        function populateProvinces(data) {
+            const provinceSelect = document.getElementById('province');
+            if (!provinceSelect) {
+                console.error('Element with ID "province" not found');
+                return;
+            }
+            provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
+    
+            data.forEach(province => {
+                const option = document.createElement('option');
+                option.value = province.code;
+                option.textContent = province.name;
+                provinceSelect.appendChild(option);
+            });
+        }
+    
+        function populateDistricts(provinceCode) {
+            const districtSelect = document.getElementById('district');
+            const wardSelect = document.getElementById('ward');
+            if (!districtSelect || !wardSelect) {
+                console.error('District or Ward select element not found');
+                return;
+            }
+    
+            districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+            wardSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
+            wardSelect.disabled = true;
+    
+            if (provinceCode && provinceData[provinceCode]) {
+                const districts = provinceData[provinceCode].districts;
+                Object.keys(districts).forEach(districtCode => {
+                    const option = document.createElement('option');
+                    option.value = districtCode;
+                    option.textContent = districts[districtCode].name;
+                    districtSelect.appendChild(option);
+                });
+                districtSelect.disabled = false;
+            } else {
+                districtSelect.disabled = true;
+            }
+        }
+    
+        function populateWards(provinceCode, districtCode) {
+            const wardSelect = document.getElementById('ward');
+            if (!wardSelect) {
+                console.error('Ward select element not found');
+                return;
+            }
+            wardSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
+    
+            if (provinceCode && districtCode && provinceData[provinceCode] && provinceData[provinceCode].districts[districtCode]) {
+                const wards = provinceData[provinceCode].districts[districtCode].wards;
+                wards.forEach(ward => {
+                    const option = document.createElement('option');
+                    option.value = ward.code;
+                    option.textContent = ward.name;
+                    wardSelect.appendChild(option);
+                });
+                wardSelect.disabled = false;
+            } else {
+                wardSelect.disabled = true;
+            }
+        }
+    
+        // Event listeners for address selects and other interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            const provinceSelect = document.getElementById('province');
+            const districtSelect = document.getElementById('district');
+            const checkoutForm = document.getElementById('checkoutForm');
+    
+            if (provinceSelect) {
+                provinceSelect.addEventListener('change', function () {
+                    populateDistricts(this.value);
+                });
+            } else {
+                console.error('Province select element not found');
+            }
+    
+            if (districtSelect) {
+                districtSelect.addEventListener('change', function () {
+                    const provinceCode = document.getElementById('province').value;
+                    populateWards(provinceCode, this.value);
+                });
+            } else {
+                console.error('District select element not found');
+            }
+    
+            // Payment method selection
+            document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+                radio.addEventListener('change', function () {
+                    document.querySelectorAll('.payment-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+    
+                    if (this.checked) {
+                        this.closest('.payment-option')?.querySelector('.payment-card')?.classList.add('selected');
+                    }
+                });
+            });
+    
+            // Form submission
+            if (checkoutForm) {
+                checkoutForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+    
+                    const submitBtn = document.querySelector('.submit-btn');
+                    const successMessage = document.getElementById('successMessage');
+    
+                    // Validate required fields
+                    const requiredFields = this.querySelectorAll('[required]');
+                    let isValid = true;
+    
+                    requiredFields.forEach(field => {
+                        if (!field.value.trim()) {
+                            field.style.borderColor = '#e74c3c';
+                            isValid = false;
+                        } else {
+                            field.style.borderColor = '#ecf0f1';
+                        }
+                    });
+    
+                    if (!isValid) {
+                        alert('Vui lòng điền đầy đủ các trường bắt buộc!');
+                        return;
+                    }
+    
+                    // Show loading state
+                    if (submitBtn) {
+                        submitBtn.textContent = 'Đang xử lý...';
+                        submitBtn.classList.add('loading');
+                        submitBtn.disabled = true;
+                    }
+    
+                    // Simulate API call
+                    setTimeout(() => {
+                        // Reset button
+                        if (submitBtn) {
+                            submitBtn.textContent = 'Hoàn tất đơn hàng';
+                            submitBtn.classList.remove('loading');
+                            submitBtn.disabled = false;
+                        }
+    
+                        // Show success message
+                        if (successMessage) {
+                            successMessage.style.display = 'block';
+                        }
+    
+                        // Get form data
+                        const formData = new FormData(this);
+                        const orderData = {};
+                        for (let [key, value] of formData.entries()) {
+                            orderData[key] = value;
+                        }
+    
+                        console.log('Order data:', orderData);
+    
+                        // Scroll to top
+                        const container = document.querySelector('.container');
+                        if (container) {
+                            container.scrollIntoView({ behavior: 'smooth' });
+                        }
+    
+                        // Hide success message after 5 seconds
+                        if (successMessage) {
+                            setTimeout(() => {
+                                successMessage.style.display = 'none';
+                            }, 5000);
+                        }
+                    }, 2000);
+                });
+            } else {
+                console.error('Checkout form element not found');
+            }
+    
+            // Add some interactive effects
+            document.querySelectorAll('input, select, textarea').forEach(element => {
+                element.addEventListener('focus', function () {
+                    this.parentElement.style.transform = 'scale(1.02)';
+                });
+    
+                element.addEventListener('blur', function () {
+                    this.parentElement.style.transform = 'scale(1)';
+                });
+            });
+    
+            // Load address data when page loads
+            loadAddressData();
+        });
+    </script>

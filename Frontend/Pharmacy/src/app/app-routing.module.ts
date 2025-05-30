@@ -17,6 +17,7 @@ import { VerifyComponent } from './components/verify/verify.component';
 import { ProductCategoryParentComponent } from './components/productCategoryParent/productCategoryParent.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { CartComponent } from './components/cart/cart.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'productCategory/:id',
     component: ProductCategoryComponent,
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent,
   },
   {
     path: 'productCategoryParent/:id',
