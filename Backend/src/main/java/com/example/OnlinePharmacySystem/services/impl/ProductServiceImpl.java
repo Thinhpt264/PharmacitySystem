@@ -1,13 +1,12 @@
-package com.example.OnlinePharmacySystem.services;
+package com.example.OnlinePharmacySystem.services.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.example.OnlinePharmacySystem.entities.Account;
 import com.example.OnlinePharmacySystem.repositories.ViewStatRepository;
+import com.example.OnlinePharmacySystem.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 
 import { BaseUrlService } from './service/baseUrl.service';
 import { CategoryService } from './service/category.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { ProductService } from './service/product.service';
 
@@ -45,6 +45,8 @@ import { CustomCurrencyPipe } from './custom-currency.pipe';
 import { DialogModule } from 'primeng/dialog';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AuthInterceptor } from './service/auth.interceptor';
+import { ThankYouComponent } from './components/thank-you/thank-you.component';
 
 
 
@@ -67,6 +69,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CartComponent,
     CustomCurrencyPipe,
     CheckoutComponent,
+    ThankYouComponent
   ],
   imports: [
     BrowserModule,
@@ -96,6 +99,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     ValidationService,
     BrandService,
     CartService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    }
     // { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent],

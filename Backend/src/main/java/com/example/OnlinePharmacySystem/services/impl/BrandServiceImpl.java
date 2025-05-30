@@ -1,8 +1,8 @@
-package com.example.OnlinePharmacySystem.services;
+package com.example.OnlinePharmacySystem.services.impl;
 
 import com.example.OnlinePharmacySystem.DTO.BrandDTO;
-import com.example.OnlinePharmacySystem.entities.Brand;
 import com.example.OnlinePharmacySystem.repositories.BrandRepository;
+import com.example.OnlinePharmacySystem.services.BrandService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -66,4 +66,14 @@ export class CartService {
   saveCart(cart: any) {
     sessionStorage.setItem('cart', JSON.stringify(cart));
   }
+
+  private selectedItems: any[] = [];
+
+  saveSelectedItems(items: any[]) {
+    this.selectedItems = items;
+  }
+
+  getSelectedItems(): any[] {
+    return this.selectedItems;
+  }
 }

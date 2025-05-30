@@ -1,8 +1,7 @@
 package com.example.OnlinePharmacySystem.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import io.micrometer.common.lang.Nullable;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,21 +22,25 @@ import java.io.Serializable;
 public class Payment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name="delivery_info_id")
-	private int deliveryInfoId;
-
 	private int method;
-
-	@Column(name="order_id")
-	private int orderId;
 
 	private int status;
 
 	@Column(name="total_price")
 	private double totalPrice;
+
+//	@ManyToOne
+//	@JoinColumn(name="delivery_info_id")
+//	private DeliveryInfo deliveryInfo;
+
+	@ManyToOne
+	private Order order;
+
 
 
 

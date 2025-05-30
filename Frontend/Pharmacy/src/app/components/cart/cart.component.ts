@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CartService } from 'src/app/service/cart.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -23,7 +24,8 @@ export class CartComponent implements OnInit {
     private cartService: CartService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -123,4 +125,27 @@ export class CartComponent implements OnInit {
     this.updateEstimateCost();
     this.cdr.detectChanges();
   }
+  getCheckedItems(): any[] {
+  return this.cart.filter(item => item.isChecked);
+  }
+  proceedToCheckout() {
+  const selectedItems = this.getCheckedItems();
+
+  if (selectedItems.length === 0) {
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Không có sản phẩm',
+      detail: 'Vui lòng chọn ít nhất một sản phẩm để thanh toán',
+    });
+    return
+  }
+  this.cartService.saveSelectedItems(selectedItems);
+    
+  console.log('Sản phẩm đã chọn để thanh toán:', this.cartService.getSelectedItems());
+  
+  this.router.navigate(['/checkout']);
+
+  // Gửi selectedItems lên backend hoặc chuyển sang trang thanh toán
+  // this.router.navigate(['/checkout'], { state: { items: selectedItems } });
+}
 }

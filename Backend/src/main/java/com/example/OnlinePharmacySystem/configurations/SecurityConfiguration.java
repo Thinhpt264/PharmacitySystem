@@ -2,6 +2,7 @@ package com.example.OnlinePharmacySystem.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -41,9 +42,11 @@ public class SecurityConfiguration {
 								"/api/v1/categories/**",
 								"/api/v1/image/**",
 								"/images/**",
+								"api/payment/vnPay-callback",
 								"assets/images/**"
 						).permitAll()
-		                .anyRequest().authenticated() // Mở tất cả API
+						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+		                .anyRequest().authenticated() // đóng tất cả API
 		            )
 				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
@@ -53,10 +56,10 @@ public class SecurityConfiguration {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.addAllowedOriginPattern("http://localhost:4200"); // Cho mọi localhost port
+		config.setAllowedOrigins(List.of("http://localhost:4200")); // ⚠ KHÔNG dùng addAllowedOriginPattern
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("*"));
-		config.setAllowCredentials(true);
+		config.setAllowCredentials(true); // Cho phép gửi kèm cookie, Authorization
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);

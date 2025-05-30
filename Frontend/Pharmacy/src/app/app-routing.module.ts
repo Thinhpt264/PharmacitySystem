@@ -18,6 +18,7 @@ import { ProductCategoryParentComponent } from './components/productCategoryPare
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
+import { ThankYouComponent } from './components/thank-you/thank-you.component';
 
 
 const routes: Routes = [
@@ -86,6 +87,10 @@ const routes: Routes = [
   {
     path: 'register-success',
     component: RegisterSuccessComponent,
+  },
+  {
+    path: 'thank-you',
+    component: ThankYouComponent,
   },
   // {
   //   path: '**',

@@ -1,0 +1,47 @@
+.thank-you-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f6f8;
+}
+
+.thank-you-box {
+  background: #ffffff;
+  padding: 40px 50px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.thank-you-box .icon {
+  font-size: 48px;
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+.thank-you-box h2 {
+  font-size: 26px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.thank-you-box p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.btn-back {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+  background-color: #218838;
+}
