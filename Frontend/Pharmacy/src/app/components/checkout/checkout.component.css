@@ -216,10 +216,6 @@ textarea {
     opacity: 0.8;
 }
 
-input[type="radio"] {
-    display: none;
-}
-
 .submit-btn {
     width: 100%;
     background: linear-gradient(135deg, #27ae60, #2ecc71);

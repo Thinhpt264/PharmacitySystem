@@ -1,5 +1,6 @@
-package com.example.OnlinePharmacySystem.services;
+package com.example.OnlinePharmacySystem.services.impl;
 
+import com.example.OnlinePharmacySystem.services.MailService;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;

@@ -169,4 +169,7 @@ export class AppComponent implements OnInit {
   goToLocations() {
     window.location.href = '/about';
   }
+  goToThank() {
+    window.location.href = '/thank-you';
+  }
 }

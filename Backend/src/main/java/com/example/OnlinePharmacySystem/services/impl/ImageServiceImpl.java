@@ -1,7 +1,8 @@
-package com.example.OnlinePharmacySystem.services;
+package com.example.OnlinePharmacySystem.services.impl;
 
 import com.example.OnlinePharmacySystem.entities.Image;
 import com.example.OnlinePharmacySystem.repositories.ImageRepository;
+import com.example.OnlinePharmacySystem.services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

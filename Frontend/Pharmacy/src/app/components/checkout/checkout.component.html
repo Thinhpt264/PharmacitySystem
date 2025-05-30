@@ -18,25 +18,25 @@
                         Thông tin cá nhân
                     </h2>
                     <div class="form-grid">
-                        <div class="form-group">
-                            <label for="firstName">Họ <span class="required">*</span></label>
-                            <input type="text" id="firstName" name="firstName" required>
-                        </div>
+                      
                         <div class="form-group">
                             <label for="lastName">Tên <span class="required">*</span></label>
-                            <input type="text" id="lastName" name="lastName" required>
+                            <input [(ngModel)]="formValues.fullName" name="fullName" required>
+
                         </div>
                         <div class="form-group">
                             <label for="email">Email <span class="required">*</span></label>
-                            <input type="email" id="email" name="email" required>
+                            <input [(ngModel)]="formValues.email" name="email" required>
+
                         </div>
                         <div class="form-group">
                             <label for="phone">Số điện thoại <span class="required">*</span></label>
-                            <input type="tel" id="phone" name="phone" required>
+                            <input [(ngModel)]="formValues.phone" name="phone" required>
+
                         </div>
                         <div class="form-group">
                             <label for="company">Tên công ty (tùy chọn)</label>
-                            <input type="text" id="company" name="company">
+                            <input type="text" id="company"  name="company">
                         </div>
                     </div>
                 </div>
@@ -47,6 +47,7 @@
                         <span class="section-icon">📍</span>
                         Địa chỉ giao hàng
                     </h2>
+                    <!-- 
                     <div class="address-grid">
                         <div class="form-group">
                             <label for="province">Tỉnh/Thành phố <span class="required">*</span></label>
@@ -66,10 +67,10 @@
                                 <option value="">Chọn phường/xã</option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group full-width">
                         <label for="address">Địa chỉ cụ thể <span class="required">*</span></label>
-                        <input type="text" id="address" name="address" placeholder="Số nhà, tên đường..." required>
+                        <input [(ngModel)]="formValues.addressDetail" name="addressDetail" required>
                     </div>
                 </div>
                 
@@ -82,7 +83,7 @@
                     </h2>
                     <div class="payment-methods">
                         <div class="payment-option">
-                            <input type="radio" id="cash" name="paymentMethod" value="cash" required>
+                            <input type="radio" [(ngModel)]="formValues.paymentMethod" name="paymentMethod" value="cash" required="true">
                             <label for="cash">
                                 <div class="payment-card">
                                     <div class="payment-icon">💵</div>
@@ -92,7 +93,7 @@
                             </label>
                         </div>
                         <div class="payment-option">
-                            <input type="radio" id="vnpay" name="paymentMethod" value="vnpay" required>
+                            <input type="radio" [(ngModel)]="formValues.paymentMethod" name="paymentMethod" value="vnpay" required="true">
                             <label for="vnpay">
                                 <div class="payment-card">
                                     <div class="payment-icon">🏦</div>
@@ -111,12 +112,12 @@
                         Ghi chú đơn hàng (tùy chọn)
                     </h2>
                     <div class="form-group">
-                        <textarea id="notes" name="notes"
+                        <textarea id="notes" [(ngModel)]="formValues.note" name="note"
                             placeholder="Ghi chú về đơn hàng của bạn, ví dụ: ghi chú đặc biệt cho việc giao hàng..."></textarea>
                     </div>
                 </div>
 
-                <button type="submit" class="submit-btn">Hoàn tất đơn hàng</button>
+                <button type="submit"(click)="onSubmit(formValues)" class="submit-btn">Hoàn tất đơn hàng</button>
             </form>
         </div>
     </div>

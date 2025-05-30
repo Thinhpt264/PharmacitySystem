@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  AddressService,
-  Province,
-  District,
-  Ward,
-} from '../../service/address.service';
+import { CartService } from 'src/app/service/cart.service';
+import { CheckoutService } from 'src/app/service/checkout.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -13,156 +9,64 @@ import {
   styleUrls: ['./checkout.component.css'],
 })
 export class CheckoutComponent implements OnInit {
-  checkoutForm: FormGroup;
-  provinces: Province[] = [];
-  districts: District[] = [];
-  wards: Ward[] = [];
-  isLoading = false;
-  showSuccessMessage = false;
+  selectedItems: any[] = [];
+  totalPrice: number = 0;
+  account : any;
+  formValues : any = {};
 
-  constructor(private fb: FormBuilder, private addressService: AddressService) {
-    this.checkoutForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
-      company: [''],
-      province: ['', Validators.required],
-      district: ['', Validators.required],
-      ward: ['', Validators.required],
-      address: ['', Validators.required],
-      paymentMethod: ['', Validators.required],
-      notes: [''],
-    });
-  }
+  constructor(
+    private cartService: CartService,
+    private checkoutService: CheckoutService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.loadProvinces();
-    this.setupFormListeners();
-  }
-
-  loadProvinces(): void {
-    this.addressService.getProvinces().subscribe({
-      next: (data) => {
-        this.provinces = data;
-        console.log('Provinces loaded successfully');
-      },
-      error: (error) => {
-        console.error('Error loading provinces:', error);
-        // Fallback data
-        this.provinces = [
-          {
-            code: '1',
-            name: 'Hà Nội',
-            districts: [
-              {
-                code: '1',
-                name: 'Ba Đình',
-                wards: [{ code: '1', name: 'Phường Phúc Xá' }],
-              },
-            ],
-          },
-          {
-            code: '79',
-            name: 'TP. Hồ Chí Minh',
-            districts: [
-              {
-                code: '760',
-                name: 'Quận 1',
-                wards: [{ code: '760101', name: 'Phường Bến Nghé' }],
-              },
-            ],
-          },
-        ];
-      },
-    });
-  }
-
-  setupFormListeners(): void {
-    // Listen to province changes
-    this.checkoutForm
-      .get('province')
-      ?.valueChanges.subscribe((provinceCode) => {
-        if (provinceCode) {
-          this.onProvinceChange(provinceCode);
-        } else {
-          this.districts = [];
-          this.wards = [];
-        }
-      });
-
-    // Listen to district changes
-    this.checkoutForm
-      .get('district')
-      ?.valueChanges.subscribe((districtCode) => {
-        const provinceCode = this.checkoutForm.get('province')?.value;
-        if (provinceCode && districtCode) {
-          this.onDistrictChange(provinceCode, districtCode);
-        } else {
-          this.wards = [];
-        }
-      });
-  }
-
-  onProvinceChange(provinceCode: string): void {
-    const selectedProvince = this.provinces.find(
-      (p) => p.code === provinceCode
+    this.selectedItems = this.cartService.getSelectedItems();
+    console.log('✅ Selected items:', this.selectedItems);
+    this.totalPrice = this.selectedItems.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
     );
-    if (selectedProvince) {
-      this.districts = selectedProvince.districts;
-      this.wards = [];
-      // Reset district and ward values
-      this.checkoutForm.patchValue({
-        district: '',
-        ward: '',
-      });
-    }
+   const accountData = sessionStorage.getItem('account');
+  if (accountData) {
+    this.account = JSON.parse(accountData);
+    console.log('🧑 Account loaded from session:', this.account);
+  } else {
+    console.warn('⚠️ Không tìm thấy thông tin tài khoản trong sessionStorage');
+  }
   }
 
-  onDistrictChange(provinceCode: string, districtCode: string): void {
-    const selectedProvince = this.provinces.find(
-      (p) => p.code === provinceCode
-    );
-    if (selectedProvince) {
-      const selectedDistrict = selectedProvince.districts.find(
-        (d) => d.code === districtCode
-      );
-      if (selectedDistrict) {
-        this.wards = selectedDistrict.wards;
-        // Reset ward value
-        this.checkoutForm.patchValue({
-          ward: '',
-        });
+async onSubmit(formValues: any) {
+  try {
+    const orderDTO = {
+      accountId: this.account?.id || 0,
+      note: formValues.note || '',
+      orderDate: new Date(),
+      status: 0,
+      totalPrice: this.totalPrice,
+      orderDetails: this.selectedItems.map(item => ({
+        productId: item.id,
+        quantity: item.quantity,
+        unitPrice: item.price
+      }))
+    };
+
+    const result = await this.checkoutService.createOrder(orderDTO);
+    console.log('📦 Kết quả trả về từ API:', result);
+
+    if (result.status) {
+      if (formValues.paymentMethod === 'vnpay') {
+        const payUrl = await this.checkoutService.payWithVNPay(result.data.id);
+        window.location.href = payUrl;
+      } else {
+        this.router.navigate(['/thank-you']);
       }
-    }
-  }
-
-  onSubmit(): void {
-    if (this.checkoutForm.valid) {
-      this.isLoading = true;
-
-      // Simulate API call
-      setTimeout(() => {
-        this.isLoading = false;
-        this.showSuccessMessage = true;
-
-        console.log('Order data:', this.checkoutForm.value);
-
-        // Hide success message after 5 seconds
-        setTimeout(() => {
-          this.showSuccessMessage = false;
-        }, 5000);
-      }, 2000);
     } else {
-      // Mark all fields as touched to show validation errors
-      Object.keys(this.checkoutForm.controls).forEach((key) => {
-        this.checkoutForm.get(key)?.markAsTouched();
-      });
+      alert('❌ Lỗi khi lưu đơn hàng');
     }
+  } catch (error) {
+    console.error('❌ Lỗi khi xử lý đơn hàng:', error);
+    alert('Đã xảy ra lỗi khi gửi đơn hàng!');
   }
-
-  isFieldInvalid(fieldName: string): boolean {
-    const field = this.checkoutForm.get(fieldName);
-    return !!(field && field.invalid && field.touched);
-  }
+}
 }
