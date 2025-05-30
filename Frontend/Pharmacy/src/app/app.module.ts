@@ -43,6 +43,8 @@ import { CartComponent } from './components/cart/cart.component';
 import { CartService } from './service/cart.service';
 import { CustomCurrencyPipe } from './custom-currency.pipe';
 import { DialogModule } from 'primeng/dialog';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -64,6 +66,7 @@ import { DialogModule } from 'primeng/dialog';
     ProductDetailComponent,
     CartComponent,
     CustomCurrencyPipe,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +82,7 @@ import { DialogModule } from 'primeng/dialog';
     ToastModule,
     ConfirmDialogModule,
     DialogModule,
+    ReactiveFormsModule,
   ],
   providers: [
     BaseUrlService,
