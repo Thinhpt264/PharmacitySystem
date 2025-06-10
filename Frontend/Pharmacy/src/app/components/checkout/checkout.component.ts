@@ -27,7 +27,7 @@ export class CheckoutComponent implements OnInit {
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-   const accountData = sessionStorage.getItem('account');
+  const accountData = sessionStorage.getItem('account');
   if (accountData) {
     this.account = JSON.parse(accountData);
     console.log('🧑 Account loaded from session:', this.account);
