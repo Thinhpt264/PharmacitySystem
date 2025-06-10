@@ -14,14 +14,18 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('token'); // hoặc sessionStorage tùy bạn
+// Bỏ qua nếu không có token hợp lệ (3 phần, ngăn cách bởi 2 dấu ".")
+    const isValidJWT = token && token.trim() !== '' && token.split('.').length === 3;
 
-    if (token) {
+    // Chỉ gắn Authorization nếu là JWT hợp lệ
+    if (isValidJWT) {
       const cloned = req.clone({
         headers: req.headers.set('Authorization', 'Bearer ' + token),
       });
       return next.handle(cloned);
     }
 
+    // Ngược lại, gửi request gốc
     return next.handle(req);
   }
 }

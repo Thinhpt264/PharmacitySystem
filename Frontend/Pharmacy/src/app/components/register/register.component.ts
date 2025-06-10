@@ -94,9 +94,10 @@ export class RegisterComponent implements OnInit {
     this.accountService
       .register(this.account)
       .then((response) => {
-        if (response.status === true) {
+        if (response.message === true) {
           console.log('Đăng kí tài khoản thành công:', response.account);
           window.location.href = '/register-success';
+          localStorage.setItem('token', response.token);
           sessionStorage.setItem('account', JSON.stringify(response.account));
         } else {
           console.error('Đăng kí thất bại:', response);
