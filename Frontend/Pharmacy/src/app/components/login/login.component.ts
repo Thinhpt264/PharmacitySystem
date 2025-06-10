@@ -37,14 +37,14 @@ export class LoginComponent implements OnInit {
           });
 
           localStorage.setItem('token', response.token);
-          sessionStorage.setItem('account', JSON.stringify(response.account));
+          // sessionStorage.setItem('account', JSON.stringify(response.account));
           // this.account = response.account
           setTimeout(() => {
             window.location.href = '/home';
           }, 1500);
         } else if (response.message === false) {
           this.messageService.add({
-            severity: 'eror',
+            severity: 'error',
             summary: 'Thất bại',
             detail: 'Sai tài khoản hoặc mật khẩu!',
           });

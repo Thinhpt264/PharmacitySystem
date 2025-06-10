@@ -43,16 +43,25 @@ export class AppComponent implements OnInit {
   }
 
   loadSession() {
-    const acc = sessionStorage.getItem('account');
-    this.account = acc ? JSON.parse(acc) : {};
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      try {
+        this.account = JSON.parse(atob(token.split('.')[1]));
+        this.account.username = this.account.sub
+        console.log(this.account)
+      } catch {
+        this.account = {};
+      }
+    }
   }
 
   logout() {
     const confirmed = confirm('Bạn có chắc chắn muốn đăng xuất không?');
     if (confirmed) {
-      sessionStorage.removeItem('account');
+      localStorage.removeItem('token');
       this.account = {};
-      window.location.href = '/login'; // hoặc this.router.navigate(['/login']);
+      this.router.navigate(['/login']);
     }
   }
 
