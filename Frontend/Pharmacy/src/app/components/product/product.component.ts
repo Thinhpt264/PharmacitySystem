@@ -211,15 +211,15 @@ export class ProductComponent implements OnInit {
       console.log('Giỏ hàng sau khi thêm sản phẩm:', this.cart);
       this.messageService.add({
         severity: 'success',
-        summary: 'Added to cart',
-        detail: 'Added to your cart successfully',
+        summary: 'Đã thêm vào giỏ hàng',
+        detail: 'Sản phẩm đã được thêm vào giỏ hàng thành công!',
       });
     } catch (error) {
       this.messageService.add({
         severity: 'error',
-        summary: 'Failed to add to cart',
+        summary: 'Lỗi khi thêm vào giỏ hàng',
         detail:
-          'An error occurred while adding the product to your cart. Please try again.',
+          'Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại sau.',
       });
       console.error('Error adding to cart:', error);
     }
