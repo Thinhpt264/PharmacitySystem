@@ -7,10 +7,18 @@ import { Component, OnInit } from '@angular/core';
 
 })
 export class ThankYouComponent implements OnInit {
+  ngOnInit(): void {}
+
+  gotoHome() {
+
+
+})
+export class ThankYouComponent implements OnInit {
     ngOnInit(): void {
      
     }
     gotoHome() {
+
     window.location.href = 'home';
   }
 }

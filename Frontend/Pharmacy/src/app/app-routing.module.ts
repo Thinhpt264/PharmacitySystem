@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-
-
 import { ProductComponent } from './components/product/product.component';
 import { ProductCategoryComponent } from './components/productCategory/productCategory.component';
 import { AboutUsComponent } from './components/aboutUs/aboutUs.component';
