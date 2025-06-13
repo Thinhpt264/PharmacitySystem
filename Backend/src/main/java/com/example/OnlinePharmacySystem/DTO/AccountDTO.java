@@ -29,7 +29,7 @@ public class AccountDTO {
 	private boolean status;
 
 	private LocalDate dob;
-
+	private int role;
 	private LocalDateTime created_at;
 	private LocalDateTime deleted_at;
 	private LocalDateTime updated_at;

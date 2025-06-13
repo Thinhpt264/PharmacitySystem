@@ -85,7 +85,6 @@ public class CategoryController {
 			e.printStackTrace();
 			return  new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
 		}
-
 	}
 	
 }

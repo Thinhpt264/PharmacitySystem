@@ -47,5 +47,4 @@ public class DeliveryInfo implements Serializable {
 	private String ward;
 
 
-
 }

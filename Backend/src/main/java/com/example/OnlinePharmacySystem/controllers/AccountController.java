@@ -170,4 +170,47 @@ public class AccountController {
 		}
 		return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 	}
+
+	@PutMapping(value = "/{id}", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> updateAccount(@PathVariable int id, @RequestBody @Valid AccountDTO accountDTO, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return buildValidationErrors(bindingResult);
+		}
+
+		try {
+			accountDTO.setId(id);
+			boolean updated = accountService.update(accountDTO);
+
+			if (updated) {
+				AccountDTO updatedAccount = accountService.findByUsername(accountDTO.getUsername());
+				return ResponseEntity.ok(updatedAccount);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body("Không tìm thấy tài khoản để cập nhật.");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Lỗi hệ thống khi cập nhật tài khoản.");
+		}
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Object> deleteAccount(@PathVariable int id) {
+		try {
+			boolean deleted = accountService.delete(id);
+
+			if (deleted) {
+				return ResponseEntity.ok("Xóa tài khoản thành công.");
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body("Không tìm thấy tài khoản để xóa.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Lỗi hệ thống khi xóa tài khoản.");
+		}
+	}
 }

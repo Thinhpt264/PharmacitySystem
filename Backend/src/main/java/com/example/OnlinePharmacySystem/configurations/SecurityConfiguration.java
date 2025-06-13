@@ -41,9 +41,13 @@ public class SecurityConfiguration {
 								"/api/v1/brands/**",
 								"/api/v1/categories/**",
 								"/api/v1/image/**",
+								"/api/v1/warehouses/**",
 								"/images/**",
-								"api/payment/vnPay-callback",
-								"assets/images/**"
+								"/api/payment/vnPay-callback",
+								"/assets/images/**",
+								"/swagger-ui/**",
+								"/v3/api-docs/**",
+								"/swagger-ui.html"
 						).permitAll()
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		                .anyRequest().authenticated() // đóng tất cả API
