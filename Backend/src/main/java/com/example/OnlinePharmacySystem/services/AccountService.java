@@ -6,17 +6,21 @@
 	import com.example.OnlinePharmacySystem.entities.Account;
 
 	public interface AccountService {
-		public List<Account> findAll();
+		 List<Account> findAll();
 
-		public AccountDTO login(String username,String password);
+		 AccountDTO login(String username,String password);
 
 		public boolean save(AccountDTO accountDTO);
 
 		public AccountDTO findByUsername (String username);
 
-		public boolean verify(String email, String securityCode);
+		 boolean verify(String email, String securityCode);
 
 		public AccountDTO findByEmail(String email);
 
 		public boolean reSendCode(String email);
+
+		boolean update (AccountDTO accountDTO);
+
+		boolean delete(int id);
 	}

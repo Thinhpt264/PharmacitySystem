@@ -130,4 +130,50 @@ public class ProductController {
 					.body(new ApiResponse<>(false, "An error occurred while retrieving the products"));
 		}
 	}
+
+	@PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse<ProductDTO>> update(
+			@PathVariable int id,
+			@RequestParam("product") String productJson,
+			@RequestParam(value = "file", required = false) MultipartFile file) {
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			ProductDTO product = objectMapper.readValue(productJson, ProductDTO.class);
+			product.setId(id);
+			if (file != null && !file.isEmpty()) {
+				String uploadDir = "uploads/images/product/";
+				Files.createDirectories(Paths.get(uploadDir));
+
+				String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+				Path imagePath = Paths.get(uploadDir, fileName);
+				Files.copy(file.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+
+				product.setImage(fileName);
+				imageService.saveImage(new Image("Product", id, "images/product/", fileName));
+			}
+			ProductDTO updatedProduct = productService.update(product);
+			return ResponseEntity.ok(new ApiResponse<>(true, "Cập nhật thành công", updatedProduct));
+		}catch (Exception e){
+			log.error("❌ Lỗi cập nhật: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse<>(false, "Lỗi khi cập nhật sản phẩm", null));
+		}
+	}
+
+	@DeleteMapping(value = "/{id}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse<Void>> delete(@PathVariable int id) {
+		try {
+			boolean deleted = productService.delete(id);
+			if (deleted) {
+				return ResponseEntity.ok(new ApiResponse<>(true, "Xóa sản phẩm thành công"));
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body(new ApiResponse<>(false, "Không tìm thấy sản phẩm để xóa"));
+			}
+		} catch (Exception e) {
+			log.error("❌ Lỗi xóa: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse<>(false, "Lỗi khi xóa sản phẩm"));
+		}
+	}
 }

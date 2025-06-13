@@ -199,5 +199,27 @@ public class AccountServiceImpl implements AccountService {
 		}
 	}
 
+	@Override
+	public boolean update(AccountDTO accountDTO) {
+		Optional<Account> optional = accountRepository.findById(accountDTO.getId());
+		if (optional.isEmpty()) return false;
+
+		Account account = optional.get();
+		account.setDob(accountDTO.getDob());
+		account.setEmail(accountDTO.getEmail());
+		account.setUpdated_at(LocalDateTime.now());
+		account.setRole(accountDTO.getRole());
+		accountRepository.save(account);
+		return true;
+	}
+
+	@Override
+	public boolean delete(int id) {
+		Optional<Account> optional = accountRepository.findById(id);
+		if (optional.isEmpty()) return false;
+		accountRepository.deleteById(id);
+		return true;
+	}
+
 
 }

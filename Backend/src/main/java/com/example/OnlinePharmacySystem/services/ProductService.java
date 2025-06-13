@@ -15,4 +15,7 @@ public interface ProductService {
 
 	List<ProductDTO> findTopProductByView();
 
+	ProductDTO update(ProductDTO product);
+
+	boolean delete(int id);
 }

@@ -1,12 +1,14 @@
 package com.example.OnlinePharmacySystem.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.example.OnlinePharmacySystem.repositories.ViewStatRepository;
 import com.example.OnlinePharmacySystem.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -61,6 +63,39 @@ public class ProductServiceImpl implements ProductService {
 		return products.stream()
 				.map(product -> mapper.map(product, ProductDTO.class))
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	@CachePut(value = "PRODUCT_CACHE", key = "#result.id")
+	public ProductDTO update(ProductDTO productDTO) {
+		Optional<Product> optionalProduct = productRepository.findById(productDTO.getId());
+		if (optionalProduct.isEmpty()) {
+			throw new RuntimeException("Không tìm thấy sản phẩm để cập nhật");
+		}
+
+		Product existingProduct = optionalProduct.get();
+
+		// Cập nhật thông tin
+		existingProduct.setName(productDTO.getName());
+		existingProduct.setDescription(productDTO.getDescription());
+		existingProduct.setPrice(productDTO.getPrice());
+		if (productDTO.getImage() != null && !productDTO.getImage().isBlank()) {
+			existingProduct.setImage(productDTO.getImage());
+		}
+
+		Product updatedProduct = productRepository.save(existingProduct);
+		return mapper.map(updatedProduct, ProductDTO.class);
+	}
+
+	@Override
+	@CacheEvict(value = "PRODUCT_CACHE", key = "#id")
+	public boolean delete(int id) {
+		Optional<Product> productOpt = productRepository.findById(id);
+		if (productOpt.isEmpty()) {
+			return false;
+		}
+		productRepository.deleteById(id);
+		return true;
 	}
 
 }
