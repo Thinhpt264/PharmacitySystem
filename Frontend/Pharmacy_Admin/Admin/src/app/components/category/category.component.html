@@ -4,10 +4,10 @@
             <div class="page-title-box">
                 <div class="page-title-right">
                     <button type="button" class="btn btn-primary">
-                        <i class="mdi mdi-plus mr-1"></i>Thêm sản phẩm
+                        <i class="mdi mdi-plus mr-1"></i>Thêm danh mục
                     </button>
                 </div>
-                <h4 class="page-title">Quản lý sản phẩm</h4>
+                <h4 class="page-title">Quản lý danh mục sản phẩm</h4>
             </div>
         </div>
     </div>
@@ -16,9 +16,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title">Danh sách sản phẩm</h4>
+                    <h4 class="header-title">Danh mục sản phẩm</h4>
                     <p class="text-muted font-13 mb-4">
-                        Quản lý tất cả sản phẩm trong hệ thống
+                        Quản lý tất cả danh mục sản phẩm trong hệ thống
                     </p>
 
                     <table id="basic-datatable" class="table dt-responsive nowrap w-100">
@@ -26,30 +26,25 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Hình ảnh</th>
-                                <th>Tên sản phẩm</th>
                                 <th>Danh mục</th>
-                                <th>Giá</th>
-
-                                <th>Tồn kho</th>
+                                <th>Thuộc danh mục</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let product of products">
-                                <td>{{ product.id }}</td>
+                            <tr *ngFor="let category of categories">
+                                <td>{{ category.id }}</td>
                                 <td style="padding: 10px;">
-                                    <img [src]="link + product.image" alt="{{ product.name }}" class="img-thumbnail"
+                                    <img [src]="link + category.image.path +category.image.imageName" alt="{{ category.categoryName }}" class="img-thumbnail"
                                         style="width: 80px; height: 80px; object-fit: cover;  display: block;">
                                 </td>
-                                <td>{{ product.name.length > 60 ? (product.name | slice:0:60) + '...' : product.name }}
-                                </td>
-                                <td>{{ product.categoryName }}</td>
-                                <td>{{ product.price | currency:'VND':'symbol':'1.0-0' }}</td>
-                                <td>{{ product.quantity }}</td>
+                               
+                                <td>{{ category.categoryName }}</td>
+                                <td>{{ category.categoryParentId !== null ? category.categoryName : '' }}</td>
                                 <td>
                                     <span class="badge">
-                                        {{ product.status }}
+                                        {{ category.status === 1 ? 'Có sẵn' : 'Ẩn' }}
                                     </span>
                                 </td>
                                 <td>

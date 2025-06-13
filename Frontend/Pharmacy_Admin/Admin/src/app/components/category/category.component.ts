@@ -1,35 +1,52 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { BaseUrlService } from 'src/app/service/baseUrl.service';
+import { CategoryService } from 'src/app/service/category.service';
 import { ProductService } from 'src/app/service/product.service';
 
 declare var $: any;
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css'],
+  selector: 'app-category',
+  templateUrl: './category.component.html',
+  styleUrls: ['./category.component.css'],
 })
-export class ProductComponent implements OnInit, AfterViewInit {
-    constructor(
-        private productService: ProductService,
-        private baseUrl : BaseUrlService
-    ) {}
-    products: any = {};
-    link : any = this.baseUrl.getProductUrl();
+export class CategoryComponent implements OnInit, AfterViewInit {
+  constructor(
+    private productService: ProductService,
+    private baseUrl: BaseUrlService,
+    private categoryService: CategoryService
+  ) {}
+  categories: any = {};
+  link: any = this.baseUrl.getBaseUrl();
 
   ngOnInit(): void {
-      console.log('Product component initialized');
-        this.findAll();
-    }
-    
-    
-    findAll() {
-        this.productService.findAll().then(
-            (res) => {
-                this.products = res;
-                console.log(res);
-            });
-    }
+    console.log('Product component initialized');
+    this.findAll();
+    this.findByCategoryId(1);
+  }
+
+  findAll() {
+    this.categoryService.findAllCategory().then((res) => {
+      this.categories = res.categories;
+      console.log(res);
+      this.categories.forEach((category: any) => {
+        this.categoryService
+          .findImageOfObjId(category.id, 'Category')
+          .then((res) => {
+            category.image = res.image;
+            // console.log(category.image);
+            console.log(category.id);
+          });
+        
+      });
+
+    });
+  }
+  findByCategoryId(id: number) { 
+    this.categoryService.findCategoryByCategoryParent(id).then((res) => { 
+      console.log(res);
+    });
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -90,9 +107,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     // Logic sửa sản phẩm
   }
 
-  deleteProduct(id: number): void {
-   
-  }
+  deleteProduct(id: number): void {}
 
   addProduct(): void {
     console.log('Add new product');

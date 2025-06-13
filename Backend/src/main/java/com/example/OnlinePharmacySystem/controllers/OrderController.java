@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/orders")
 @RequiredArgsConstructor
@@ -36,6 +38,27 @@ public class OrderController {
                     .body(new ApiResponse<>(false, "Lỗi khi tạo đơn hàng: " + e.getMessage()));
         }
     }
+    @GetMapping("/accept/{orderId}")
+    public ResponseEntity<ApiResponse<OrderDTO>> acceptOrder(@PathVariable("orderId") int orderId) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            OrderDTO orderDTO = orderService.getOrderById(orderId);
+            if (orderDTO.getStatus() == 0 ) {
+                orderDTO.setStatus(1);
+            }
+
+            OrderDTO savedOrder = orderService.save(orderDTO);
+            return ResponseEntity.ok(
+                    new ApiResponse<>(true, " Đơn hàng được duyệt thành công", savedOrder)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Lỗi khi duyệt đơn hàng: " + e.getMessage()));
+        }
+    }
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<OrderDTO>> getOrderById(@PathVariable int id) {
         try {
@@ -50,6 +73,21 @@ public class OrderController {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse<>(false, "Không tìm thấy đơn hàng với ID: " + id));
+        }
+    }
+    @GetMapping("findAll")
+    public ResponseEntity<ApiResponse<List<OrderDTO>>> findAll() {
+        try {
+            List<OrderDTO> orders = orderService.findAll();
+
+            return ResponseEntity.ok(
+                    new ApiResponse<>(true, "Lấy đơn hàng thành công", orders)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(false, "Không tìm thấy đơn hàng : " ));
         }
     }
 }
