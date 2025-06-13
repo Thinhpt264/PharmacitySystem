@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.example.OnlinePharmacySystem.DTO.JwtAuthRequest;
 import com.example.OnlinePharmacySystem.DTO.JwtAuthResponse;
+import com.example.OnlinePharmacySystem.Ultis.ApiResponse;
 import com.example.OnlinePharmacySystem.Ultis.CustomUserDetails;
 import com.example.OnlinePharmacySystem.Ultis.JwtUtils;
 import com.example.OnlinePharmacySystem.configurations.CustomUserDetailsService;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 import com.example.OnlinePharmacySystem.DTO.AccountDTO;
 import com.example.OnlinePharmacySystem.entities.Account;
 import com.example.OnlinePharmacySystem.services.AccountService;
+
+import javax.management.ObjectName;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
@@ -211,6 +214,42 @@ public class AccountController {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body("Lỗi hệ thống khi xóa tài khoản.");
+		}
+	}
+
+
+	@PostMapping(value = "/forgot-password", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse<Object>> forgotPassword(@RequestParam String email) {
+		try {
+			boolean emailSent = accountService.reSendCodeForgotPassword(email);
+
+            if(emailSent) {
+				return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true, "Email đã được gửi", emailSent));
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(false, "Email không tìm thấy"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Map<String, String> response = new HashMap<>();
+			response.put("error", "An error occurred while attempting to send reset instructions.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(false, "Lỗi server"));
+		}
+	}
+
+
+	@PostMapping(value = "/verify-code", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse<Object>> verifySixDigitCode(@RequestParam String email, @RequestParam String code) {
+		try {
+			boolean isVerified = accountService.verifyCode(email, code);
+
+			if (isVerified) {
+				return ResponseEntity.ok(new ApiResponse<>(true, "Code verified successfully."));
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(false, "Invalid or expired code."));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(false, "Server error. Please try again later."));
 		}
 	}
 }
