@@ -1,35 +1,34 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { BaseUrlService } from 'src/app/service/baseUrl.service';
+import { CategoryService } from 'src/app/service/category.service';
+import { OrderService } from 'src/app/service/order.service';
 import { ProductService } from 'src/app/service/product.service';
-
 declare var $: any;
-
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css'],
+  selector: 'app-root',
+  templateUrl: './order.component.html',
+  styleUrls: ['./order.component.css'],
 })
-export class ProductComponent implements OnInit, AfterViewInit {
-    constructor(
-        private productService: ProductService,
-        private baseUrl : BaseUrlService
-    ) {}
-    products: any = {};
-    link : any = this.baseUrl.getProductUrl();
+export class OrderComponent implements OnInit, AfterViewInit {
+  // Khai báo các biến và dịch vụ cần thiết
+  constructor(
+    private productService: ProductService,
+    private baseUrl: BaseUrlService,
+    private orderService: OrderService
+  ) {}
+  orders: any = {};
+  link: any = this.baseUrl.getBaseUrl();
 
   ngOnInit(): void {
-      console.log('Product component initialized');
-        this.findAll();
-    }
-    
-    
-    findAll() {
-        this.productService.findAll().then(
-            (res) => {
-                this.products = res;
-                console.log(res);
-            });
-    }
+    this.findAll();
+  }
+
+  findAll() {
+    this.orderService.findAll().then((res) => {
+      this.orders = res.data;
+    });
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -72,30 +71,27 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getStatusClass(status: string): string {
-    switch (status) {
-      case 'true':
-        return 'badge-success-lighten';
-      case 'false':
-        return 'badge-warning-lighten';
-      case 'Hết hàng':
-        return 'badge-danger-lighten';
-      default:
-        return 'badge-secondary-lighten';
-    }
-  }
-
   editProduct(id: number): void {
     console.log('Edit product:', id);
     // Logic sửa sản phẩm
   }
 
-  deleteProduct(id: number): void {
-   
-  }
+  deleteProduct(id: number): void {}
 
   addProduct(): void {
     console.log('Add new product');
     // Logic thêm sản phẩm mới
   }
+    approveOrder(orderId: number) {
+        this.orderService.acceptOrder(orderId).then((res) => { 
+            console.log(res);
+            if (res.status) {
+                this.findAll(); // Cập nhật danh sách đơn hàng sau khi duyệt
+                alert('Đơn hàng đã được duyệt thành công!');
+            } else {
+                alert('Duyệt đơn hàng thất bại: ' + res.message);
+            }
+        });
+     }
+
 }

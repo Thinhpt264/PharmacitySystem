@@ -50,7 +50,8 @@ export class ProductComponent implements OnInit {
   }
 
   findAll() {
-    this.productService.findAll().then((res) => {
+    this.productService.findAll().then(
+      (res) => {
       console.log(res);
       this.products = res;
       this.listProd = res;

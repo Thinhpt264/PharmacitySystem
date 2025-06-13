@@ -9,6 +9,7 @@ import com.example.OnlinePharmacySystem.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,5 +57,10 @@ public class OrderServiceImpl implements OrderService {
 
         order.setStatus(orderDTO.getStatus());
         orderRepository.save(order);
+    }
+
+    @Override
+    public List<OrderDTO> findAll() {
+        return modelMapper.map(orderRepository.findAll(), new TypeToken<List<OrderDTO>>() {}.getType());
     }
 }

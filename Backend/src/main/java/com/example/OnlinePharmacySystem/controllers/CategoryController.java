@@ -86,5 +86,26 @@ public class CategoryController {
 			return  new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
+	@GetMapping(value = "findAll" , produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> findAll() {
+		try {
+			List<Category> categories = categoryService.findAll();
+
+			if (categories == null) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Khong có categories");
+			}
+
+			Map<String, Object> response = new HashMap<>();
+			response.put("message", "Thanh Cong");
+			response.put("categories", categories);
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return  new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+		}
+
+	}
 }
