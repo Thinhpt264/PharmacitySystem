@@ -1,15 +1,19 @@
 package com.example.OnlinePharmacySystem.controllers;
 
+import com.example.OnlinePharmacySystem.DTO.ExportProductDTO;
 import com.example.OnlinePharmacySystem.DTO.OrderDTO;
+import com.example.OnlinePharmacySystem.DTO.OrderDetailDTO;
 import com.example.OnlinePharmacySystem.DTO.PaymentDTO;
 import com.example.OnlinePharmacySystem.configurations.VNPayConfig;
 import com.example.OnlinePharmacySystem.entities.Order;
 import com.example.OnlinePharmacySystem.entities.Payment;
+import com.example.OnlinePharmacySystem.services.InventoryItemService;
 import com.example.OnlinePharmacySystem.services.OrderService;
 import com.example.OnlinePharmacySystem.services.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +28,12 @@ import java.util.*;
 @Controller
 @RequestMapping("api/payment")
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentController {
 
     private final VNPayConfig vnPayConfig;
     private final PaymentService paymentService;
+    private final InventoryItemService inventoryItemService;
     private final OrderService orderService;
     @PostMapping("/pay")
     @ResponseBody
@@ -119,8 +125,30 @@ public class PaymentController {
         payment.setStatus("00".equals(responseCode) ? 1 : 0);
 
         if ("00".equals(responseCode)) {
-            order.setStatus(1);
-            orderService.updateStatusOnly(order);
+            try {
+                // 1. Cập nhật trạng thái đơn hàng
+                order.setStatus(1);
+                orderService.updateStatusOnly(order);
+
+                // 2. Thực hiện xuất kho theo từng sản phẩm
+                for (OrderDetailDTO orderDetail : order.getOrderDetails()) {
+                    ExportProductDTO exportProductDTO = new ExportProductDTO(
+                            orderDetail.getProductId(),
+                            orderDetail.getQuantity()
+                    );
+                    inventoryItemService.exportProduct(exportProductDTO); // FIFO logic
+                }
+
+            } catch (Exception e) {
+                // ⚠️ Nếu xuất kho thất bại, nên rollback hoặc log cảnh báo
+                log.error("❌ Xuất kho thất bại cho đơn hàng ID: {}", order.getId(), e);
+                // Optional: cập nhật trạng thái đơn hàng lại về "lỗi xử lý kho"
+                order.setStatus(99); // ví dụ 99 = lỗi kho
+                orderService.updateStatusOnly(order);
+                // Optional: gửi thông báo tới Admin
+            }
+
+
         }
 
         paymentService.save(payment);

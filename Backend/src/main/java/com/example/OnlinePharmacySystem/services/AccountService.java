@@ -23,4 +23,9 @@
 		boolean update (AccountDTO accountDTO);
 
 		boolean delete(int id);
+
+		boolean reSendCodeForgotPassword(String email);
+
+		boolean verifyCode(String email, String code);
+
 	}

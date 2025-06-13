@@ -221,5 +221,71 @@ public class AccountServiceImpl implements AccountService {
 		return true;
 	}
 
+	@Override
+	public boolean reSendCodeForgotPassword(String email) {
+		try {
+			Account account = accountRepository.findByEmail(email);
+			if (account != null) {
+				String securityCode = RandomHelper.random6Digits();
+				account.setSecurity_code(securityCode);
+				account.setSecurityExpiration(LocalDateTime.now().plusMinutes(15));
+				try {
+					// Lưu tài khoản và xử lý nếu thành công
+					accountRepository.save(account);
+					String from = environment.getProperty("spring.mail.username");
+					String to = account.getEmail();
+
+
+					String content = "<!DOCTYPE html>" +
+							"<html>" +
+							"<head>" +
+							"<style>" +
+							"body { font-family: Arial, sans-serif; }" +
+							".container { max-width: 600px; margin: 0 auto; padding: 20px; }" +
+							".btn { background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; }" +
+							"</style>" +
+							"</head>" +
+							"<body>" +
+							"<div class='container'>" +
+							"<h2>Xác minh tài khoản của bạn</h2>" +
+							"<p>Xin chào,</p>" +
+							"<p>Đây là mã bảo mật 6 số xác minh tài khoản của bạn:</p>" +
+							"<button>"+ securityCode +"</button>" +
+							"" +
+							"<br><br><br><b> Đường dẫn sẽ hết hạn sau 15 phút </b>"+
+							"</div>" +
+							"</body>" +
+							"</html>";
+					System.out.println(securityCode);
+					mailService.send(from, to, "Mã lấy lại tài khoản của bạn", content);
+					return true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					// TODO: handle exception
+					return false;
+				}
+
+			}
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean verifyCode(String email, String code) {
+		try {
+			Account account = accountRepository.findByEmail(email);
+			if (account != null && code.equals(account.getSecurity_code())) {
+                return account.getSecurityExpiration().isAfter(LocalDateTime.now());
+			}
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 
 }

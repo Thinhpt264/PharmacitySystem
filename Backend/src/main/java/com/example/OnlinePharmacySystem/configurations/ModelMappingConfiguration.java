@@ -14,7 +14,7 @@ public class ModelMappingConfiguration {
 
 		mapper.typeMap(Product.class, ProductDTO.class).addMappings(m -> {
 			m.map(src -> src.getCategory().getId(), ProductDTO::setCategoryId);
-			m .map(src -> src.getCategory().getCategoryName(), ProductDTO::setCategoryName);
+			m.map(src -> src.getCategory().getCategoryName(), ProductDTO::setCategoryName);
 		});
 
 		return mapper;
