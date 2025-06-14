@@ -42,8 +42,8 @@
                                     <img [src]="product.imageUrl" alt="{{ product.name }}" class="img-thumbnail"
                                         style="width: 80px; height: 80px; object-fit: cover;  display: block;">
                                 </td>
-                                <td>{{ product.name.length > 60 ? (product.name | slice:0:60) + '...' : product.name }}
-                                </td>
+                                <td pTooltip="{{ product.name }}" tooltipPosition="top" style="cursor: pointer;">
+                                    {{ product.name.length > 60 ? (product.name | slice:0:40) + '...' : product.name }}                       </td>
                                 <td>{{ product.categoryName }}</td>
                                 <td>{{ product.price | currency:'VND':'symbol':'1.0-0' }}</td>
                                 <td>{{ product.quantity }}</td>
