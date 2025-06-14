@@ -20,4 +20,8 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/images/product/**")
 				.addResourceLocations("file:uploads/images/product/");
 	}
+
+	public static void main(String[] args) {
+		System.out.println(new BCryptPasswordEncoder().encode("Phanthethinh2604@@"));
+	}
 }

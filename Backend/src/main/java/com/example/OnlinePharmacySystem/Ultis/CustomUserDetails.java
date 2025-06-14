@@ -63,8 +63,7 @@ public class CustomUserDetails implements UserDetails {
         return switch (roleValue) {
             case 0 -> "ADMIN";
             case 1 -> "USER";
-            case 2 -> "MANAGER";
-            case 3 -> "GUEST";
+            case 2 -> "EMPLOYEE";
             default -> "USER";
         };
     }

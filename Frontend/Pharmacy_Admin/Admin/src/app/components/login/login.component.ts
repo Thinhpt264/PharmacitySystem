@@ -15,17 +15,14 @@ export class LoginComponent implements OnInit {
   isLoading = false;
   account: any = {};
 
-
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private accountService : AccountService,
+    private accountService: AccountService,
     private messageService: MessageService
-
   ) {}
 
-    ngOnInit(): void {
-        
+  ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -37,49 +34,76 @@ export class LoginComponent implements OnInit {
   }
 
   checkLogin() {
-    this.accountService.login(this.account).then(
-      (response) => {
-        if (response.message === true) {
+    const formValue = this.loginForm.value;
+    const loginData = {
+      username: formValue.username,
+      password: formValue.password,
+    };
+
+    console.log('Login data:', loginData);
+
+    this.accountService
+      .login(loginData)
+      .then((response) => {
+        this.isLoading = false;
+        console.log('Response:', response); // ← Debug để xem response
+
+        // Kiểm tra nhiều trường hợp
+        if (response && response.status === true) {
           this.messageService.add({
             severity: 'success',
             summary: 'Thành công',
-            detail: 'Đăng nhập thành công! Chuyển về trang chủ',
+            detail: 'Đăng nhập thành công!',
           });
 
           localStorage.setItem('token', response.token);
-          // sessionStorage.setItem('account', JSON.stringify(response.account));
-          // this.account = response.account
+
           setTimeout(() => {
-            window.location.href = '/home';
+            this.router.navigate(['/home']);
           }, 1500);
-        } else if (response.message === false) {
+        } else {
+          // Sai tài khoản/mật khẩu - response trả về nhưng status = false
           this.messageService.add({
             severity: 'error',
-            summary: 'Thất bại',
-            detail: 'Sai tài khoản hoặc mật khẩu!',
+            summary: 'Đăng nhập thất bại',
+            detail: response?.message || 'Sai tài khoản hoặc mật khẩu!',
           });
         }
       })
       .catch((error) => {
-        this.messageService.add({
-          severity: 'warn',
-          summary: 'Lỗi hệ thống',
-          detail: 'Không thể đăng nhập. Vui lòng thử lại.',
-        });
+        this.isLoading = false;
+        console.error('Login error:', error); // ← Debug để xem lỗi
+
+        // Kiểm tra loại lỗi
+        if (error.status === 401 || error.status === 403) {
+          // Lỗi authentication
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Đăng nhập thất bại',
+            detail: 'Sai tài khoản hoặc mật khẩu!',
+          });
+        } else {
+          // Lỗi hệ thống khác
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Lỗi hệ thống',
+            detail: 'Không thể đăng nhập. Vui lòng thử lại.',
+          });
+        }
       });
   }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.isLoading = true;
+      // Lấy giá trị từ form
+      const username = this.loginForm.get('username')?.value;
+      const password = this.loginForm.get('password')?.value;
 
-      // Simulate API call
-      setTimeout(() => {
-        console.log('Login data:', this.loginForm.value);
-        this.isLoading = false;
-        // Handle login logic here
-        // this.router.navigate(['/dashboard']);
-      }, 2000);
+      // Gán vào account object nếu cần
+      this.account.username = username;
+      this.account.password = password;
+
+      this.isLoading = true;
       this.checkLogin();
     }
   }
