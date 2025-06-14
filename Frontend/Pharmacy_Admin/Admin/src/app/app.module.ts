@@ -11,11 +11,16 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EmplyeeComponent } from './components/employee/employee.component';
 import { ProductService } from './service/product.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { BaseUrlService } from './service/baseUrl.service';
 import { CategoryService } from './service/category.service';
 import { CategoryComponent } from './components/category/category.component';
 import { OrderService } from './service/order.service';
+import { AccountService } from './service/account.service';
+import { AuthService } from './service/auth.service';
+import { AuthGuard } from './service/auth.guard';
+import { AuthInterceptor } from './service/auth.interceptor';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -40,8 +45,19 @@ import { OrderService } from './service/order.service';
     BaseUrlService,
     ProductService,
     CategoryService,
-    OrderService
+    OrderService,
+    AccountService,
+    AuthService,
+    AuthGuard,
+    MessageService,
+    AuthInterceptor,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    }
   ],
+  
   bootstrap: [AppComponent],
 })
 export class AppModule {}

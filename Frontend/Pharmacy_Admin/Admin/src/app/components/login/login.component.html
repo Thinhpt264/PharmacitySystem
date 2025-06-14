@@ -8,15 +8,15 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label class="form-label" for="username">Tên đăng nhập</label>
-                <input type="text" id="username" class="form-input" formControlName="username"
+                <input type="text" id="username" class="form-input" formControlName="username" [(ngModel)]="account.username"
                     placeholder="Nhập tên đăng nhập" autocomplete="username">
-            </div>
+            </div>  
 
             <div class="form-group">
                 <label class="form-label" for="password">Mật khẩu</label>
                 <div class="password-input-container">
                     <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-input password-input"
-                        formControlName="password" placeholder="Nhập mật khẩu" autocomplete="current-password">
+                        formControlName="password" placeholder="Nhập mật khẩu"  [(ngModel)]="account.password" autocomplete="current-password">
                     <button type="button" class="password-toggle" (click)="togglePassword()"
                         [attr.aria-label]="showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'">
                         <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>

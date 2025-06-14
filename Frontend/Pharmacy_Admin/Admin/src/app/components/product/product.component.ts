@@ -14,20 +14,42 @@ export class ProductComponent implements OnInit, AfterViewInit {
         private productService: ProductService,
         private baseUrl : BaseUrlService
     ) {}
-    products: any = {};
+    products: any[] = [];
     link : any = this.baseUrl.getProductUrl();
 
   ngOnInit(): void {
       console.log('Product component initialized');
         this.findAll();
+      
     }
-    
+    findImageForObj() { 
+    this.products.forEach((product, index) => {
+      if (!product || !product.id) return;
+
+      const tableName = 'Product';
+      this.productService
+        .findImageOfObjId(product.id, tableName)
+        .then((imgRes) => {
+          if (!this.products[index]) return; // Kiểm tra lại trước khi gán
+          const fullPath =
+            this.baseUrl.getBaseUrl() +
+            imgRes.image.path +
+            imgRes.image.imageName;
+          this.products[index].imageUrl = fullPath;
+          console.log(fullPath)
+        })
+        .catch((err) => {
+          console.error('Image fetch error for product', product.id, err);
+        });
+      });
+    }
     
     findAll() {
         this.productService.findAll().then(
             (res) => {
                 this.products = res;
                 console.log(res);
+                this.findImageForObj()
             });
     }
 
@@ -85,6 +107,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  
   editProduct(id: number): void {
     console.log('Edit product:', id);
     // Logic sửa sản phẩm
@@ -98,4 +121,5 @@ export class ProductComponent implements OnInit, AfterViewInit {
     console.log('Add new product');
     // Logic thêm sản phẩm mới
   }
+  
 }
