@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ProductComponent } from './components/product/product.component';
 import { CategoryComponent } from './components/category/category.component';
 import { OrderComponent } from './components/order/order.component';
+import { AuthGuard } from './service/auth.guard';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
+    canActivate: [AuthGuard],
     component: DashBoardComponent,
   },
   {
@@ -22,14 +24,17 @@ const routes: Routes = [
   },
   {
     path: 'category',
+    canActivate: [AuthGuard],
     component: CategoryComponent,
   },
   {
     path: 'product',
+    canActivate: [AuthGuard],
     component: ProductComponent,
   },
   {
     path: 'order',
+    canActivate: [AuthGuard],
     component: OrderComponent,
   },
 ];

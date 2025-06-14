@@ -22,6 +22,6 @@ export class AccountService {
     }
      async reSendCode(email: any) : Promise<any>{
             return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "api/v1/accounts/reSendCode?email=" + email ));
-    }
+    }   
 
 }
