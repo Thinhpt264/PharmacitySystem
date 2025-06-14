@@ -6,13 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./thank-you.component.css'],
 
 })
-export class ThankYouComponent implements OnInit {
-  ngOnInit(): void {}
 
-  gotoHome() {
-
-
-})
 export class ThankYouComponent implements OnInit {
     ngOnInit(): void {
      

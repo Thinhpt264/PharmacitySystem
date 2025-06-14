@@ -36,8 +36,13 @@ public class ImportServiceImpl implements ImportService {
             Product product = productRepository.findById(inventoryItem.getProductId())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm ID: " + inventoryItem.getProductId()));
 
-            InventoryItem item = modelMapper.map(inventoryItem, InventoryItem.class);
-            item.setQuantityRemaining(item.getQuantity()); // nếu có logic này
+            InventoryItem item = new InventoryItem();
+            item.setProductId(inventoryItem.getProductId());
+            item.setExpiryDate(inventoryItem.getExpiryDate());
+            item.setQuantity(inventoryItem.getQuantity());
+            item.setQuantityRemaining(inventoryItem.getQuantity());
+            item.setStatus(1); // nếu cần
+            item.setImportBatch(importbatch); // nếu có logic này
             inventoryItems.add(item);
 
         }

@@ -63,7 +63,7 @@ public class SecurityConfiguration {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(List.of("http://localhost:4200")); // ⚠ KHÔNG dùng addAllowedOriginPattern
+		config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:4021")); // ⚠ KHÔNG dùng addAllowedOriginPattern
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("*"));
 		config.setAllowCredentials(true); // Cho phép gửi kèm cookie, Authorization

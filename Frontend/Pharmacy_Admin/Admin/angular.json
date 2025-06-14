@@ -13,7 +13,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "port": 4201,
             "outputPath": "dist/admin",
             "index": "src/index.html",
             "main": "src/main.ts",

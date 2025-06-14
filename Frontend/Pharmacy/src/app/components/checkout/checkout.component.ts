@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/service/cart.service';
 import { CheckoutService } from 'src/app/service/checkout.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-checkout',
@@ -17,6 +18,7 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private checkoutService: CheckoutService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -27,9 +29,9 @@ export class CheckoutComponent implements OnInit {
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-  const accountData = sessionStorage.getItem('account');
+  const accountData = this.authService.getAccount()
   if (accountData) {
-    this.account = JSON.parse(accountData);
+    this.account = accountData
     console.log('🧑 Account loaded from session:', this.account);
   } else {
     console.warn('⚠️ Không tìm thấy thông tin tài khoản trong sessionStorage');

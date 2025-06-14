@@ -28,7 +28,7 @@ public class Importbatch {
     private String supplierName;
 
     //bi-directional many-to-one association to Inventoryitem
-    @OneToMany(mappedBy="importbatch")
+    @OneToMany(mappedBy = "importbatch", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InventoryItem> inventoryitems;
 
     public Importbatch() {

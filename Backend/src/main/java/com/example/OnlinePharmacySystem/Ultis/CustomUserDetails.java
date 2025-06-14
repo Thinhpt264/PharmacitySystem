@@ -55,6 +55,10 @@ public class CustomUserDetails implements UserDetails {
         return account;
     }
 
+    public int getId() {
+        return account.getId();
+    }
+
     public String getRoleName() {
         return getRoleName(account.getRole());
     }
