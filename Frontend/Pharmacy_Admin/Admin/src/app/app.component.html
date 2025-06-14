@@ -101,14 +101,14 @@
 
           <li class="side-nav-title side-nav-item">Xác nhận đơn hàng</li>
 
-          <li class="side-nav-item">
+          <li class="side-nav-item" (click)="gotoOrders()">
             <a routerLink="/orders/pending" class="side-nav-link">
               <i class="uil-briefcase"></i>
               <span> Đơn hàng chờ xử lý </span>
             </a>
           </li>
 
-          <li class="side-nav-item">
+          <li class="side-nav-item" (click)="gotoOrderDetails()">
             <a routerLink="/orders/confirmed" class="side-nav-link">
               <i class="uil-check-circle"></i>
               <span> Đơn hàng đã xác nhận </span>

@@ -55,6 +55,16 @@ public class AccountController {
 		}
 	}
 
+	@GetMapping(value = "findById/{accountId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AccountDTO> findById(@PathVariable("accountId") int accountId) {
+		try {
+			return new ResponseEntity<AccountDTO>(accountService.findById(accountId), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
 	@PostMapping(value = "process_login", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> login(@RequestBody @Valid JwtAuthRequest accountDTO, BindingResult bindingResult) {
 

@@ -43,10 +43,9 @@
                                 <td>{{ category.categoryName }}</td>
                                 <td>{{ category.categoryParentId !== null ? category.categoryName : '' }}</td>
                                 <td>
-                                    <span class="badge">
+                                    <span class="badge" [ngClass]="category.status === 1 ? 'status-approved' : 'status-pending'">
                                         {{ category.status === 1 ? 'Có sẵn' : 'Ẩn' }}
-                                    </span>
-                                </td>
+                                    </span>                           </td>
                                 <td>
                                     <button class="btn btn-sm btn-outline-primary mr-1">
                                         <i class="mdi mdi-pencil"></i>

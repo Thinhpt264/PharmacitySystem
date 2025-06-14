@@ -1,0 +1,179 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <button type="button" class="btn btn-primary">
+                        <i class="mdi mdi-plus mr-1"></i>Thêm đơn hàng
+                    </button>
+                </div>
+                <h4 class="page-title">Quản lý đơn hàng</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title">Đơn hàng đã duyệt</h4>
+                    <p class="text-muted font-13 mb-4">
+                        Quản lý tất cả đơn hàng đã được duyệt trong hệ thống
+                    </p>
+
+                    <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Người đặt</th>
+                                <th>Tổng tiền</th>
+                                <th>Thời gian</th>
+                                <th>Ghi chú</th>
+                                <th>Chi tiết</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let order of orders">
+                                <td>{{ order.id }}</td>
+                                <td>{{ order.user?.username }}</td>
+                                <td>{{ order.totalPrice | currency:'VND':'symbol':'1.0-0' }}</td>
+                                <td>{{ order.orderDate }}</td>
+                                <td>{{ order.note || 'Không có' }}</td>
+                                <td>
+                                    <button class="btn btn-outline-success  mr-1 pt-2"
+                                        (click)="openOrderDetails(order.id)" data-toggle="modal"
+                                        data-target="#orderDetailModal">
+                                        <i class="mdi mdi-chevron-right-circle mr-1"></i>Chi tiết
+                                    </button>
+                                </td>
+                                <td>
+                                    <span class="badge"
+                                        [ngClass]="order.status === 0 ? 'status-pending' : 'status-approved'">
+                                        {{ order.status === 0 ? 'Cần duyệt' : 'Đã duyệt' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-info mr-1 pt-2" (click)="approveOrder(order.id)">
+                                        <i class="mdi mdi-check-circle mr-1"></i>Vận chuyển ngay
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger">
+                                        <i class="mdi mdi-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Chi tiết đơn hàng -->
+<div class="modal fade" id="orderDetailModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderDetailModalLabel">
+                    <i class="mdi mdi-clipboard-text mr-2"></i>Chi tiết đơn hàng #{{ selectedOrder?.id }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Thông tin đơn hàng -->
+                <div class="card mb-3" *ngIf="selectedOrder">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <strong>ID</strong><br>
+                                <span class="text-primary">{{ selectedOrder.id }}</span>
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Người đặt:</strong><br>
+                                <span class="text-primary">{{ selectedOrder.user?.username }}</span>
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Tổng tiền:</strong><br>
+                                <span class="text-success h5">{{ selectedOrder.totalPrice |
+                                    currency:'VND':'symbol':'1.0-0' }}</span>
+                            </div>
+                            <div class="col-md-2">
+                                <strong>Thời gian:</strong><br>
+                                <span>{{ selectedOrder.orderDate }}</span>
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Ghi chú:</strong><br>
+                                <span>{{ selectedOrder.note || 'Không có' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chi tiết sản phẩm trong đơn hàng -->
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i class="mdi mdi-package-variant mr-2"></i>Chi tiết sản phẩm
+                        </h6>
+
+                        <div class="table-responsive">
+                            <table id="basic-datatable1" class="table table-striped dt-responsive nowrap w-100">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Đơn giá</th>
+                                        <th>Thành tiền</th>
+                                        <th>Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let detail of orderDetails">
+                                        <td>{{ detail.id }}</td>
+                                        <td>{{ detail.productName.length > 60 ? (detail.productName | slice:0:40) + '...' : detail.productName }}</td>
+                                     
+                                        <td>
+                                            <span class="badge badge-primary">{{ detail.quantity }}</span>
+                                        </td>
+                                        <td>{{ detail.unitPrice | currency:'VND':'symbol':'1.0-0' }}</td>
+                                        <td>{{ (detail.unitPrice * detail.quantity) | currency:'VND':'symbol':'1.0-0' }}
+                                        </td>
+                                        <td>{{ detail.note ===0 ?"Đã thanh toán":"Chưa thanh toán" }}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="table-info">
+                                        <td colspan="2"><strong>Tổng cộng</strong></td>
+                                        <td><strong>{{ getTotalQuantity() }}</strong></td>
+                                        <td></td>
+                                        <td><strong>{{ getTotalAmount() | currency:'VND':'symbol':'1.0-0' }}</strong>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="mdi mdi-close mr-1"></i>Đóng
+                </button>
+                <button type="button" class="btn btn-success" (click)="approveOrderFromModal()"
+                    *ngIf="selectedOrder?.status === 0">
+                    <i class="mdi mdi-check-circle mr-1"></i>Duyệt đơn hàng
+                </button>
+                <button type="button" class="btn btn-primary" (click)="printOrder()">
+                    <i class="mdi mdi-printer mr-1"></i>In đơn hàng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AccountService } from 'src/app/service/account.service';
 import { BaseUrlService } from 'src/app/service/baseUrl.service';
 import { CategoryService } from 'src/app/service/category.service';
 import { OrderService } from 'src/app/service/order.service';
@@ -15,7 +16,8 @@ export class OrderComponent implements OnInit, AfterViewInit {
   constructor(
     private productService: ProductService,
     private baseUrl: BaseUrlService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private accountService: AccountService,
   ) {}
   orders: any = {};
   link: any = this.baseUrl.getBaseUrl();
@@ -27,6 +29,15 @@ export class OrderComponent implements OnInit, AfterViewInit {
   findAll() {
     this.orderService.findAll().then((res) => {
       this.orders = res.data;
+      this.orders = res.data.filter((order: any) => order.status === 0);
+      this.orders.forEach((order: any) => {
+        // Lấy thông tin người dùng từ dịch vụ accountService
+        this.accountService.findById(order.accountId).then((res) => {
+          order.user = res; 
+          console.log(order.user.username);
+        });
+       
+      });
     });
   }
 

@@ -8,6 +8,8 @@
 	public interface AccountService {
 		 List<Account> findAll();
 
+		 AccountDTO findById(int id);
+
 		 AccountDTO login(String username,String password);
 
 		public boolean save(AccountDTO accountDTO);

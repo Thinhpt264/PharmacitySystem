@@ -13,5 +13,8 @@ export class AccountService {
     async login(account : any) : Promise<any>{
             return await lastValueFrom(this.httpClient.post(this.baseUrl.getBaseUrl() + "api/v1/accounts/process_login" , account));
     }
+    async findById(accountId : any) : Promise<any>{
+        return await lastValueFrom(this.httpClient.get(this.baseUrl.getBaseUrl() + "api/v1/accounts/findById/" + accountId));
+}
 
 }

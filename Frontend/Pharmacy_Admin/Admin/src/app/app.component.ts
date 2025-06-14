@@ -55,4 +55,19 @@ export class AppComponent implements OnInit {
   gotoCategories() {
     window.location.href = 'category'; // Redirect to Google
   }
+  gotoOrders() {
+    window.location.href = 'order'; // Redirect to Google
+  }
+  gotoOrderDetails() {
+    window.location.href = 'order-detail'; // Redirect to Google
+  }
+  gotoAccounts() {
+    window.location.href = 'account'; // Redirect to Google
+  }
+  gotoLogin() {
+    window.location.href = 'login'; // Redirect to Google
+  }
+  gotoDelivery() {
+  window.location.href = 'register'; // Redirect to Google
+  }
 }

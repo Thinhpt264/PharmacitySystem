@@ -6,6 +6,7 @@ import { ProductComponent } from './components/product/product.component';
 import { CategoryComponent } from './components/category/category.component';
 import { OrderComponent } from './components/order/order.component';
 import { AuthGuard } from './service/auth.guard';
+import { OrderDetailComponent } from './components/order-detail/order-detail.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,11 @@ const routes: Routes = [
     path: 'order',
     canActivate: [AuthGuard],
     component: OrderComponent,
+  },
+  {
+    path: 'order-detail',
+    canActivate: [AuthGuard],
+    component: OrderDetailComponent,
   },
 ];
 

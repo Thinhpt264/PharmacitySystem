@@ -34,12 +34,25 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Autowired
 	private BCryptPasswordEncoder encoder;
-	
+	private ModelMapper modelMapper;
+
 	@Override
 	public List<Account> findAll() {
 		// TODO Auto-generated method stub
 		System.out.println(accountRepository.findAll());
 		return accountRepository.findAll();
+	}
+
+	@Override
+	public AccountDTO findById(int id) {
+		// TODO Auto-generated method stub
+		Optional<Account> account = accountRepository.findById(id);
+		if (account.isPresent()) {
+			Account acc = account.get();
+			return mapper.map(acc, AccountDTO.class);
+		}
+		return null;
+
 	}
 
 	@Override

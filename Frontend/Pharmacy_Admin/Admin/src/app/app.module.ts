@@ -23,6 +23,9 @@ import { AuthInterceptor } from './service/auth.interceptor';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TooltipModule } from 'primeng/tooltip';
+import { OrderDetailComponent } from './components/order-detail/order-detail.component';
+import { OrderDetailService } from './service/order-detail.service';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginComponent,
     EmplyeeComponent,
     CategoryComponent,
+    OrderDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +47,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     ToastModule,
     BrowserAnimationsModule,
+    TooltipModule,
   ],
   providers: [
     BaseUrlService,
@@ -54,6 +59,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AuthGuard,
     MessageService,
     AuthInterceptor,
+    OrderDetailService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -49,7 +49,8 @@ public class SecurityConfiguration {
 								"/v3/api-docs/**",
 								"/swagger-ui.html",
 								"/api/v1/orders/accept/**",
-								"/api/v1/orders/findAll"
+								"/api/v1/orders/findAll",
+								"/api/v1/orderDetails/**"
 						).permitAll()
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		                .anyRequest().authenticated() // đóng tất cả API

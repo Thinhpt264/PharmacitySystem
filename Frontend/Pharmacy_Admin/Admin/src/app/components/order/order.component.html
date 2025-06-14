@@ -1,4 +1,4 @@
-<h1>Delivery</h1><div class="container-fluid">
+<div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title">Danh mục sản phẩm</h4>
+                    <h4 class="header-title">Danh mục sản phẩm đang chờ xử lý</h4>
                     <p class="text-muted font-13 mb-4">
                         Quản lý tất cả danh mục sản phẩm trong hệ thống
                     </p>
@@ -37,17 +37,16 @@
                         <tbody>
                             <tr *ngFor="let order of orders">
                                 <td>{{ order.id }}</td>
-                                <td>{{ order.accountId }}</td>
+                                <td>{{ order.user.username }}</td>
 
                                 <td>{{ order.totalPrice }}</td>
                                 <td>{{ order.orderDate }}</td>
                                 <td>{{ order.note }}</td>
                                
                                 <td>
-                                    <span class="badge">
-                                        {{ order.status === 0 ? 'Cần duyệt' : 'Ẩn' }}
-                                    </span>
-                                </td>
+                                    <span class="badge" [ngClass]="order.status === 0 ? 'status-pending' : 'status-approved'">
+                                        {{ order.status === 0 ? 'Đang chờ...' : 'Đã duyệt' }}
+                                    </span>                           </td>
                                 <td>
                                     <button class="btn btn-sm btn-success mr-1 pt-2" (click)="approveOrder(order.id)">
                                         <i class="mdi mdi-check-circle mr-1"></i>Duyệt ngay                          </button>
