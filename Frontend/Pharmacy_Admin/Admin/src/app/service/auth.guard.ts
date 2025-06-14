@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     const isLoggedIn = this.authService.isLoggedIn();
     const role = this.authService.getRole();
 
-    if (isLoggedIn && (role === 'ADMIN' || role === 'MANAGER')) {
+    if (isLoggedIn && (role === 'ADMIN' || role === 'EMPLOYEE')) {
       return true;
     }
 

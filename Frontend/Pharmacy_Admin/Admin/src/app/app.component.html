@@ -1,3 +1,6 @@
+<!-- Toast toàn cục -->
+<p-toast position="top-right"></p-toast>
+
 <!-- Admin Layout - chỉ hiện khi không phải trang auth -->
 <div *ngIf="showLayout" class="loading"
   data-layout-config='{"leftSideBarTheme":"light","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -9,20 +12,20 @@
       <!-- LOGO -->
       <a href="index.html" class="logo text-center logo-light">
         <span class="logo-lg">
-          <img src="/assets/images/logo.png" alt="" height="16">
+          <img src="assets/images/logo.png" alt="" height="16">
         </span>
         <span class="logo-sm">
-          <img src="/assets/images/logo_sm.png" alt="" height="16">
+          <img src="assets/images/logo_sm.png" alt="" height="16">
         </span>
       </a>
 
       <!-- LOGO -->
       <a href="index.html" class="logo text-center logo-dark">
         <span class="logo-lg">
-          <img src="/assets/images/logo-dark.png" alt="" height="16">
+          <img src="assets/images/logo-dark.png" alt="" height="16">
         </span>
         <span class="logo-sm">
-          <img src="/assets/images/logo_sm_dark.png" alt="" height="16">
+          <img src="assets/images/logo_sm_dark.png" alt="" height="16">
         </span>
       </a>
 
@@ -30,8 +33,6 @@
 
         <!--- Sidemenu -->
         <ul class="metismenu side-nav">
-
-
 
           <li class="side-nav-item" (click)="gotoDashboard()">
             <a routerLink="/dashboard" class="side-nav-link">
@@ -63,14 +64,13 @@
             </a>
           </li>
 
-
           <li class="side-nav-item">
             <a routerLink="/inventory/stock" class="side-nav-link">
               <i class="uil-box"></i>
               <span> Sản phẩm tồn kho </span>
             </a>
           </li>
-          <li class="side-nav-item"(click)="gotoCategories()">
+          <li class="side-nav-item" (click)="gotoCategories()">
             <a routerLink="/categories" class="side-nav-link">
               <i class="mdi mdi-segment"></i>
               <span> Danh mục </span>
@@ -137,6 +137,7 @@
     <!-- ============================================================== -->
 
     <div class="content-page">
+
       <div class="content">
         <!-- Topbar Start -->
         <div class="navbar-custom">
@@ -249,10 +250,8 @@
           </div>
         </div>
         <!-- end Topbar -->
-
-        <!-- Main Content với Layout -->
+        <!-- Router outlet duy nhất - hiển thị content dựa trên showLayout -->
         <router-outlet></router-outlet>
-
       </div>
       <!-- Footer Start -->
       <footer class="footer">
@@ -319,6 +318,5 @@
   <div class="rightbar-overlay"></div>
   <!-- /Right-bar -->
 </div>
-
-<!-- Auth Pages (Login, Register, etc.) - Full Screen -->
+<!-- Router outlet cho auth pages (login) - hiển thị fullscreen -->
 <router-outlet *ngIf="!showLayout"></router-outlet>

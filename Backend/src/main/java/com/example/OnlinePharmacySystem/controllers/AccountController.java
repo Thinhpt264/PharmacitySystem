@@ -79,7 +79,7 @@ public class AccountController {
 
 
 			Map<String, Object> response = new HashMap<>();
-			response.put("message", true);
+			response.put("status", true);
 			response.put("token", token);
 			response.put("account", account);
 
@@ -87,7 +87,11 @@ public class AccountController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Tên đăng nhập hoặc mật khẩu không đúng");
+			Map<String, Object> response = new HashMap<>();
+			response.put("status", false);
+			response.put("message", "Tên đăng nhập hoặc mật khẩu không khớp");
+			return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+
 		}
 	}
 

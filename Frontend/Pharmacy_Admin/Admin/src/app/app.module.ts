@@ -21,6 +21,8 @@ import { AuthService } from './service/auth.service';
 import { AuthGuard } from './service/auth.guard';
 import { AuthInterceptor } from './service/auth.interceptor';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,7 @@ import { MessageService } from 'primeng/api';
     ProductComponent,
     LoginComponent,
     EmplyeeComponent,
-    CategoryComponent
+    CategoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,8 @@ import { MessageService } from 'primeng/api';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
- 
+    ToastModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     BaseUrlService,
@@ -55,9 +58,9 @@ import { MessageService } from 'primeng/api';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
-    }
+    },
   ],
-  
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}
