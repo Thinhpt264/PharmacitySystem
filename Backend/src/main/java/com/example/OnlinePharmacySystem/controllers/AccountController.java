@@ -84,7 +84,9 @@ public class AccountController {
 			// 3. Sinh token JWT
 			String role = ((CustomUserDetails) userDetails).getRoleName();
 			System.out.println(role);
-			String token = jwtUtils.generateToken(userDetails.getUsername(), role);
+			int idAccount = ((CustomUserDetails) userDetails).getId();
+			String token = jwtUtils.generateToken(userDetails.getUsername(), role, idAccount);
+
 			AccountDTO account = accountService.findByUsername(accountDTO.getUsername());
 
 
@@ -126,8 +128,8 @@ public class AccountController {
 			if (createdAccount.isStatus()) {
 				UserDetails userDetails = userDetailsService.loadUserByUsername(createdAccount.getUsername());
 				String role = ((CustomUserDetails) userDetails).getRoleName(); // sử dụng role đúng
-
-				String token = jwtUtils.generateToken(userDetails.getUsername(), role);
+				int idAccount = ((CustomUserDetails) userDetails).getId();
+				String token = jwtUtils.generateToken(userDetails.getUsername(), role, idAccount);
 				return ResponseEntity.ok(new JwtAuthResponse(token, createdAccount));
 			} else {
 				// Trả về thông báo yêu cầu xác thực tài khoản

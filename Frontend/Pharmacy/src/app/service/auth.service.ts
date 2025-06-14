@@ -12,14 +12,15 @@ export class AuthService {
 
   // Lưu thông tin người dùng vào session
   login(token: any): void {
-        localStorage.setItem(this.SESSION_KEY, token);
+    localStorage.setItem(this.SESSION_KEY, token);
   }
 
   // Lấy thông tin người dùng từ session
   getAccount(): any {
      const token = this.getToken();
+      console.log(token);
     if (!token) return null;
-
+    
     try {
       console.log(jwtDecode(token));
       return jwtDecode(token);

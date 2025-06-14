@@ -29,7 +29,8 @@ export class LoginComponent implements OnInit {
 
     this.accountService.login(this.account).then(
       (response) => {
-        if (response.message === true) {
+        console.log('✅ RESPONSE:', response);
+        if (response.status === true) {
           this.messageService.add({
             severity: 'success',
             summary: 'Thành công',

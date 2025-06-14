@@ -127,7 +127,7 @@ public class PaymentController {
         if ("00".equals(responseCode)) {
             try {
                 // 1. Cập nhật trạng thái đơn hàng
-                order.setStatus(1);
+                order.setStatus(0);
                 orderService.updateStatusOnly(order);
 
                 // 2. Thực hiện xuất kho theo từng sản phẩm
