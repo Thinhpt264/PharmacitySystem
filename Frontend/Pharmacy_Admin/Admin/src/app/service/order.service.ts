@@ -13,7 +13,7 @@ export class OrderService {
   async findAll(): Promise<any> {
     return await lastValueFrom(
       this.httpClient.get(
-        this.baseUrl.getBaseUrl() + 'api/v1/orders/findAll'
+        this.baseUrl.getBaseUrl() + 'api/v1/orders'
       )
     );
   }

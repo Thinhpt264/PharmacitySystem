@@ -75,11 +75,11 @@ public class OrderController {
                     .body(new ApiResponse<>(false, "Không tìm thấy đơn hàng với ID: " + id));
         }
     }
-    @GetMapping("findAll")
+
+    @GetMapping()
     public ResponseEntity<ApiResponse<List<OrderDTO>>> findAll() {
         try {
             List<OrderDTO> orders = orderService.findAll();
-
             return ResponseEntity.ok(
                     new ApiResponse<>(true, "Lấy đơn hàng thành công", orders)
             );
@@ -87,7 +87,26 @@ public class OrderController {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(false, "Không tìm thấy đơn hàng : " ));
+                    .body(new ApiResponse<>(false, "Không tìm thấy đơn hàng : "));
         }
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<List<OrderDTO>>> searchByAccountAndStatus(
+            @RequestParam("accountId") int accountId,
+            @RequestParam("status") int status) {
+        try {
+            List<OrderDTO> orders = orderService.findByStatusAndAccountId(status, accountId);
+            return ResponseEntity.ok(
+                    new ApiResponse<>(true, "Lấy danh sách đơn hàng thành công", orders)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Lỗi khi tìm đơn hàng: " + e.getMessage()));
+        }
+    }
+
+    
 }
