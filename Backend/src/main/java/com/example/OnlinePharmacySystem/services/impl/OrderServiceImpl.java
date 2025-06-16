@@ -69,8 +69,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> findByStatusAndAccountId(int status, int userId) {
-        List<Order> orders = orderRepository.findOrdersByAccountIdAndStatus(userId, status);
+    public List<OrderDTO> findByAccountId( int userId) {
+        List<Order> orders = orderRepository.findOrdersByAccountId(userId);
         return orders.stream()
                 .map(order -> modelMapper.map(order, OrderDTO.class))
                 .collect(Collectors.toList());
