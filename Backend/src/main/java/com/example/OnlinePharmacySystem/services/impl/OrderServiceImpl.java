@@ -1,6 +1,7 @@
 package com.example.OnlinePharmacySystem.services.impl;
 
 import com.example.OnlinePharmacySystem.DTO.OrderDTO;
+import com.example.OnlinePharmacySystem.DTO.ProductDTO;
 import com.example.OnlinePharmacySystem.entities.Order;
 import com.example.OnlinePharmacySystem.entities.OrderDetail;
 import com.example.OnlinePharmacySystem.repositories.OrderDetailRepository;
@@ -61,6 +62,63 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDTO> findAll() {
-        return modelMapper.map(orderRepository.findAll(), new TypeToken<List<OrderDTO>>() {}.getType());
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .map(order -> modelMapper.map(order, OrderDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderDTO> findByStatusAndAccountId(int status, int userId) {
+        List<Order> orders = orderRepository.findOrdersByAccountIdAndStatus(userId, status);
+        return orders.stream()
+                .map(order -> modelMapper.map(order, OrderDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateOrder(OrderDTO orderDTO) {
+        Order existingOrder = orderRepository.findById(orderDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        // Update basic order information
+        existingOrder.setStatus(orderDTO.getStatus());
+        existingOrder.setOrderDate(orderDTO.getOrderDate());
+
+        // Update order details
+        List<OrderDetail> updatedDetails = orderDTO.getOrderDetails().stream().map(detailDTO -> {
+            OrderDetail detail = new OrderDetail();
+            detail.setId(detailDTO.getId());
+            detail.setProductId(detailDTO.getProductId());
+            detail.setQuantity(detailDTO.getQuantity());
+            detail.setUnitPrice(detailDTO.getUnitPrice());
+            detail.setOrder(existingOrder);
+            return detail;
+        }).collect(Collectors.toList());
+
+        // Save updated order and details
+        orderDetailRepository.saveAll(updatedDetails);
+
+        // Recalculate total amount
+        double totalAmount = updatedDetails.stream()
+                .mapToDouble(detail -> detail.getQuantity() * detail.getUnitPrice())
+                .sum();
+
+        log.info("Updated total amount: " + totalAmount);
+
+        existingOrder.setOrderDetails(updatedDetails);
+        orderRepository.save(existingOrder);
+    }
+
+    @Override
+    public void deleteOrder(int id) {
+        Order existingOrder = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        // Delete associated order details first
+        orderDetailRepository.deleteAll(existingOrder.getOrderDetails());
+
+        // Delete the main order
+        orderRepository.delete(existingOrder);
     }
 }
