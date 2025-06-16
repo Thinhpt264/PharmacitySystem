@@ -47,6 +47,7 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './service/auth.interceptor';
 import { ThankYouComponent } from './components/thank-you/thank-you.component';
+import { OrderComponent } from './components/order/order.component';
 
 
 
@@ -69,7 +70,8 @@ import { ThankYouComponent } from './components/thank-you/thank-you.component';
     CartComponent,
     CustomCurrencyPipe,
     CheckoutComponent,
-    ThankYouComponent
+    ThankYouComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,

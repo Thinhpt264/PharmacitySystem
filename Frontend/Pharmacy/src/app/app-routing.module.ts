@@ -17,6 +17,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ThankYouComponent } from './components/thank-you/thank-you.component';
 import { AuthGuard } from './service/auth.guard';
+import { OrderComponent } from './components/order/order.component';
 
 
 const routes: Routes = [
@@ -90,6 +91,10 @@ const routes: Routes = [
   {
     path: 'thank-you',
     component: ThankYouComponent,
+  },
+  {
+    path: 'order',
+    component: OrderComponent,
   },
   // {
   //   path: '**',
