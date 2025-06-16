@@ -39,8 +39,8 @@ public class Order implements Serializable {
 
 	@Column(name="total_price")
 	private double totalPrice;
-
-
+	@Column(name = "delivery_info_id")
+	private int delivery_info_id;
 
 	//bi-directional many-to-one association to OrderDetail
 	@OneToMany(mappedBy="order")
@@ -148,6 +148,11 @@ public class Order implements Serializable {
 	}
 
 
+	public int getDelivery_info_id() {
+		return delivery_info_id;
+	}
 
-
+	public void setDelivery_info_id(int delivery_info_id) {
+		this.delivery_info_id = delivery_info_id;
+	}
 }

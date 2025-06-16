@@ -85,7 +85,8 @@ public class AccountController {
 			String role = ((CustomUserDetails) userDetails).getRoleName();
 			System.out.println(role);
 			int idAccount = ((CustomUserDetails) userDetails).getId();
-			String token = jwtUtils.generateToken(userDetails.getUsername(), role, idAccount);
+            String phone = ((CustomUserDetails) userDetails).getPhone();
+			String token = jwtUtils.generateToken(userDetails.getUsername(), role, idAccount, phone);
 
 			AccountDTO account = accountService.findByUsername(accountDTO.getUsername());
 
@@ -129,7 +130,9 @@ public class AccountController {
 				UserDetails userDetails = userDetailsService.loadUserByUsername(createdAccount.getUsername());
 				String role = ((CustomUserDetails) userDetails).getRoleName(); // sử dụng role đúng
 				int idAccount = ((CustomUserDetails) userDetails).getId();
-				String token = jwtUtils.generateToken(userDetails.getUsername(), role, idAccount);
+
+				String phone = ((CustomUserDetails) userDetails).getPhone();
+				String token = jwtUtils.generateToken(userDetails.getUsername(), role, idAccount, phone);
 				return ResponseEntity.ok(new JwtAuthResponse(token, createdAccount));
 			} else {
 				// Trả về thông báo yêu cầu xác thực tài khoản

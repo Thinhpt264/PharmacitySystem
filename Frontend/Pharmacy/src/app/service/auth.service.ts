@@ -17,10 +17,10 @@ export class AuthService {
 
   // Lấy thông tin người dùng từ session
   getAccount(): any {
-     const token = this.getToken();
-      console.log(token);
+    const token = this.getToken();
+    console.log(token);
     if (!token) return null;
-    
+
     try {
       console.log(jwtDecode(token));
       return jwtDecode(token);
@@ -29,11 +29,22 @@ export class AuthService {
     }
   }
   getUsername(): string | null {
-    return this.getAccount()?.username || null;
+    const account = this.getAccount();
+    return account ? account.sub : null;
   }
 
-    getToken(): string | null {
+  getEmail(): string | null {
+    const account = this.getAccount();
+    return account ? account.getEmail : null;
+  }
+
+  getToken(): string | null {
     return localStorage.getItem(this.SESSION_KEY);
+  }
+
+  getPhone() {
+    const account = this.getAccount();
+    return account ? account.phone : null;
   }
 
   // Kiểm tra xem người dùng đã đăng nhập chưa
@@ -54,5 +65,9 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.SESSION_KEY);
     this.router.navigate(['/login']);
+  }
+  getId() {
+    const account = this.getAccount();
+    return account ? account.id : null;
   }
 }

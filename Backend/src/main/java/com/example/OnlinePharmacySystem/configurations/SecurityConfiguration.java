@@ -42,6 +42,9 @@ public class SecurityConfiguration {
 								"/api/v1/categories/**",
 								"/api/v1/image/**",
 								"/api/v1/warehouses/**",
+								"/api/v1/orderDetails/**",
+								"/api/v1/orders/**",
+								"/api/v1/deliveryInfo/**",
 								"/images/**",
 								"/api/payment/vnPay-callback",
 								"/assets/images/**",
@@ -60,7 +63,7 @@ public class SecurityConfiguration {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:4021")); // ⚠ KHÔNG dùng addAllowedOriginPattern
+		config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:4201")); // ⚠ KHÔNG dùng addAllowedOriginPattern
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("*"));
 		config.setAllowCredentials(true); // Cho phép gửi kèm cookie, Authorization

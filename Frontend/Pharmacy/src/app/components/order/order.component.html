@@ -92,44 +92,28 @@
                         Chi tiết
                     </button>
 
-                    <!-- Actions based on status -->
-                    <ng-container [ngSwitch]="order.status">
-                        <div *ngSwitchCase="'pending_confirm'" class="action-group">
-                            <!-- <button class="btn btn-success" (click)="confirmOrder(order)">
-                                <span class="btn-icon">✅</span>
-                                Xác nhận
-                            </button> -->
-                            <button class="btn btn-danger" (click)="cancelOrder(order)">
-                                <span class="btn-icon">❌</span>
-                                Hủy
-                            </button>
-                        </div>
+                    <!-- Chỉ hiển thị nút hủy cho 2 trạng thái đầu -->
+                    <button *ngIf="canCancelOrder(order.status)" class="btn btn-danger" (click)="cancelOrder(order)">
+                        <span class="btn-icon">❌</span>
+                        Hủy đơn hàng
+                    </button>
 
-                        <div *ngSwitchCase="'pending_payment'" class="action-group">
-                            <button class="btn btn-warning" (click)="cancelOrder(order)">
-                                <span class="btn-icon">❌</span>
-                                Hủy
-                            </button>
-                        </div>
+                    <!-- Thông báo cho các trạng thái không thể hủy -->
+                    <div *ngIf="!canCancelOrder(order.status) && order.status !== 'cancelled' && order.status !== 'delivered'"
+                        class="info-message">
+                        <span class="info-icon">ℹ️</span>
+                        <span class="info-text">Đơn hàng đang được xử lý</span>
+                    </div>
 
-                        <div *ngSwitchCase="'ready_pickup'" class="action-group">
-                            <button class="btn btn-primary" (click)="shipOrder(order)">
-                                <span class="btn-icon">🚚</span>
-                                Giao hàng
-                            </button>
-                            <button class="btn btn-warning" (click)="cancelOrder(order)">
-                                <span class="btn-icon">❌</span>
-                                Hủy
-                            </button>
-                        </div>
+                    <div *ngIf="order.status === 'delivered'" class="success-message">
+                        <span class="success-icon">✅</span>
+                        <span class="success-text">Đơn hàng đã hoàn thành</span>
+                    </div>
 
-                        <div *ngSwitchCase="'shipping'" class="action-group">
-                            <button class="btn btn-success" (click)="completeOrder(order)">
-                                <span class="btn-icon">✅</span>
-                                Hoàn thành
-                            </button>
-                        </div>
-                    </ng-container>
+                    <div *ngIf="order.status === 'cancelled'" class="cancelled-message">
+                        <span class="cancelled-icon">❌</span>
+                        <span class="cancelled-text">Đơn hàng đã bị hủy</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -243,6 +227,16 @@
                 </h3>
                 <div class="cancel-reason-box">
                     {{selectedOrder.cancelReason}}
+                </div>
+            </div>
+
+            <!-- Action trong modal -->
+            <div class="modal-section" *ngIf="canCancelOrder(selectedOrder.status)">
+                <div class="modal-actions">
+                    <button class="btn btn-danger btn-large" (click)="cancelOrder(selectedOrder)">
+                        <span class="btn-icon">❌</span>
+                        Hủy đơn hàng
+                    </button>
                 </div>
             </div>
         </div>

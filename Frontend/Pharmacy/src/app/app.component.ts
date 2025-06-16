@@ -44,12 +44,12 @@ export class AppComponent implements OnInit {
 
   loadSession() {
     const token = localStorage.getItem('token');
-    
+
     if (token) {
       try {
         this.account = JSON.parse(atob(token.split('.')[1]));
-        this.account.username = this.account.sub
-        console.log(this.account)
+        this.account.username = this.account.sub;
+        console.log(this.account);
       } catch {
         this.account = {};
       }
@@ -180,5 +180,8 @@ export class AppComponent implements OnInit {
   }
   goToThank() {
     window.location.href = '/thank-you';
+  }
+  gotoUserInfo() {
+    window.location.href = '/user-info';
   }
 }

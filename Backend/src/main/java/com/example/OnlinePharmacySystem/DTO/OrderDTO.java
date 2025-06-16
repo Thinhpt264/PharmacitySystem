@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Builder
+
 public class OrderDTO {
     private int id;
     private int accountId;
@@ -20,6 +21,7 @@ public class OrderDTO {
     private Date orderDate;
     private int status;
     private double totalPrice;
+    private int delivery_info_id;
     private List<OrderDetailDTO> orderDetails;
 
 }

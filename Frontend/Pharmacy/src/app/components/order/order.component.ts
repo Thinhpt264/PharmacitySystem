@@ -1,4 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AuthService } from 'src/app/service/auth.service';
+import { CheckoutService } from 'src/app/service/checkout.service';
+import { DeliveryInforService } from 'src/app/service/delivery-info.service';
 
 @Component({
   selector: 'app-root',
@@ -10,114 +13,25 @@ export class OrderComponent implements OnInit, OnDestroy {
   showModal: boolean = false;
   selectedOrder: any = null;
   private scrollY = 0;
+  constructor(
+    private checkoutService: CheckoutService,
+    private authService: AuthService,
+    private deliveryInforService: DeliveryInforService // Dịch vụ để lấy địa chỉ giao hàng // Thay thế bằng dịch vụ thực tế
+  ) {}
+  getAddressById(id: number): string {
+    var address = '';
+    this.deliveryInforService.findById(id).then((res) => {
+      console.log(res);
+      address =
+        res.data.province + ', ' + res.data.district + ', ' + res.data.ward;
+      console.log(address);
+    });
+    return address;
+  }
 
   // Danh sách đơn hàng mẫu
-  orders: any[] = [
-    {
-      id: 'DH001',
-      customerName: 'Nguyễn Văn A',
-      phone: '0123456789',
-      totalAmount: 250000,
-      status: 'pending_confirm',
-      createdDate: '2024-06-15 10:30',
-      items: [
-        { name: 'Paracetamol 500mg', quantity: 2, price: 15000 },
-        { name: 'Vitamin C 1000mg', quantity: 1, price: 220000 },
-      ],
-      address: '123 Nguyễn Trãi, Quận 1, TP.HCM',
-    },
-    {
-      id: 'DH001',
-      customerName: 'Nguyễn Văn B',
-      phone: '0123456789',
-      totalAmount: 250000,
-      status: 'pending_confirm',
-      createdDate: '2024-06-15 10:30',
-      items: [
-        { name: 'Paracetamol 500mg', quantity: 2, price: 15000 },
-        { name: 'Vitamin C 1000mg', quantity: 1, price: 220000 },
-      ],
-      address: '123 Nguyễn Trãi, Quận 1, TP.HCM',
-    },
-    {
-      id: 'DH001',
-      customerName: 'Nguyễn Văn C',
-      phone: '0123456789',
-      totalAmount: 250000,
-      status: 'pending_confirm',
-      createdDate: '2024-06-15 10:30',
-      items: [
-        { name: 'Paracetamol 500mg', quantity: 2, price: 15000 },
-        { name: 'Vitamin C 1000mg', quantity: 1, price: 220000 },
-      ],
-      address: '123 Nguyễn Trãi, Quận 1, TP.HCM',
-    },
-    {
-      id: 'DH002',
-      customerName: 'Trần Thị B',
-      phone: '0987654321',
-      totalAmount: 180000,
-      status: 'pending_payment',
-      createdDate: '2024-06-15 11:15',
-      items: [
-        { name: 'Thuốc ho Am Bảo', quantity: 1, price: 45000 },
-        { name: 'Gel bôi ngoài da', quantity: 1, price: 135000 },
-      ],
-      address: '456 Lê Lợi, Quận 3, TP.HCM',
-    },
-    {
-      id: 'DH003',
-      customerName: 'Lê Văn C',
-      phone: '0369852147',
-      totalAmount: 320000,
-      status: 'ready_pickup',
-      createdDate: '2024-06-14 14:20',
-      items: [
-        { name: 'Thuốc kháng sinh', quantity: 1, price: 150000 },
-        { name: 'Thuốc giảm đau', quantity: 2, price: 85000 },
-      ],
-      address: '789 Hai Bà Trưng, Quận 1, TP.HCM',
-    },
-    {
-      id: 'DH004',
-      customerName: 'Phạm Thị D',
-      phone: '0741258963',
-      totalAmount: 195000,
-      status: 'shipping',
-      createdDate: '2024-06-14 09:45',
-      items: [
-        { name: 'Thuốc tiêu hóa', quantity: 1, price: 95000 },
-        { name: 'Thuốc bổ máu', quantity: 1, price: 100000 },
-      ],
-      address: '321 Võ Văn Tần, Quận 3, TP.HCM',
-    },
-    {
-      id: 'DH005',
-      customerName: 'Hoàng Văn E',
-      phone: '0258147369',
-      totalAmount: 420000,
-      status: 'delivered',
-      createdDate: '2024-06-13 16:30',
-      completedDate: '2024-06-14 10:15',
-      items: [
-        { name: 'Thuốc tim mạch', quantity: 1, price: 280000 },
-        { name: 'Thuốc huyết áp', quantity: 1, price: 140000 },
-      ],
-      address: '654 Nguyễn Huệ, Quận 1, TP.HCM',
-    },
-    {
-      id: 'DH006',
-      customerName: 'Vũ Thị F',
-      phone: '0147852369',
-      totalAmount: 160000,
-      status: 'cancelled',
-      createdDate: '2024-06-13 13:20',
-      cancelledDate: '2024-06-13 15:45',
-      cancelReason: 'Khách hàng hủy do không cần nữa',
-      items: [{ name: 'Thuốc cảm cúm', quantity: 2, price: 80000 }],
-      address: '987 Lý Tự Trọng, Quận 1, TP.HCM',
-    },
-  ];
+  orders: any[] = [];
+  orders1: any[];
 
   tabs: any[] = [
     { key: 'pending_confirm', label: 'Chờ xác nhận', icon: '⏳', count: 0 },
@@ -130,11 +44,68 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.updateTabCounts();
+    this.findOrderByAccountId(this.authService.getId());
   }
 
   ngOnDestroy(): void {
     if (this.showModal) {
       this.enableBodyScroll();
+    }
+  }
+  async findOrderByAccountId(accountId: any): Promise<void> {
+    try {
+      const response = await this.checkoutService.findByAccountIdAndStatus(
+        accountId
+      );
+      this.orders1 = response.data || [];
+
+      const statusMap: any = {
+        0: 'pending_confirm',
+        1: 'pending_payment',
+        2: 'ready_pickup',
+        3: 'shipping',
+        4: 'delivered',
+        5: 'cancelled',
+      };
+
+      // 🔁 Duyệt qua đơn và lấy địa chỉ cho từng đơn hàng
+      const enrichedOrders = await Promise.all(
+        this.orders1.map(async (order) => {
+          const items = order.orderDetails.map((detail: any) => ({
+            name: `Sản phẩm ${detail.productId}`,
+            quantity: detail.quantity,
+            price: detail.unitPrice,
+          }));
+
+          // GỌI API LẤY ĐỊA CHỈ
+          const addressRes = await this.deliveryInforService.findById(
+            order.delivery_info_id
+          );
+          const address =
+            addressRes.data.province +
+            ', ' +
+            addressRes.data.district +
+            ', ' +
+            addressRes.data.ward;
+
+          return {
+            id: `DH${String(order.id).padStart(3, '0')}`,
+            customerName: this.authService.getUsername(),
+            phone: this.authService.getPhone(),
+            totalAmount: order.totalPrice,
+            status: statusMap[order.status] || 'pending_confirm',
+            createdDate: order.orderDate + ' 10:30',
+            items,
+            address,
+            note: order.note,
+          };
+        })
+      );
+
+      this.orders = enrichedOrders;
+      this.updateTabCounts();
+    } catch (error) {
+      console.error('Lỗi khi lấy đơn hàng hoặc địa chỉ:', error);
     }
   }
 
@@ -190,39 +161,26 @@ export class OrderComponent implements OnInit, OnDestroy {
     return date.toLocaleString('vi-VN');
   }
 
-  confirmOrder(order: any): void {
-    if (confirm(`Xác nhận đơn hàng ${order.id}?`)) {
-      order.status = 'pending_payment';
-      this.updateTabCounts();
-      alert('Đã xác nhận đơn hàng thành công!');
-    }
+  // Chỉ cho phép hủy đơn hàng ở 2 trạng thái đầu
+  canCancelOrder(status: string): boolean {
+    return status === 'pending_confirm' || status === 'pending_payment';
   }
 
   cancelOrder(order: any): void {
+    if (!this.canCancelOrder(order.status)) {
+      alert('Không thể hủy đơn hàng ở trạng thái này!');
+      return;
+    }
+
     const reason = prompt('Nhập lý do hủy đơn hàng:');
-    if (reason) {
-      order.status = 'cancelled';
-      order.cancelledDate = new Date().toISOString();
-      order.cancelReason = reason;
-      this.updateTabCounts();
-      alert('Đã hủy đơn hàng!');
-    }
-  }
-
-  shipOrder(order: any): void {
-    if (confirm(`Giao đơn hàng ${order.id}?`)) {
-      order.status = 'shipping';
-      this.updateTabCounts();
-      alert('Đã chuyển đơn hàng sang trạng thái giao hàng!');
-    }
-  }
-
-  completeOrder(order: any): void {
-    if (confirm(`Xác nhận đã giao thành công đơn hàng ${order.id}?`)) {
-      order.status = 'delivered';
-      order.completedDate = new Date().toISOString();
-      this.updateTabCounts();
-      alert('Đã hoàn thành đơn hàng!');
+    if (reason && reason.trim()) {
+      if (confirm(`Bạn có chắc chắn muốn hủy đơn hàng ${order.id}?`)) {
+        order.status = 'cancelled';
+        order.cancelledDate = new Date().toISOString();
+        order.cancelReason = reason.trim();
+        this.updateTabCounts();
+        alert('Đã hủy đơn hàng thành công!');
+      }
     }
   }
 
