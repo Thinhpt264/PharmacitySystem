@@ -93,10 +93,9 @@ public class OrderController {
 
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<OrderDTO>>> searchByAccountAndStatus(
-            @RequestParam("accountId") int accountId,
-            @RequestParam("status") int status) {
+            @RequestParam("accountId") int accountId) {
         try {
-            List<OrderDTO> orders = orderService.findByStatusAndAccountId(status, accountId);
+            List<OrderDTO> orders = orderService.findByAccountId(accountId);
             return ResponseEntity.ok(
                     new ApiResponse<>(true, "Lấy danh sách đơn hàng thành công", orders)
             );

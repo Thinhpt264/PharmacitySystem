@@ -13,7 +13,7 @@ public interface OrderService {
 
     List<OrderDTO> findAll();
 
-    List<OrderDTO> findByStatusAndAccountId(int status, int userId);
+    List<OrderDTO> findByAccountId(int accountId);
 
     void updateOrder(OrderDTO orderDTO);
 
