@@ -1,6 +1,5 @@
 package com.example.OnlinePharmacySystem.services.impl;
 
-import com.example.OnlinePharmacySystem.DTO.OrderDTO;
 import com.example.OnlinePharmacySystem.DTO.OrderDetailDTO;
 import com.example.OnlinePharmacySystem.repositories.OrderDetailRepository;
 import com.example.OnlinePharmacySystem.services.OrderDetailService;
@@ -23,7 +22,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
     @Override
     public List<OrderDetailDTO> findByOrderId(int id) {
-        return orderDetailRepository.findByOrderId(id)
+        return orderDetailRepository.findOrderDetailsByOrderId(id)
                 .stream()
                 .map(orderDetail -> modelMapper.map(orderDetail, OrderDetailDTO.class))
                 .toList();

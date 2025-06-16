@@ -203,7 +203,7 @@
                     
                       <!-- Nếu account có username thì là đã đăng nhập -->
                       <ul *ngIf="account?.username; else guestMenu">
-                        <li><a routerLink="/account">Tài khoản của tôi</a></li>
+                        <li><a (click)="gotoUserInfo()">Tài khoản của tôi</a></li>
                         <li><a href="#" (click)="logout()">Đăng xuất</a></li>
                       </ul>
                     

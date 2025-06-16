@@ -25,7 +25,7 @@ public class AccountDTO {
 	@NotBlank(message = "{email.not.blank}")
 	@Email(message = "{email.invalid}")
 	private String email;
-
+	private  String phone;
 	private boolean status;
 
 	private LocalDate dob;
@@ -122,5 +122,12 @@ public class AccountDTO {
 
 	public void setSecurity_code(String security_code) {
 		this.security_code = security_code;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 }

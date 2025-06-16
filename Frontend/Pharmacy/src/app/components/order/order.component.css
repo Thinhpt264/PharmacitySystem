@@ -814,3 +814,66 @@
     justify-content: center;
   }
 }
+
+/* ...existing CSS... */
+
+/* Info Messages */
+.info-message, .success-message, .cancelled-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .info-message {
+    background: #e3f2fd;
+    color: #1976d2;
+    border: 1px solid #bbdefb;
+  }
+  
+  .success-message {
+    background: #e8f5e8;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+  }
+  
+  .cancelled-message {
+    background: #ffebee;
+    color: #d32f2f;
+    border: 1px solid #ffcdd2;
+  }
+  
+  .info-icon, .success-icon, .cancelled-icon {
+    font-size: 1rem;
+  }
+  
+  .info-text, .success-text, .cancelled-text {
+    font-size: 0.85rem;
+  }
+  
+  /* Modal Actions */
+  .modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .btn-large {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+  
+  /* Responsive cho messages */
+  @media (max-width: 768px) {
+    .info-message, .success-message, .cancelled-message {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+    
+    .info-text, .success-text, .cancelled-text {
+      font-size: 0.75rem;
+    }
+  }

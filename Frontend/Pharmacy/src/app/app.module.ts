@@ -48,6 +48,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './service/auth.interceptor';
 import { ThankYouComponent } from './components/thank-you/thank-you.component';
 import { OrderComponent } from './components/order/order.component';
+import { UserInfoComponent } from './components/user-info/user-info.component';
+import { DeliveryInforService } from './service/delivery-info.service';
 
 
 
@@ -71,7 +73,8 @@ import { OrderComponent } from './components/order/order.component';
     CustomCurrencyPipe,
     CheckoutComponent,
     ThankYouComponent,
-    OrderComponent
+    OrderComponent,
+    UserInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -101,6 +104,7 @@ import { OrderComponent } from './components/order/order.component';
     ValidationService,
     BrandService,
     CartService,
+    DeliveryInforService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -1,0 +1,197 @@
+<div class="user-info-container">
+    <!-- Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <span class="title-icon">👤</span>
+            Thông tin cá nhân
+        </h1>
+    </div>
+
+    <!-- User Profile Section -->
+    <div class="profile-section">
+        <div class="profile-card">
+            <!-- Avatar Section -->
+            <div class="avatar-section">
+                <div class="avatar-container">
+                    <img [src]="userInfo.avatar" [alt]="userInfo.fullName" class="avatar-img">
+                    <div class="avatar-overlay">
+                        <label for="avatar-upload" class="avatar-upload-btn">
+                            <span class="upload-icon">📷</span>
+                            <span>Đổi ảnh</span>
+                        </label>
+                        <input type="file" id="avatar-upload" accept="image/*" (change)="onAvatarChange($event)" hidden>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Info -->
+            <div class="user-details">
+                <h2 class="user-name">{{userInfo.fullName}}</h2>
+                <div class="user-info-grid">
+                    <div class="info-item">
+                        <span class="info-icon">📧</span>
+                        <div class="info-content">
+                            <label>Email</label>
+                            <span>{{userInfo.email}}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">📱</span>
+                        <div class="info-content">
+                            <label>Số điện thoại</label>
+                            <span>{{userInfo.phone}}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">📅</span>
+                        <div class="info-content">
+                            <label>Ngày tham gia</label>
+                            <span>{{userInfo.joinDate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Address Section -->
+    <div class="address-section">
+        <div class="section-header">
+            <h3 class="section-title">
+                <span class="section-icon">📍</span>
+                Địa chỉ nhận hàng
+            </h3>
+            <button class="btn btn-primary" (click)="openAddressModal()">
+                <span class="btn-icon">➕</span>
+                Thêm địa chỉ
+            </button>
+        </div>
+
+        <!-- Address List -->
+        <div class="address-list">
+            <div class="address-card" *ngFor="let address of userAddresses1">
+                <div class="address-header">
+                    <div class="address-name">
+                        <strong>Địa chỉ {{address.id}}</strong>
+                        <span *ngIf="address.isDefault" class="default-badge">Mặc định</span>
+                    </div>
+                    <div class="address-actions">
+                        <button class="action-btn edit-btn" title="Sửa">
+                            <span>✏️</span>
+                        </button>
+                        <button class="action-btn delete-btn" (click)="deleteAddress(address.id)" title="Xóa">
+                            <span>🗑️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="address-details">
+                    <p class="address-phone">
+                        <span class="detail-icon">📞</span>
+                        {{address.phone}}
+                    </p>
+                    <p class="address-full">
+                        <span class="detail-icon">📍</span>
+                        {{address.province}}, {{address.district}}, {{address.ward}} <br>Chi tiết :{{address.addressDetail}}
+                    </p>
+                </div>
+
+                <div class="address-footer" *ngIf="!address.isDefault">
+                    <button class="btn btn-outline" (click)="setDefaultAddress(address.id)">
+                        Đặt làm mặc định
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Address -->
+<div class="modal-overlay" *ngIf="showAddressModal" (click)="onBackdropClick($event)">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                <span class="modal-icon">📍</span>
+                Thêm địa chỉ mới
+            </h2>
+            <button class="close-btn" (click)="closeAddressModal()">
+                <span>✕</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form class="address-form">
+                <!-- Số điện thoại -->
+                <div class="form-group">
+                    <label class="form-label">Số điện thoại <span class="required">*</span></label>
+                    <input type="tel" class="form-input" [(ngModel)]="addressForm.phone" name="phone"
+                        placeholder="Nhập số điện thoại">
+                </div>
+
+                <!-- Tỉnh thành -->
+                <div class="form-group">
+                    <label class="form-label">Tỉnh/Thành phố <span class="required">*</span></label>
+                    <select class="form-select" (change)="onProvinceChange($event)" [disabled]="loadingProvinces">
+                        <option value="">Chọn tỉnh/thành phố</option>
+                        <option *ngFor="let province of provinces" [value]="province.code">
+                            {{province.name}}
+                        </option>
+                    </select>
+                    <div *ngIf="loadingProvinces" class="loading-text">Đang tải...</div>
+                </div>
+
+                <!-- Quận huyện -->
+                <div class="form-group">
+                    <label class="form-label">Quận/Huyện <span class="required">*</span></label>
+                    <select class="form-select" (change)="onDistrictChange($event)"
+                        [disabled]="!addressForm.provinceCode || loadingDistricts">
+                        <option value="">Chọn quận/huyện</option>
+                        <option *ngFor="let district of districts" [value]="district.code">
+                            {{district.name}}
+                        </option>
+                    </select>
+                    <div *ngIf="loadingDistricts" class="loading-text">Đang tải...</div>
+                </div>
+
+                <!-- Phường xã -->
+                <div class="form-group">
+                    <label class="form-label">Phường/Xã <span class="required">*</span></label>
+                    <select class="form-select" (change)="onWardChange($event)"
+                        [disabled]="!addressForm.districtCode || loadingWards">
+                        <option value="">Chọn phường/xã</option>
+                        <option *ngFor="let ward of wards" [value]="ward.code">
+                            {{ward.name}}
+                        </option>
+                    </select>
+                    <div *ngIf="loadingWards" class="loading-text">Đang tải...</div>
+                </div>
+
+                <!-- Địa chỉ chi tiết -->
+                <div class="form-group">
+                    <label class="form-label">Địa chỉ chi tiết <span class="required">*</span></label>
+                    <input type="text" class="form-input" [(ngModel)]="addressForm.addressDetail" name="addressDetail"
+                        placeholder="Số nhà, tên đường...">
+                </div>
+
+                <!-- Checkbox mặc định -->
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" [(ngModel)]="addressForm.isDefault" name="isDefault">
+                        <span class="checkmark"></span>
+                        Đặt làm địa chỉ mặc định
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="closeAddressModal()">
+                Hủy
+            </button>
+            <button class="btn btn-primary" (click)="addAddress()">
+                <span class="btn-icon">💾</span>
+                Lưu địa chỉ
+            </button>
+        </div>
+    </div>
+</div>

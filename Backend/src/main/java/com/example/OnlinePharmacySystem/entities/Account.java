@@ -42,6 +42,7 @@ public class Account {
 	private LocalDateTime last_login_at;
 	private LocalDate dob;
 	private int gender;
+	private String phone;
 	@Column(name = "security_expiration")
 	private LocalDateTime securityExpiration;
 	

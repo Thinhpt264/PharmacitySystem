@@ -9,10 +9,7 @@ import { lastValueFrom } from 'rxjs';
 export class CheckoutService {
   private baseApiUrl: string;
 
-  constructor(
-    private http: HttpClient,
-    private baseUrl: BaseUrlService
-  ) {
+  constructor(private http: HttpClient, private baseUrl: BaseUrlService) {
     this.baseApiUrl = this.baseUrl.getBaseUrl();
   }
 
@@ -42,4 +39,20 @@ export class CheckoutService {
       })
     );
   }
+  async findByAccountIdAndStatus(accountId: any): Promise<any> {
+    const url = `${this.baseApiUrl}api/v1/orders/search?accountId=`;
+    return await lastValueFrom(
+      this.http.get(url + accountId, {
+        headers: this.getAuthHeaders(),
+      })
+    );
+  }
+
+  //status của order
+  //0: Đang chờ xác nhận
+  //1: Đã xác nhận
+  //2: Đang chờ lấy hàng
+  //3: Đang giao hàng
+  //4: Đã giao hàng
+  //5: Đang chờ thanh toán
 }
