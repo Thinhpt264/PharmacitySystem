@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { CategoryService } from 'src/app/service/category.service';
 
 @Component({
@@ -10,7 +11,8 @@ export class HomeComponent implements OnInit {
 
   categories: any;
   constructor(
-    private categoryService : CategoryService
+    private categoryService: CategoryService,
+    private translate: TranslateService // Thêm TranslateService
   ){}
     ngOnInit(): void {
       this.findAll();

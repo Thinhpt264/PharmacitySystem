@@ -11,7 +11,7 @@
           <div class="col-md-7">
             <div class="ltn__top-bar-menu">
               <ul>
-                <li><a href="mailto:info@webmail.com?Subject=Flower%20greetings%20to%20you"><i class="icon-mail"></i>
+                <li><a href="mailto:trungtamthongbaoso15@gmail.com"><i class="icon-mail"></i>
                     trungtamthongbaoso15&#64;gmail.com</a></li>
                 <li><a href="locations.html"><i class="icon-placeholder"></i> Thu Duc, Ho Chi Minh </a></li>
               </ul>
@@ -25,12 +25,16 @@
                     <!-- ltn__language-menu -->
                     <div class="ltn__drop-menu ltn__currency-menu ltn__language-menu">
                       <ul>
-                        <li><a href="#" class="dropdown-toggle"><span class="active-currency">Tiếng Việt</span></a>
+                        <li>
+                          <a href="#" class="dropdown-toggle">
+                            <span class="active-currency">{{getCurrentLanguageLabel()}}</span>
+                          </a>
                           <ul>
-                            <li><a href="#">English</a></li>
-                            <li><a href="#">France</a></li>
-                            <li><a href="#">Chinese</a></li>
-                            
+                            <li>
+                              <a href="#" (click)="switchLanguage(); $event.preventDefault()">
+                                {{getOtherLanguageLabel()}}
+                              </a>
+                            </li>
                           </ul>
                         </li>
                       </ul>
@@ -55,71 +59,7 @@
       </div>
     </div>
     <!-- ltn__header-top-area end -->
-        <!-- Utilize Cart Menu Start -->
 
-        <!-- gio hang -->
-        <!-- <div id="ltn__utilize-cart-menu" class="ltn__utilize ltn__utilize-cart-menu">
-          <div class="ltn__utilize-menu-inner ltn__scrollbar">
-            <div class="ltn__utilize-menu-head">
-              <span class="ltn__utilize-menu-title">Cart</span>
-              <button class="ltn__utilize-close">×</button>
-            </div>
-            <div class="mini-cart-product-area ltn__scrollbar">
-              <div class="mini-cart-item clearfix">
-                <div class="mini-cart-img">
-                  <a href="#"><img src="assets/img/product/1.png" alt="Image"></a>
-                  <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
-                </div>
-                <div class="mini-cart-info">
-                  <h6><a href="#">Antiseptic Spray</a></h6>
-                  <span class="mini-cart-quantity">1 x $65.00</span>
-                </div>
-              </div>
-              <div class="mini-cart-item clearfix">
-                <div class="mini-cart-img">
-                  <a href="#"><img src="assets/img/product/2.png" alt="Image"></a>
-                  <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
-                </div>
-                <div class="mini-cart-info">
-                  <h6><a href="#">Digital Stethoscope</a></h6>
-                  <span class="mini-cart-quantity">1 x $85.00</span>
-                </div>
-              </div>
-              <div class="mini-cart-item clearfix">
-                <div class="mini-cart-img">
-                  <a href="#"><img src="assets/img/product/3.png" alt="Image"></a>
-                  <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
-                </div>
-                <div class="mini-cart-info">
-                  <h6><a href="#">Cosmetic Containers</a></h6>
-                  <span class="mini-cart-quantity">1 x $92.00</span>
-                </div>
-              </div>
-              <div class="mini-cart-item clearfix">
-                <div class="mini-cart-img">
-                  <a href="#"><img src="assets/img/product/4.png" alt="Image"></a>
-                  <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
-                </div>
-                <div class="mini-cart-info">
-                  <h6><a href="#">Thermometer Gun</a></h6>
-                  <span class="mini-cart-quantity">1 x $68.00</span>
-                </div>
-              </div>
-            </div>
-            <div class="mini-cart-footer">
-              <div class="mini-cart-sub-total">
-                <h5>Subtotal: <span>$310.00</span></h5>
-              </div>
-              <div class="btn-wrapper">
-                <a href="cart.html" class="theme-btn-1 btn btn-effect-1">View Cart</a>
-                <a href="cart.html" class="theme-btn-2 btn btn-effect-2">Checkout</a>
-              </div>
-              <p>Free Shipping on All Orders Over $100!</p>
-            </div>
-        
-          </div>
-        </div> -->
-        <!-- Utilize Cart Menu End -->
     <!-- ltn__header-middle-area start -->
     <div class="ltn__header-middle-area">
       <div class="container">
@@ -131,20 +71,10 @@
           </div>
           <div class="col header-contact-serarch-column d-none d-xl-block">
             <div class="header-contact-search">
-              <!-- header-feature-item -->
-              <div class="header-feature-item d-none">
-                <div class="header-feature-icon">
-                  <i class="icon-phone"></i>
-                </div>
-                <div class="header-feature-info">
-                  <h6>Phone</h6>
-                  <p><a href="tel:0123456789">+84 843 281 139</a></p>
-                </div>
-              </div>
               <!-- header-search-2 -->
               <div class="header-search-2">
                 <form id="#123" method="get" action="#">
-                  <input type="text" name="search" value="" placeholder="Tìm kiếm..." />
+                  <input type="text" name="search" value="" [placeholder]="'tim_kiem' | translate" />
                   <button type="submit">
                     <span><i class="icon-search"></i></span>
                   </button>
@@ -156,25 +86,6 @@
             <!-- header-options -->
             <div class="ltn__header-options">
               <ul>
-                <li class="d-none">
-                  <!-- ltn__currency-menu -->
-                  <div class="ltn__drop-menu ltn__currency-menu">
-                    <ul>
-                      <li><a href="#" class="dropdown-toggle"><span class="active-currency">USD</span></a>
-                        <ul>
-                          <li><a href="login.html">USD - US Dollar</a></li>
-                          <li><a href="wishlist.html">CAD - Canada Dollar</a></li>
-                          <li><a href="register.html">EUR - Euro</a></li>
-                          <li><a href="account.html">GBP - British Pound</a></li>
-                          <li><a href="wishlist.html">INR - Indian Rupee</a></li>
-                          <li><a href="wishlist.html">BDT - Bangladesh Taka</a></li>
-                          <li><a href="wishlist.html">JPY - Japan Yen</a></li>
-                          <li><a href="wishlist.html">AUD - Australian Dollar</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
                 <li class="d-none---">
                   <!-- header-search-1 -->
                   <div class="header-search-wrap d-block d-xl-none">
@@ -186,7 +97,7 @@
                     </div>
                     <div class="header-search-1-form">
                       <form id="#" method="get" action="#">
-                        <input type="text" name="search" value="" placeholder="Search here..." />
+                        <input type="text" name="search" value="" [placeholder]="'tim_kiem' | translate" />
                         <button type="submit">
                           <span><i class="icon-search"></i></span>
                         </button>
@@ -198,24 +109,22 @@
                   <!-- user-menu -->
                   <div class="ltn__drop-menu user-menu">
                     <ul>
-                    <li>
-                      <a><i class="icon-user"></i></a>
-                    
-                      <!-- Nếu account có username thì là đã đăng nhập -->
-                      <ul *ngIf="account?.username; else guestMenu">
-                        <li><a (click)="gotoUserInfo()">Tài khoản của tôi</a></li>
-                        <li><a href="#" (click)="logout()">Đăng xuất</a></li>
-                      </ul>
-                    
-                      <!-- Nếu chưa đăng nhập -->
-                      <ng-template #guestMenu>
-                        <ul>
-                          <li><a [routerLink]="['/login']">Đăng nhập</a></li>
-                          <!-- <li><a [routerLink]="['/register']">Đăng kí</a></li> -->
-                        </ul>
-                      </ng-template>
-                    </li>
+                      <li>
+                        <a><i class="icon-user"></i></a>
 
+                        <!-- Nếu account có username thì là đã đăng nhập -->
+                        <ul *ngIf="account?.username; else guestMenu">
+                          <li><a (click)="gotoUserInfo()">{{ 'tai_khoan_cua_toi' | translate }}</a></li>
+                          <li><a href="#" (click)="logout()">{{ 'dang_xuat' | translate }}</a></li>
+                        </ul>
+
+                        <!-- Nếu chưa đăng nhập -->
+                        <ng-template #guestMenu>
+                          <ul>
+                            <li><a [routerLink]="['/login']">{{ 'dang_nhap' | translate }}</a></li>
+                          </ul>
+                        </ng-template>
+                      </li>
                     </ul>
                   </div>
                 </li>
@@ -227,7 +136,8 @@
                         <i class="icon-shopping-cart"></i>
                         <sup>2</sup>
                       </span>
-                      <h6><span>Xin chào {{account.username}}</span> <span class="ltn__secondary-color"></span></h6>
+                      <h6><span>{{ 'xin_chao' | translate }} {{account.username}}</span> <span
+                          class="ltn__secondary-color"></span></h6>
                     </a>
                   </div>
                 </li>
@@ -246,7 +156,7 @@
           <div class="col-lg-12">
             <!-- Mobile Menu Button -->
             <div class="mobile-menu-toggle d-lg-none">
-              <span>MENU</span>
+              <span>{{ 'menu' | translate }}</span>
               <a href="#ltn__utilize-mobile-menu" class="ltn__utilize-toggle">
                 <svg viewBox="0 0 800 600">
                   <path d="M300,220 C300,220 520,220 540,220 C740,220 640,540 520,420 C440,340 300,200 300,200"
@@ -273,7 +183,7 @@
             <!-- CATEGORY-MENU-LIST START -->
             <div class="ltn__category-menu-wrap ltn__category-dropdown-hide ltn__category-menu-with-header-menu">
               <div class="ltn__category-menu-title">
-                <h2 class="section-bg-1--- ltn__secondary-bg text-color-white">Danh Mục </h2>
+                <h2 class="section-bg-1--- ltn__secondary-bg text-color-white">{{ 'danh_muc' | translate }}</h2>
               </div>
               <div class="ltn__category-menu-toggle ltn__one-line-active">
                 <ul>
@@ -303,14 +213,6 @@
                       </ul>
                     </li>
                   </ng-container>
-                  <!-- <li class="ltn__category-menu-more-item-parent">
-                    <a class="rx-default">
-                      More categories <span class="cat-thumb icon-plus"></span>
-                    </a>
-                    <a class="rx-show">
-                      Close menu <span class="cat-thumb icon-remove"></span>
-                    </a>
-                  </li> -->
                 </ul>
               </div>
             </div>
@@ -324,24 +226,27 @@
                     <ul>
                       <!-- HOME -->
                       <li class="menu-icon">
-                        <a (click)="goToHome()">Trang chủ</a>
+                        <a (click)="goToHome()">{{ 'trang_chu' | translate }}</a>
                       </li>
                       <li class="menu-icon">
-                        <a (click)="goToAbout()">Chúng tôi</a>
-                        
+                        <a (click)="goToAbout()">{{ 've_chung_toi' | translate }}</a>
                       </li>
-                      <li class="menu-icon"><a (click)="goToProducts()">Sản phẩm</a>
-                        
+                      <li class="menu-icon">
+                        <a (click)="goToProducts()">{{ 'san_pham' | translate }}</a>
                       </li>
-                      <li class="menu-icon"><a (click)="goToLocations()">Thông tin</a>
+                      <li class="menu-icon">
+                        <a (click)="goToLocations()">{{ 'thong_tin' | translate }}</a>
                         <ul>
-                          <li><a (click)="goToServices()">Cửa hàng gần bạn</a></li>
-                          <li><a (click)="goToServices()">Giấy phép kinh doanh</a></li>
-                          <li><a (click)="goToServices()">Hệ thống bán lẻ</a></li>
-                          <li><a (click)="goToServices()">Y tế</a></li>
+                          <li><a (click)="goToOrder()">{{ 'theo_doi_don_hang' | translate }}</a></li>
+                          <li><a (click)="goToServices()">{{ 'cua_hang_gan_ban' | translate }}</a></li>
+                          <li><a (click)="goToServices()">{{ 'giay_phep_kinh_doanh' | translate }}</a></li>
+                          <li><a (click)="goToServices()">{{ 'he_thong_ban_le' | translate }}</a></li>
+                          <li><a (click)="goToServices()">{{ 'y_te' | translate }}</a></li>
                         </ul>
                       </li>
-                      <li class="menu-icon"><a (click)="goToContact()">Liên hệ</a></li>
+                      <li class="menu-icon">
+                        <a (click)="goToContact()">{{ 'lien_he' | translate }}</a>
+                      </li>
                     </ul>
                   </div>
                 </nav>
@@ -350,8 +255,11 @@
           </div>
           <div class="col-lg-2 align-self-center d-none d-xl-block">
             <div class="header-contact-info text-end">
-              <a class="font-weight-6 ltn__primary-color" href="tel:+123456789"><span class="ltn__secondary-color"><i
-                    class="icon-call font-weight-7"></i></span> +84 843 281 139</a>
+              <a class="font-weight-6 ltn__primary-color" href="tel:+84843281139">
+                <span class="ltn__secondary-color">
+                  <i class="icon-call font-weight-7"></i>
+                </span> +84 843 281 139
+              </a>
             </div>
           </div>
         </div>
@@ -361,24 +269,7 @@
   </header>
   <!-- HEADER AREA END -->
   <router-outlet></router-outlet>
-  <!-- CALL TO ACTION START (call-to-action-6) -->
-  <div class="ltn__call-to-action-area call-to-action-6 before-bg-bottom d-none" data-bs-bg="assets/img/1.jpg--">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="call-to-action-inner call-to-action-inner-6 ltn__secondary-bg position-relative text-center---">
-            <div class="coll-to-info text-color-white">
-              <h1>Buy medical disposable face mask <br> to protect your loved ones</h1>
-            </div>
-            <div class="btn-wrapper">
-              <a class="btn btn-effect-3 btn-white" href="shop.html">Explore Products <i class="icon-next"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- CALL TO ACTION END -->
+
   <!-- FOOTER AREA START -->
   <footer class="ltn__footer-area">
     <div class="footer-top-area section-bg-2 plr--5">
@@ -391,7 +282,7 @@
                   <img [src]="'assets/img/logo-2.png'" alt="Logo">
                 </div>
               </div>
-              <p>T-Medicine luôn đặt sức khỏe của bạn lên hàng đầu. </p>
+              <p>{{ 'mo_ta_cong_ty' | translate }}</p>
               <div class="footer-address">
                 <ul>
                   <li>
@@ -407,7 +298,7 @@
                       <i class="icon-call"></i>
                     </div>
                     <div class="footer-address-info">
-                      <p><a href="tel:+0123-456789">+84 843 281 139</a></p>
+                      <p><a href="tel:+84843281139">+84 843 281 139</a></p>
                     </div>
                   </li>
                   <li>
@@ -415,7 +306,7 @@
                       <i class="icon-mail"></i>
                     </div>
                     <div class="footer-address-info">
-                      <p><a href="mailto:example@example.com">trungtamthongbaoso15&#64;gmail.com</a></p>
+                      <p><a href="mailto:trungtamthongbaoso15@gmail.com">trungtamthongbaoso15&#64;gmail.com</a></p>
                     </div>
                   </li>
                 </ul>
@@ -432,15 +323,15 @@
           </div>
           <div class="col-xl-2 col-md-6 col-sm-6 col-12">
             <div class="footer-widget footer-menu-widget clearfix">
-              <h4 class="footer-title">Khắp cả nước</h4>
+              <h4 class="footer-title">{{ 'khap_ca_nuoc' | translate }}</h4>
               <div class="footer-menu">
                 <ul>
-                  <li><a href="about.html">Hà Nội</a></li>
-                  <li><a href="blog.html">Hải Phòng</a></li>
-                  <li><a href="shop.html">Huế</a></li>
-                  <li><a href="locations.html">Đà Nẵng</a></li>
-                  <li><a href="faq.html">Tp.Hồ Chí Minh</a></li>
-                  <li><a href="contact.html">Cần Thơ</a></li>
+                  <li><a href="about.html">{{ 'ha_noi' | translate }}</a></li>
+                  <li><a href="blog.html">{{ 'hai_phong' | translate }}</a></li>
+                  <li><a href="shop.html">{{ 'hue' | translate }}</a></li>
+                  <li><a href="locations.html">{{ 'da_nang' | translate }}</a></li>
+                  <li><a href="faq.html">{{ 'tp_ho_chi_minh' | translate }}</a></li>
+                  <li><a href="contact.html">{{ 'can_tho' | translate }}</a></li>
                   <li><a href="contact.html">...</a></li>
                 </ul>
               </div>
@@ -448,52 +339,44 @@
           </div>
           <div class="col-xl-2 col-md-6 col-sm-6 col-12">
             <div class="footer-widget footer-menu-widget clearfix">
-              <h4 class="footer-title">Dịch vụ</h4>
+              <h4 class="footer-title">{{ 'dich_vu' | translate }}</h4>
               <div class="footer-menu">
                 <ul>
-                  <li><a href="order-tracking.html">Hỗ trợ 24/24 </a></li>
-                  <li><a href="wishlist.html">Tư vấn triệu chứng bệnh</a></li>
-                  <li><a href="login.html">Bán lẻ trên toàn quốc</a></li>
-                  <li><a href="account.html">Thành viên</a></li>
-                  <li><a href="about.html">Đa dạng thuốc</a></li>
-                  <li><a href="about.html">Toa thuốc đặc trị</a></li>
-                  <li><a href="about.html">Đội ngũ bác sĩ </a></li>
+                  <li><a href="order-tracking.html">{{ 'ho_tro_24_24' | translate }}</a></li>
+                  <li><a href="wishlist.html">{{ 'tu_van_trieu_chung_benh' | translate }}</a></li>
+                  <li><a href="login.html">{{ 'ban_le_toan_quoc' | translate }}</a></li>
+                  <li><a href="account.html">{{ 'thanh_vien' | translate }}</a></li>
+                  <li><a href="about.html">{{ 'da_dang_thuoc' | translate }}</a></li>
+                  <li><a href="about.html">{{ 'toa_thuoc_dac_tri' | translate }}</a></li>
+                  <li><a href="about.html">{{ 'doi_ngu_bac_si' | translate }}</a></li>
                 </ul>
               </div>
             </div>
           </div>
           <div class="col-xl-2 col-md-6 col-sm-6 col-12">
             <div class="footer-widget footer-menu-widget clearfix">
-              <h4 class="footer-title">Quyền lợi</h4>
+              <h4 class="footer-title">{{ 'quyen_loi' | translate }}</h4>
               <div class="footer-menu">
                 <ul>
-                  <li><a href="login.html">Miễn phí vận chuyển</a></li>
-                  <li><a href="account.html">Theo dõi tình trạng bệnh</a></li>
-                  <li><a href="wishlist.html">Thanh toán nhanh chóng</a></li>
-                  <li><a href="order-tracking.html">Nhận hàng và thanh toán</a></li>
-                  <li><a href="order-tracking.html">Đội ngũ dược sĩ chuyên</a></li>
-                  <li><a href="faq.html">Bảo mật</a></li>
-                  <li><a href="contact.html">Giải đáp thắc mắc</a></li>
+                  <li><a href="login.html">{{ 'mien_phi_van_chuyen' | translate }}</a></li>
+                  <li><a href="account.html">{{ 'theo_doi_tinh_trang_benh' | translate }}</a></li>
+                  <li><a href="wishlist.html">{{ 'thanh_toan_nhanh_chong' | translate }}</a></li>
+                  <li><a href="order-tracking.html">{{ 'nhan_hang_va_thanh_toan' | translate }}</a></li>
+                  <li><a href="order-tracking.html">{{ 'doi_ngu_duoc_si_chuyen' | translate }}</a></li>
+                  <li><a href="faq.html">{{ 'bao_mat' | translate }}</a></li>
+                  <li><a href="contact.html">{{ 'giai_dap_thac_mac' | translate }}</a></li>
                 </ul>
               </div>
             </div>
           </div>
           <div class="col-xl-3 col-md-6 col-sm-12 col-12">
             <div class="footer-widget footer-newsletter-widget">
-              <h4 class="footer-title">Đội ngũ chúng tôi gồm</h4>
+              <h4 class="footer-title">{{ 'doi_ngu_chung_toi_gom' | translate }}</h4>
               <ul>
-                <li><a href="login.html">Phan The Thinh </a></li>
+                <li><a href="login.html">Phan The Thinh</a></li>
                 <li><a href="account.html">Nguyen Tran Phuc Thanh</a></li>
               </ul>
-              <!-- <div class="footer-newsletter">
-                <form action="#">
-                  <input type="email" name="email" placeholder="Email*">
-                  <div class="btn-wrapper">
-                    <button class="theme-btn-1 btn" type="submit"><i class="fas fa-location-arrow"></i></button>
-                  </div>
-                </form>
-              </div> -->
-              <h5 class="mt-30">Hỗ trợ thanh toán</h5>
+              <h5 class="mt-30">{{ 'ho_tro_thanh_toan' | translate }}</h5>
               <img src="assets/img/icons/payment-4.png" alt="Payment Image">
             </div>
           </div>
@@ -505,15 +388,15 @@
         <div class="row">
           <div class="col-md-6 col-12">
             <div class="ltn__copyright-design clearfix">
-              <p>All Rights Reserved Company <span class="current-year"></span></p>
+              <p>{{ 'ban_quyen' | translate }} <span class="current-year"></span></p>
             </div>
           </div>
           <div class="col-md-6 col-12 align-self-center">
             <div class="ltn__copyright-menu text-end">
               <ul>
-                <li><a href="#">Điều khoản & điều kiện</a></li>
-                <li><a href="#">Bản quyền</a></li>
-                <li><a href="#">Chính sách</a></li>
+                <li><a href="#">{{ 'dieu_khoan_dieu_kien' | translate }}</a></li>
+                <li><a href="#">{{ 'ban_quyen' | translate }}</a></li>
+                <li><a href="#">{{ 'chinh_sach' | translate }}</a></li>
               </ul>
             </div>
           </div>
