@@ -165,5 +165,20 @@
   "thanh_toan_thanh_cong": "Thanh toán thành công!",
   "cam_on_da_mua_hang": "Cảm ơn bạn đã mua hàng tại cửa hàng của chúng tôi.",
   "xac_nhan_email": "Vui lòng xác nhận email của bạn để hoàn tất đơn hàng.",
-  "trang_chu_quay_lai": "Quay lại trang chủ"
+  "trang_chu_quay_lai": "Quay lại trang chủ",
+  "danh_gia_khach_hang": "Đánh giá khách hàng",
+  "danh_gia": "đánh giá",
+  "nguoi_dung": "Người dùng",
+  "vua_xong": "Vừa xong",
+  "tra_loi": "Trả lời",
+  "huy": "Hủy",
+  "nhap_tra_loi": "Nhập nội dung trả lời...",
+  "gui_tra_loi": "Gửi trả lời",
+  "chua_co_danh_gia": "Chưa có đánh giá nào cho sản phẩm này",
+  "them_danh_gia": "Thêm đánh giá",
+  "danh_gia_cua_ban": "Đánh giá của bạn",
+  "nhap_binh_luan": "Nhập nội dung bình luận...",
+  "nhap_ten": "Nhập tên của bạn...",
+  "nhap_email": "Nhập email của bạn...",
+  "gui_binh_luan": "Gửi bình luận"
 }

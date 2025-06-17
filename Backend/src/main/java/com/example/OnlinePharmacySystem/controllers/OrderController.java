@@ -39,7 +39,7 @@ public class OrderController {
         }
     }
     @GetMapping("/accept/{orderId}")
-    public ResponseEntity<ApiResponse<OrderDTO>> acceptOrder(@PathVariable("orderId") int orderId) {
+    public ResponseEntity<ApiResponse<Object>> acceptOrder(@PathVariable("orderId") int orderId) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
@@ -48,9 +48,9 @@ public class OrderController {
                 orderDTO.setStatus(1);
             }
 
-            OrderDTO savedOrder = orderService.save(orderDTO);
+            orderService.updateStatusOnly(orderDTO);
             return ResponseEntity.ok(
-                    new ApiResponse<>(true, " Đơn hàng được duyệt thành công", savedOrder)
+                    new ApiResponse<>(true, " Đơn hàng được duyệt thành công", true)
             );
         } catch (Exception e) {
             e.printStackTrace();

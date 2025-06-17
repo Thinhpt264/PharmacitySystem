@@ -56,6 +56,7 @@ import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-transla
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { LanguageService } from './service/language.service';
+import { CommentService } from './service/comment.service';
 
 // Factory function cho TranslateHttpLoader
 export function HttpLoaderFactory(http: HttpClient) {
@@ -124,6 +125,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CartService,
     DeliveryInforService,
     LanguageService,
+    CommentService,
 
     {
       provide: HTTP_INTERCEPTORS,
