@@ -51,7 +51,16 @@ import { OrderComponent } from './components/order/order.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { DeliveryInforService } from './service/delivery-info.service';
 
+// Thêm imports cho ngx-translate
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
+import { LanguageService } from './service/language.service';
 
+// Factory function cho TranslateHttpLoader
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -91,6 +100,15 @@ import { DeliveryInforService } from './service/delivery-info.service';
     ConfirmDialogModule,
     DialogModule,
     ReactiveFormsModule,
+    // Thêm TranslateModule với cấu hình
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+      defaultLanguage: 'vi',
+    }),
   ],
   providers: [
     BaseUrlService,
@@ -105,11 +123,13 @@ import { DeliveryInforService } from './service/delivery-info.service';
     BrandService,
     CartService,
     DeliveryInforService,
+    LanguageService,
+
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
-    }
+    },
     // { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent],

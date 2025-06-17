@@ -4686,6 +4686,11 @@ ul.wp-block-latest-posts.is-grid.alignwide {
     position: inherit !important; } }
 
 /* Menu Icon */
+.menu-icon {
+ 
+  cursor: pointer; }
+  .menu-icon:hover {
+    color: var(--ltn__primary-color); }
 .menu-icon > a {
   position: relative;
   cursor: pointer;

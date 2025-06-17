@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { CategoryService } from './service/category.service';
 import { BaseUrlService } from './service/baseUrl.service';
-import { filter } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   categories: any;
   imageOfObjectId: any;
   listChildrenCategory: any;
@@ -19,13 +20,27 @@ export class AppComponent implements OnInit {
   cateId: any;
   showLayout = true;
   account: any = {};
+
+  // Thêm properties cho language
+  currentLanguage: string = 'vi';
+  otherLanguage: string = 'en';
+  private languageSubscription!: Subscription;
+
   constructor(
     private router: Router,
     private categoryService: CategoryService,
     private baseUrl: BaseUrlService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private translate: TranslateService // Thêm TranslateService
   ) {
+    // Thiết lập ngôn ngữ mặc định
+    translate.setDefaultLang('vi');
+
+    // Lấy ngôn ngữ đã lưu từ localStorage
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'vi';
+    this.setLanguage(savedLanguage);
+
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
@@ -37,9 +52,41 @@ export class AppComponent implements OnInit {
         ].includes(event.urlAfterRedirects);
       });
   }
+
   ngOnInit(): void {
     this.findAll();
     this.loadSession();
+  }
+
+  ngOnDestroy(): void {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
+  }
+
+  // Thêm methods cho language management
+  setLanguage(language: string): void {
+    this.translate.use(language);
+    this.currentLanguage = language;
+    this.otherLanguage = language === 'vi' ? 'en' : 'vi';
+    localStorage.setItem('selectedLanguage', language);
+  }
+
+  switchLanguage(): void {
+    const newLanguage = this.currentLanguage === 'vi' ? 'en' : 'vi';
+    this.setLanguage(newLanguage);
+  }
+
+  getLanguageLabel(lang: string): string {
+    return lang === 'vi' ? 'Tiếng Việt' : 'English';
+  }
+
+  getCurrentLanguageLabel(): string {
+    return this.getLanguageLabel(this.currentLanguage);
+  }
+
+  getOtherLanguageLabel(): string {
+    return this.getLanguageLabel(this.otherLanguage);
   }
 
   loadSession() {
@@ -57,7 +104,11 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    const confirmed = confirm('Bạn có chắc chắn muốn đăng xuất không?');
+    // Sử dụng translate cho confirm message
+    const confirmMessage = this.translate.instant('xac_nhan_dang_xuat');
+    const confirmed = confirm(
+      confirmMessage || 'Bạn có chắc chắn muốn đăng xuất không?'
+    );
     if (confirmed) {
       localStorage.removeItem('token');
       this.account = {};
@@ -117,6 +168,7 @@ export class AppComponent implements OnInit {
       this.cachedChildren[id] = this.listChildrenCategory;
     });
   }
+
   goToCategoryById(categoryId: number) {
     console.log(categoryId);
     window.location.href = '/productCategory/' + categoryId;
@@ -183,5 +235,8 @@ export class AppComponent implements OnInit {
   }
   gotoUserInfo() {
     window.location.href = '/user-info';
+  }
+  goToOrder() {
+    window.location.href = '/order';
   }
 }
