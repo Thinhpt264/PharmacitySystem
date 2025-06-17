@@ -20,34 +20,36 @@ import java.util.Map;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final ModelMapper modelMapper;
-    
-    
+
+
     @Override
     public List<CommentDTO> commentsByProductId(int id) {
         List<Comment> allComments = commentRepository.findCommentByProductId(id);
-
-        // Map entity → DTO
         Map<Integer, CommentDTO> dtoMap = new HashMap<>();
         List<CommentDTO> rootComments = new ArrayList<>();
 
         for (Comment comment : allComments) {
-            CommentDTO dto = modelMapper.map(comment, CommentDTO.class);
-            dto.setChildComments(new ArrayList<>()); // Chuẩn bị danh sách con
+            CommentDTO dto = new CommentDTO();
+            dto.setId(comment.getId());
+            dto.setAccountId(comment.getAccountId());
+            dto.setComment(comment.getComment());
+            dto.setProductId(comment.getProductId());
+            dto.setStatus(comment.getStatus());
+            dto.setCommentParentId(comment.getParentComment() != null ? comment.getParentComment().getId() : null);
+            dto.setChildComments(new ArrayList<>());
             dtoMap.put(dto.getId(), dto);
         }
 
-        // Xây dựng quan hệ cha – con
         for (CommentDTO dto : dtoMap.values()) {
             Integer parentId = dto.getCommentParentId();
             if (parentId == null) {
-                rootComments.add(dto); // Comment gốc
+                rootComments.add(dto);
             } else {
                 CommentDTO parentDTO = dtoMap.get(parentId);
                 if (parentDTO != null) {
                     parentDTO.getChildComments().add(dto);
                 } else {
-                    // Nếu không có cha thì cũng đưa ra ngoài (tránh lỗi)
-                    rootComments.add(dto);
+                    rootComments.add(dto); // fallback nếu cha không tồn tại
                 }
             }
         }
@@ -57,7 +59,20 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDTO addComment(CommentDTO commentDTO) {
-        Comment comment = modelMapper.map(commentDTO, Comment.class);
+        Comment comment = new Comment();
+        comment.setId(commentDTO.getId());
+        comment.setAccountId(commentDTO.getAccountId());
+        comment.setComment(commentDTO.getComment());
+        comment.setProductId(commentDTO.getProductId());
+        comment.setStatus(commentDTO.getStatus());
+
+        // Gán parent nếu có
+        if (commentDTO.getCommentParentId() != null) {
+            Comment parent = commentRepository.findById(commentDTO.getCommentParentId())
+                    .orElse(null);
+            comment.setParentComment(parent);
+        }
+
         Comment savedComment = commentRepository.save(comment);
         return modelMapper.map(savedComment, CommentDTO.class);
     }

@@ -28,13 +28,15 @@ export class OrderComponent implements OnInit, AfterViewInit {
 
   findAll() {
     this.orderService.findAll().then((res) => {
+      console.log(res);
       this.orders = res.data;
       this.orders = res.data.filter((order: any) => order.status === 0);
       this.orders.forEach((order: any) => {
         // Lấy thông tin người dùng từ dịch vụ accountService
         this.accountService.findById(order.accountId).then((res) => {
-          order.user = res; 
-          console.log(order.user.username);
+          // console.log(res);
+          order.username = res.data.username; // Lưu tên người dùng vào order
+          
         });
        
       });

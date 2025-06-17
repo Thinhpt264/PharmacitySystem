@@ -165,5 +165,20 @@
   "thanh_toan_thanh_cong": "Payment Successful!",
   "cam_on_da_mua_hang": "Thank you for shopping with us.",
   "xac_nhan_email": "Please confirm your email to complete your order.",
-  "trang_chu_quay_lai": "Back to Home"
+  "trang_chu_quay_lai": "Back to Home",
+  "danh_gia_khach_hang": "Customer Reviews",
+  "danh_gia": "reviews",
+  "nguoi_dung": "User",
+  "vua_xong": "Just now",
+  "tra_loi": "Reply",
+  "huy": "Cancel",
+  "nhap_tra_loi": "Type your reply...",
+  "gui_tra_loi": "Send Reply",
+  "chua_co_danh_gia": "No reviews yet for this product",
+  "them_danh_gia": "Add a Review",
+  "danh_gia_cua_ban": "Your Rating",
+  "nhap_binh_luan": "Type your comments...",
+  "nhap_ten": "Type your name...",
+  "nhap_email": "Type your email...",
+  "gui_binh_luan": "Submit Review"
 }

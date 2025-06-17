@@ -1,4 +1,4 @@
-<p-toast position="top-right"></p-toast><p-toast position="top-right"></p-toast>
+<p-toast position="top-right"></p-toast>
 <br>
 <!-- SHOP DETAILS AREA START -->
 <div class="ltn__shop-details-area pb-85">
@@ -80,21 +80,21 @@
                                         <li><a href="#"><i class="fas fa-star"></i></a></li>
                                         <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
                                         <li><a href="#"><i class="far fa-star"></i></a></li>
-                                        <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
+                                        <li class="review-total"> <a href="#"> ( {{ comments.length }} {{ 'danh_gia' |
+                                                translate }} )</a></li>
                                     </ul>
                                 </div>
                                 <h3>{{ product.name }}</h3>
                                 <div class="product-price">
                                     <span>{{product.price | customCurrency }} </span>
-                                    <del>$65.00</del>
+                                    <del>{{product.price +50000 | customCurrency }}</del>
                                 </div>
                                 <div class="modal-product-meta ltn__product-details-menu-1">
                                     <ul>
                                         <li>
-                                            <strong>Danh mục:</strong>
+                                            <strong>{{ 'danh_muc' | translate }}:</strong>
                                             <span>
                                                 <a href="#">{{product.categoryName}}</a>
-                                             
                                             </span>
                                         </li>
                                     </ul>
@@ -108,10 +108,11 @@
                                             </div>
                                         </li>
                                         <li>
-                                            <a (click)="addToCart(product)" class="theme-btn-1 btn btn-effect-1" title="Add to Cart"
-                                                data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
+                                            <a (click)="addToCart(product)" class="theme-btn-1 btn btn-effect-1"
+                                                title="Add to Cart" data-bs-toggle="modal"
+                                                data-bs-target="#add_to_cart_modal">
                                                 <i class="fas fa-shopping-cart"></i>
-                                                <span>Thêm vào giỏ hàng</span>
+                                                <span>{{ 'them_vao_gio' | translate }}</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -122,32 +123,25 @@
                                             <a href="#" class="" title="Wishlist" data-bs-toggle="modal"
                                                 data-bs-target="#liton_wishlist_modal">
                                                 <i class="far fa-heart"></i>
-                                                <span>Add to Wishlist</span>
+                                                <span>{{ 'yeu_thich' | translate }}</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="#" class="" title="Compare" data-bs-toggle="modal"
-                                                data-bs-target="#quick_view_modal">
-                                                <i class="fas fa-exchange-alt"></i>
-                                                <span>Compare</span>
-                                            </a>
-                                        </li>
+                                        
                                     </ul>
                                 </div>
                                 <hr>
                                 <div class="ltn__social-media">
                                     <ul>
-                                        <li>Share:</li>
+                                        <li>{{ 'chia_se' | translate }}:</li>
                                         <li><a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
                                         <li><a href="#" title="Twitter"><i class="fab fa-twitter"></i></a></li>
                                         <li><a href="#" title="Linkedin"><i class="fab fa-linkedin"></i></a></li>
                                         <li><a href="#" title="Instagram"><i class="fab fa-instagram"></i></a></li>
-
                                     </ul>
                                 </div>
                                 <hr>
                                 <div class="ltn__safe-checkout">
-                                    <h5>Guaranteed Safe Checkout</h5>
+                                    <h5>{{ 'thanh_toan_an_toan' | translate }}</h5>
                                     <img src="/assets/img/icons/payment-2.png" alt="Payment Image">
                                 </div>
                             </div>
@@ -158,8 +152,10 @@
                 <div class="ltn__shop-details-tab-inner ltn__shop-details-tab-inner-2">
                     <div class="ltn__shop-details-tab-menu">
                         <div class="nav">
-                            <a class="active show" data-bs-toggle="tab" href="#liton_tab_details_1_1">Description</a>
-                            <a data-bs-toggle="tab" href="#liton_tab_details_1_2" class="">Reviews</a>
+                            <a class="active show" data-bs-toggle="tab" href="#liton_tab_details_1_1">{{ 'tong_quan' |
+                                translate }}</a>
+                            <a data-bs-toggle="tab" href="#liton_tab_details_1_2" class="">{{ 'danh_gia' | translate
+                                }}</a>
                         </div>
                     </div>
                     <div class="tab-content">
@@ -181,9 +177,10 @@
                                     tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
                             </div>
                         </div>
+                        <!-- Reviews Tab Content -->
                         <div class="tab-pane fade" id="liton_tab_details_1_2">
                             <div class="ltn__shop-details-tab-content-inner">
-                                <h4 class="title-2">Customer Reviews</h4>
+                                <h4 class="title-2">{{ 'danh_gia_khach_hang' | translate }}</h4>
                                 <div class="product-ratting">
                                     <ul>
                                         <li><a href="#"><i class="fas fa-star"></i></a></li>
@@ -191,124 +188,157 @@
                                         <li><a href="#"><i class="fas fa-star"></i></a></li>
                                         <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
                                         <li><a href="#"><i class="far fa-star"></i></a></li>
-                                        <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
+                                        <li class="review-total">
+                                            <a href="#"> ( {{ comments.length }} {{ 'danh_gia' | translate }} )</a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <hr>
-                                <!-- comment-area -->
+
+                                <!-- Comments Area -->
                                 <div class="ltn__comment-area mb-30">
                                     <div class="ltn__comment-inner">
-                                        <ul>
-                                            <li>
+                                        <ul *ngIf="comments.length > 0; else noComments">
+                                            <li *ngFor="let comment of comments; trackBy: trackByCommentId">
+                                                <!-- Main Comment -->
                                                 <div class="ltn__comment-item clearfix">
                                                     <div class="ltn__commenter-img">
-                                                        <img src="/assets/img/testimonial/1.jpg" alt="Image">
+                                                        <img src="/assets/img/default-avt.png" alt="User Avatar">
                                                     </div>
                                                     <div class="ltn__commenter-comment">
-                                                        <h6><a href="#">Adam Smit</a></h6>
+                                                        <h6><a href="#">{{ comment.username || ('nguoi_dung' |
+                                                                translate) + ' #' + comment.accountId }}</a></h6>
                                                         <div class="product-ratting">
                                                             <ul>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a>
+                                                                <li *ngFor="let star of getStarArray(5)">
+                                                                    <a href="#"><i
+                                                                            [class]="star ? 'fas fa-star' : 'far fa-star'"></i></a>
                                                                 </li>
-                                                                <li><a href="#"><i class="far fa-star"></i></a></li>
                                                             </ul>
                                                         </div>
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                            Doloribus, omnis fugit corporis iste magnam ratione.</p>
-                                                        <span class="ltn__comment-reply-btn">September 3, 2020</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ltn__comment-item clearfix">
-                                                    <div class="ltn__commenter-img">
-                                                        <img src="/assets/img/testimonial/3.jpg" alt="Image">
-                                                    </div>
-                                                    <div class="ltn__commenter-comment">
-                                                        <h6><a href="#">Adam Smit</a></h6>
-                                                        <div class="product-ratting">
+                                                        <p>{{ comment.comment }}</p>
+                                                        <div class="comment-actions">
+                                                            <span class="ltn__comment-reply-btn">{{ 'vua_xong' |
+                                                                translate }}</span>
+                                                            <button class="btn btn-sm btn-outline-primary ms-2"
+                                                                (click)="toggleReplyForm(comment.id)">
+                                                                {{ showReplyForm[comment.id] ? ('huy' | translate) :
+                                                                ('tra_loi' | translate) }}
+                                                            </button>
+                                                        </div>
+
+                                                        <!-- Reply Form for Main Comment -->
+                                                        <div *ngIf="showReplyForm[comment.id]" class="reply-form mt-3">
+                                                            <div class="input-group">
+                                                                <textarea class="form-control" rows="2"
+                                                                    [(ngModel)]="replyForm[comment.id]"
+                                                                    [placeholder]="'nhap_tra_loi' | translate">
+                                                                </textarea>
+                                                                <button class="btn btn-primary" type="button"
+                                                                    (click)="submitReply(comment.id)">
+                                                                    {{ 'gui_tra_loi' | translate }}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Child Comments (Replies) -->
+                                                        <div *ngIf="comment.childComments && comment.childComments.length > 0"
+                                                            class="child-comments mt-3">
                                                             <ul>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a>
+                                                                <li
+                                                                    *ngFor="let childComment of comment.childComments; trackBy: trackByCommentId">
+                                                                    <div
+                                                                        class="ltn__comment-item clearfix child-comment">
+                                                                        <div class="ltn__commenter-img">
+                                                                            <img src="/assets/img/default-avt.png"
+                                                                                alt="User Avatar">
+                                                                        </div>
+                                                                        <div class="ltn__commenter-comment">
+                                                                            <h6><a href="#">{{ childComment.username ||
+                                                                                    ('nguoi_dung' | translate) + ' #' +
+                                                                                    childComment.accountId }}</a></h6>
+                                                                            <p>{{ childComment.comment }}</p>
+                                                                            <div class="comment-actions">
+                                                                                <span class="ltn__comment-reply-btn">{{
+                                                                                    'vua_xong' | translate }}</span>
+                                                                                <button
+                                                                                    class="btn btn-sm btn-outline-secondary ms-2"
+                                                                                    (click)="toggleReplyFormForChild(childComment.id)">
+                                                                                    {{ showReplyForm['child_' +
+                                                                                    childComment.id] ? ('huy' |
+                                                                                    translate) :
+                                                                                    ('tra_loi' | translate) }}
+                                                                                </button>
+                                                                            </div>
+
+                                                                            <!-- Reply Form for Child Comment -->
+                                                                            <div *ngIf="showReplyForm['child_' + childComment.id]"
+                                                                                class="reply-form mt-2">
+                                                                                <div class="input-group">
+                                                                                    <textarea class="form-control"
+                                                                                        rows="2"
+                                                                                        [(ngModel)]="replyForm['child_' + childComment.id]"
+                                                                                        [placeholder]="'nhap_tra_loi' | translate">
+                                                                                    </textarea>
+                                                                                    <button
+                                                                                        class="btn btn-primary btn-sm"
+                                                                                        type="button"
+                                                                                        (click)="submitReplyToChild(comment.id, childComment.id)">
+                                                                                        {{ 'gui_tra_loi' | translate }}
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </li>
-                                                                <li><a href="#"><i class="far fa-star"></i></a></li>
                                                             </ul>
                                                         </div>
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                            Doloribus, omnis fugit corporis iste magnam ratione.</p>
-                                                        <span class="ltn__comment-reply-btn">September 2, 2020</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ltn__comment-item clearfix">
-                                                    <div class="ltn__commenter-img">
-                                                        <img src="/assets/img/testimonial/2.jpg" alt="Image">
-                                                    </div>
-                                                    <div class="ltn__commenter-comment">
-                                                        <h6><a href="#">Adam Smit</a></h6>
-                                                        <div class="product-ratting">
-                                                            <ul>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a>
-                                                                </li>
-                                                                <li><a href="#"><i class="far fa-star"></i></a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                            Doloribus, omnis fugit corporis iste magnam ratione.</p>
-                                                        <span class="ltn__comment-reply-btn">September 2, 2020</span>
                                                     </div>
                                                 </div>
                                             </li>
                                         </ul>
+
+                                        <!-- No Comments Template -->
+                                        <ng-template #noComments>
+                                            <div class="text-center py-4">
+                                                <p>{{ 'chua_co_danh_gia' | translate }}</p>
+                                            </div>
+                                        </ng-template>
                                     </div>
                                 </div>
-                                <!-- comment-reply -->
-                                <div class="ltn__comment-reply-area ltn__form-box mb-30">
-                                    <form action="#">
-                                        <h4 class="title-2">Add a Review</h4>
+
+                                <!-- Add New Comment Form -->
+                                <div class="ltn__comment-reply-area mb-30">
+                                    <form (ngSubmit)="submitComment()" #commentForm="ngForm">
+                                        <h4 class="title-2">{{ 'them_danh_gia' | translate }}</h4>
+                                
                                         <div class="mb-30">
                                             <div class="add-a-review">
-                                                <h6>Your Ratings:</h6>
+                                                <h6>{{ 'danh_gia_cua_ban' | translate }}:</h6>
                                                 <div class="product-ratting">
                                                     <ul>
-                                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                                        <li><a href="#"><i class="far fa-star"></i></a></li>
+                                                        <li *ngFor="let i of [1,2,3,4,5]">
+                                                            <a href="#" (click)="setRating(i); $event.preventDefault()">
+                                                                <i [class]="i <= newComment.rating ? 'fas fa-star' : 'far fa-star'"></i>
+                                                            </a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="input-item input-item-textarea ltn__custom-icon">
-                                            <textarea placeholder="Type your comments...."></textarea>
+                                
+                                        <div class="comment-form-wrapper">
+                                            <div class="input-group">
+                                                <textarea class="form-control" rows="4" [(ngModel)]="newComment.comment" name="comment" required
+                                                    [placeholder]="'nhap_binh_luan' | translate">
+                                                                                </textarea>
+                                                <button class="btn btn-primary" type="submit"
+                                                    [disabled]="!commentForm.valid || !newComment.comment.trim()">
+                                                    {{ 'gui_binh_luan' | translate }}
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="input-item input-item-name ltn__custom-icon">
-                                            <input type="text" placeholder="Type your name....">
-                                        </div>
-                                        <div class="input-item input-item-email ltn__custom-icon">
-                                            <input type="email" placeholder="Type your email....">
-                                        </div>
-                                        <div class="input-item input-item-website ltn__custom-icon">
-                                            <input type="text" name="website" placeholder="Type your website....">
-                                        </div>
-                                        <label class="mb-0"><input type="checkbox" name="agree"> Save my name, email,
-                                            and website in this browser for the next time I comment.</label>
-                                        <div class="btn-wrapper">
-                                            <button class="btn theme-btn-1 btn-effect-1 text-uppercase"
-                                                type="submit">Submit</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </form>                          </div>
                             </div>
                         </div>
                     </div>
@@ -319,9 +349,9 @@
                 <aside class="sidebar ltn__shop-sidebar ltn__right-sidebar">
                     <!-- Top Rated Product Widget -->
                     <div class="widget ltn__top-rated-product-widget">
-                        <h4 class="ltn__widget-title ltn__widget-title-border">Top Rated Product</h4>
+                        <h4 class="ltn__widget-title ltn__widget-title-border">{{ 'san_pham_noi_bat' | translate }}</h4>
                         <ul>
-                            <li  *ngFor="let product1 of topProducts | slice:0:3">
+                            <li *ngFor="let product1 of topProducts | slice:0:3">
                                 <div class="top-rated-product-item clearfix">
                                     <div class="top-rated-product-img">
                                         <a href="product-details.html"><img [src]="product1.imgUrl" alt="Image"></a>
@@ -336,15 +366,14 @@
                                                 <li><a href="#"><i class="fas fa-star"></i></a></li>
                                             </ul>
                                         </div>
-                                        <h6><a href="product-details.html">Mixel Solid Seat Cover</a></h6>
+                                        <h6><a href="product-details.html">{{ product1.name }}</a></h6>
                                         <div class="product-price">
-                                            <span>{{ product1.price }}</span>
-                                            <del>VNĐ 65.00</del>
+                                            <span>{{ product1.price | customCurrency }}</span>
+                                            <del>{{ (product1.price * 1.2) | customCurrency }}</del>
                                         </div>
                                     </div>
                                 </div>
                             </li>
-                            
                         </ul>
                     </div>
                     <!-- Banner Widget -->
@@ -364,7 +393,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title-area ltn__section-title-2">
-                    <h4 class="title-2">Related Products<span>.</span></h4>
+                    <h4 class="title-2">{{ 'san_pham_lien_quan' | translate }}<span>.</span></h4>
                 </div>
             </div>
         </div>
@@ -376,25 +405,25 @@
                         <a href="product-details.html"><img src="/assets/img/product/7.png" alt="#"></a>
                         <div class="product-badge">
                             <ul>
-                                <li class="sale-badge">New</li>
+                                <li class="sale-badge">{{ 'moi' | translate }}</li>
                             </ul>
                         </div>
                         <div class="product-hover-action">
                             <ul>
                                 <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal"
+                                    <a href="#" [title]="'xem_nhanh' | translate" data-bs-toggle="modal"
                                         data-bs-target="#quick_view_modal">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal"
+                                    <a href="#" [title]="'them_vao_gio' | translate" data-bs-toggle="modal"
                                         data-bs-target="#add_to_cart_modal">
                                         <i class="fas fa-shopping-cart"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal"
+                                    <a href="#" [title]="'yeu_thich' | translate" data-bs-toggle="modal"
                                         data-bs-target="#liton_wishlist_modal">
                                         <i class="far fa-heart"></i></a>
                                 </li>
@@ -411,7 +440,8 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="product-details.html">Digital Stethoscope</a></h2>
+                        <h2 class="product-title"><a href="product-details.html">{{ 'ong_nghe_so' | translate }}</a>
+                        </h2>
                         <div class="product-price">
                             <span>$149.00</span>
                             <del>$162.00</del>
@@ -426,25 +456,25 @@
                         <a href="product-details.html"><img src="/assets/img/product/8.png" alt="#"></a>
                         <div class="product-badge">
                             <ul>
-                                <li class="sale-badge">New</li>
+                                <li class="sale-badge">{{ 'moi' | translate }}</li>
                             </ul>
                         </div>
                         <div class="product-hover-action">
                             <ul>
                                 <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal"
+                                    <a href="#" [title]="'xem_nhanh' | translate" data-bs-toggle="modal"
                                         data-bs-target="#quick_view_modal">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal"
+                                    <a href="#" [title]="'them_vao_gio' | translate" data-bs-toggle="modal"
                                         data-bs-target="#add_to_cart_modal">
                                         <i class="fas fa-shopping-cart"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal"
+                                    <a href="#" [title]="'yeu_thich' | translate" data-bs-toggle="modal"
                                         data-bs-target="#liton_wishlist_modal">
                                         <i class="far fa-heart"></i></a>
                                 </li>
@@ -461,7 +491,8 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="product-details.html">Thermometer Gun</a></h2>
+                        <h2 class="product-title"><a href="product-details.html">{{ 'sung_do_nhiet_do' | translate
+                                }}</a></h2>
                         <div class="product-price">
                             <span>$62.00</span>
                             <del>$85.00</del>
@@ -476,25 +507,25 @@
                         <a href="product-details.html"><img src="/assets/img/product/9.png" alt="#"></a>
                         <div class="product-badge">
                             <ul>
-                                <li class="sale-badge">New</li>
+                                <li class="sale-badge">{{ 'moi' | translate }}</li>
                             </ul>
                         </div>
                         <div class="product-hover-action">
                             <ul>
                                 <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal"
+                                    <a href="#" [title]="'xem_nhanh' | translate" data-bs-toggle="modal"
                                         data-bs-target="#quick_view_modal">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal"
+                                    <a href="#" [title]="'them_vao_gio' | translate" data-bs-toggle="modal"
                                         data-bs-target="#add_to_cart_modal">
                                         <i class="fas fa-shopping-cart"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal"
+                                    <a href="#" [title]="'yeu_thich' | translate" data-bs-toggle="modal"
                                         data-bs-target="#liton_wishlist_modal">
                                         <i class="far fa-heart"></i></a>
                                 </li>
@@ -511,7 +542,8 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="product-details.html">Cosmetic Containers</a></h2>
+                        <h2 class="product-title"><a href="product-details.html">{{ 'hop_my_pham' | translate }}</a>
+                        </h2>
                         <div class="product-price">
                             <span>$75.00</span>
                             <del>$92.00</del>
@@ -526,25 +558,25 @@
                         <a href="product-details.html"><img src="/assets/img/product/10.png" alt="#"></a>
                         <div class="product-badge">
                             <ul>
-                                <li class="sale-badge">New</li>
+                                <li class="sale-badge">{{ 'moi' | translate }}</li>
                             </ul>
                         </div>
                         <div class="product-hover-action">
                             <ul>
                                 <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal"
+                                    <a href="#" [title]="'xem_nhanh' | translate" data-bs-toggle="modal"
                                         data-bs-target="#quick_view_modal">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal"
+                                    <a href="#" [title]="'them_vao_gio' | translate" data-bs-toggle="modal"
                                         data-bs-target="#add_to_cart_modal">
                                         <i class="fas fa-shopping-cart"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal"
+                                    <a href="#" [title]="'yeu_thich' | translate" data-bs-toggle="modal"
                                         data-bs-target="#liton_wishlist_modal">
                                         <i class="far fa-heart"></i></a>
                                 </li>
@@ -561,7 +593,8 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="product-details.html">Cosmetic Containers</a></h2>
+                        <h2 class="product-title"><a href="product-details.html">{{ 'hop_my_pham' | translate }}</a>
+                        </h2>
                         <div class="product-price">
                             <span>$78.00</span>
                             <del>$85.00</del>
@@ -576,25 +609,25 @@
                         <a href="product-details.html"><img src="/assets/img/product/5.png" alt="#"></a>
                         <div class="product-badge">
                             <ul>
-                                <li class="sale-badge">New</li>
+                                <li class="sale-badge">{{ 'moi' | translate }}</li>
                             </ul>
                         </div>
                         <div class="product-hover-action">
                             <ul>
                                 <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal"
+                                    <a href="#" [title]="'xem_nhanh' | translate" data-bs-toggle="modal"
                                         data-bs-target="#quick_view_modal">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal"
+                                    <a href="#" [title]="'them_vao_gio' | translate" data-bs-toggle="modal"
                                         data-bs-target="#add_to_cart_modal">
                                         <i class="fas fa-shopping-cart"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal"
+                                    <a href="#" [title]="'yeu_thich' | translate" data-bs-toggle="modal"
                                         data-bs-target="#liton_wishlist_modal">
                                         <i class="far fa-heart"></i></a>
                                 </li>
@@ -611,7 +644,8 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="product-details.html">Blue Hand Gloves</a></h2>
+                        <h2 class="product-title"><a href="product-details.html">{{ 'gang_tay_xanh' | translate }}</a>
+                        </h2>
                         <div class="product-price">
                             <span>$150.00</span>
                             <del>$180.00</del>
@@ -626,25 +660,25 @@
                         <a href="product-details.html"><img src="/assets/img/product/6.png" alt="#"></a>
                         <div class="product-badge">
                             <ul>
-                                <li class="sale-badge">New</li>
+                                <li class="sale-badge">{{ 'moi' | translate }}</li>
                             </ul>
                         </div>
                         <div class="product-hover-action">
                             <ul>
                                 <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal"
+                                    <a href="#" [title]="'xem_nhanh' | translate" data-bs-toggle="modal"
                                         data-bs-target="#quick_view_modal">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal"
+                                    <a href="#" [title]="'them_vao_gio' | translate" data-bs-toggle="modal"
                                         data-bs-target="#add_to_cart_modal">
                                         <i class="fas fa-shopping-cart"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal"
+                                    <a href="#" [title]="'yeu_thich' | translate" data-bs-toggle="modal"
                                         data-bs-target="#liton_wishlist_modal">
                                         <i class="far fa-heart"></i></a>
                                 </li>
@@ -661,7 +695,8 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="product-details.html">Thermometer Gun</a></h2>
+                        <h2 class="product-title"><a href="product-details.html">{{ 'sung_do_nhiet_do' | translate
+                                }}</a></h2>
                         <div class="product-price">
                             <span>$150.00</span>
                             <del>$180.00</del>
@@ -673,6 +708,4 @@
         </div>
     </div>
 </div>
-
-<p-toast></p-toast>
 <!-- PRODUCT SLIDER AREA END -->

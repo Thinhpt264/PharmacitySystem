@@ -12,11 +12,8 @@ public class CommentDTO {
     private int id;
     private int accountId;
     private String comment;
-    private Integer commentParentId;
+    private Integer commentParentId; // sửa thành Integer thay vì CommentDTO
     private int productId;
     private int status;
-
-
-    // THÊM DÒNG NÀY: để chứa danh sách comment con (nếu có)
     private List<CommentDTO> childComments;
 }

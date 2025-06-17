@@ -61,8 +61,9 @@ export class OrderComponent implements OnInit, OnDestroy {
 
       const statusMap: any = {
         0: 'pending_confirm',
-        1: 'pending_payment',
-        2: 'ready_pickup',
+        2: 'pending_payment',
+        1: 'ready_pickup', // Trùng lặp, có thể bỏ qua
+        // 2: 'ready_pickup',
         3: 'shipping',
         4: 'delivered',
         5: 'cancelled',

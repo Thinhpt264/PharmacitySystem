@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthService } from './service/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,16 @@ import { filter } from 'rxjs/operators';
 export class AppComponent implements OnInit {
   showLayout = true;
   title = '';
-
-  constructor(private router: Router) {}
+  account: any = {};
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     // Check current route and set layout visibility
     this.checkRoute(this.router.url);
-
+    this.account = this.authService.getAccount();
     // Listen to route changes
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
