@@ -45,6 +45,7 @@ public class SecurityConfiguration {
 								"/api/v1/orderDetails/**",
 								"/api/v1/orders/**",
 								"/api/v1/deliveryInfo/**",
+								"/api/v1/comments/product/**",
 								"/images/**",
 								"/api/payment/vnPay-callback",
 								"/assets/images/**",

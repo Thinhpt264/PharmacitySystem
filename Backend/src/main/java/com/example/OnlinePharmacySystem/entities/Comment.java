@@ -1,15 +1,14 @@
 package com.example.OnlinePharmacySystem.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The persistent class for the comment database table.
@@ -32,14 +31,18 @@ public class Comment implements Serializable {
 	@Lob
 	private String comment;
 
-	@Column(name="comment_parent_id")
-	private int commentParentId;
 
 	@Column(name="product_id")
 	private int productId;
 
 	private int status;
 
+	@ManyToOne
+	@JoinColumn(name = "comment_parent_id", nullable = true)
+	private Comment parentComment;
+
+	@OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
+	private List<Comment> childComments = new ArrayList<>();
 
 
 }
