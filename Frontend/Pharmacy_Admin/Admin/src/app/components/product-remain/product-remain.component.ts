@@ -6,16 +6,18 @@ declare var $: any;
 
 @Component({
   selector: 'app-product',
-  templateUrl: './product.component.html',
+  templateUrl: './product-remain.component.html',
   styleUrls: ['./product.component.css'],
 })
-export class ProductComponent implements OnInit, AfterViewInit {
+export class ProductRemainComponent implements OnInit, AfterViewInit {
   constructor(
     private productService: ProductService,
     private baseUrl: BaseUrlService
   ) {}
   products: any[] = [];
   link: any = this.baseUrl.getProductUrl();
+  selectedProduct: any = null;
+  stockDetails: any[] = [];
 
   ngOnInit(): void {
     console.log('Product component initialized');
@@ -142,5 +144,108 @@ export class ProductComponent implements OnInit, AfterViewInit {
   addProduct(): void {
     console.log('Add new product');
     // Logic thêm sản phẩm mới
+  }
+  // Hiển thị chi tiết tồn kho
+  showStockDetails(productId: number) {
+    // Tìm sản phẩm được chọn
+    this.selectedProduct = this.products.find((p) => p.id === productId);
+
+    Promise.all([
+      this.productService.getQuantityRemaining(productId),
+      this.productService.getQuantityExpiried(productId),
+      this.productService.getQuantityExpiring(productId), // Thêm API gần hết hạn
+    ])
+      .then(([remainingRes, expiredRes, expiringRes]) => {
+        console.log('Raw remainingRes:', remainingRes);
+        console.log('Raw expiredRes:', expiredRes);
+        console.log('Raw expiringRes:', expiringRes);
+
+        // Xử lý số lượng còn lại
+        let remainingQty = 0;
+        if (remainingRes && remainingRes.data !== undefined) {
+          remainingQty = Number(remainingRes.data);
+        } else if (remainingRes !== undefined) {
+          remainingQty = Number(remainingRes);
+        }
+
+        // Xử lý số lượng hết hạn
+        let expiredQty = 0;
+        if (expiredRes && expiredRes.data !== undefined) {
+          expiredQty = Number(expiredRes.data);
+        } else if (expiredRes !== undefined) {
+          expiredQty = Number(expiredRes);
+        }
+
+        // Xử lý số lượng gần hết hạn
+        let expiringQty = 0;
+        if (expiringRes && expiringRes.data !== undefined) {
+          expiringQty = Number(expiringRes.data);
+        } else if (expiringRes !== undefined) {
+          expiringQty = Number(expiringRes);
+        }
+
+        // Gán giá trị đã xử lý
+        this.selectedProduct.remainingQuantity = remainingQty;
+        this.selectedProduct.expiredQuantity = expiredQty;
+        this.selectedProduct.expiringQuantity = expiringQty; // Thêm quantity gần hết hạn
+
+        console.log(
+          'Processed remaining quantity:',
+          this.selectedProduct.remainingQuantity
+        );
+        console.log(
+          'Processed expired quantity:',
+          this.selectedProduct.expiredQuantity
+        );
+        console.log(
+          'Processed expiring quantity:',
+          this.selectedProduct.expiringQuantity
+        );
+      })
+      .catch((error) => {
+        console.error('Error loading stock details:', error);
+        this.selectedProduct.expiredQuantity = 0;
+        this.selectedProduct.remainingQuantity = 0;
+        this.selectedProduct.expiringQuantity = 0; // Reset gần hết hạn
+      });
+  }
+
+  // Cập nhật getTotalStock()
+  getTotalStock(): number {
+    if (!this.selectedProduct) return 0;
+    return this.selectedProduct.remainingQuantity || 0;
+  }
+
+  // Cập nhật getValidStock() - trừ cả hết hạn và gần hết hạn
+  getValidStock(): number {
+    if (!this.selectedProduct) return 0;
+    return (
+      this.selectedProduct.remainingQuantity -
+        this.selectedProduct.expiredQuantity 
+    );
+  }
+
+  // Thêm method getExpiringStock()
+  getExpiringStock(): number {
+    if (!this.selectedProduct) return 0;
+    return this.selectedProduct.expiringQuantity || 0;
+  }
+
+  getExpiredStock(): number {
+    if (!this.selectedProduct) return 0;
+    return this.selectedProduct.expiredQuantity || 0;
+  }
+
+  // Kiểm tra hết hạn
+  isExpired(expiryDate: string): boolean {
+    if (!expiryDate) return false;
+    const today = new Date();
+    const expiry = new Date(expiryDate);
+    return expiry < today;
+  }
+
+  // In báo cáo tồn kho
+  printStockReport() {
+    window.print();
   }
 }

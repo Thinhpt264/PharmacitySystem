@@ -1,0 +1,179 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <button type="button" class="btn btn-primary">
+                        <i class="mdi mdi-plus mr-1"></i>Thêm sản phẩm
+                    </button>
+                </div>
+                <h4 class="page-title">Quản lý sản phẩm</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title">Danh sách sản phẩm</h4>
+                    <p class="text-muted font-13 mb-4">
+                        Quản lý tất cả sản phẩm trong hệ thống
+                    </p>
+
+                    <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Hình ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Danh mục</th>
+                                <th>Giá</th>
+
+                                <th>Tồn kho</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let product of products">
+                                <td>{{ product.id }}</td>
+                                <td style="padding: 10px;">
+                                    <img [src]="product.imageUrl" alt="{{ product.name }}" class="img-thumbnail"
+                                        style="width: 80px; height: 80px; object-fit: cover;  display: block;">
+                                </td>
+                                <td pTooltip="{{ product.name }}" tooltipPosition="top" style="cursor: pointer;">
+                                    {{ product.name.length > 60 ? (product.name | slice:0:40) + '...' : product.name }}                       </td>
+                                <td>{{ product.categoryName }}</td>
+                                <td>{{ product.price | currency:'VND':'symbol':'1.0-0' }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="mr-2">{{ product.quantity }}</span>
+                                        <button class="btn btn-sm btn-info" (click)="showStockDetails(product.id)" data-toggle="modal"
+                                            data-target="#stockDetailModal" title="Xem chi tiết tồn kho">
+                                            <i class="mdi mdi-information"></i>
+                                        </button>
+                                    </div>                           </td>
+                                <td>
+                                    <span class="badge">
+                                        {{ product.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary mr-1">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger">
+                                        <i class="mdi mdi-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Chi tiết tồn kho - thêm vào cuối file -->
+        <div class="modal fade" id="stockDetailModal" tabindex="-1" role="dialog" aria-labelledby="stockDetailModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="stockDetailModalLabel">
+                            <i class="mdi mdi-package-variant mr-2"></i>Chi tiết tồn kho - {{ selectedProduct?.name }}
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Thông tin tổng quan - 4 cột -->
+                        <div class="row mb-3" *ngIf="selectedProduct">
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Tổng tồn kho</h6>
+                                        <h3>{{ getTotalStock() }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Còn hạn</h6>
+                                        <h3>{{ getValidStock() }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-white">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Gần đến hạn</h6>
+                                        <h3>{{ getExpiringStock() }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-danger text-white">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Hết hạn</h6>
+                                        <h3>{{ getExpiredStock() }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Thông tin chi tiết - 3 cột -->
+                        <div class="row" *ngIf="selectedProduct">
+                            <div class="col-md-4">
+                                <div class="card border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <h6 class="mb-0"><i class="mdi mdi-check-circle mr-2"></i>Sản phẩm còn hạn</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="text-success">{{ getValidStock() }}</h4>
+                                        <p class="text-muted mb-0">Có thể bán được</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-warning">
+                                    <div class="card-header bg-warning text-white">
+                                        <h6 class="mb-0"><i class="mdi mdi-clock-alert mr-2"></i>Sản phẩm gần hết hạn</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="text-warning">{{ getExpiringStock() }}</h4>
+                                        <p class="text-muted mb-0">Cần ưu tiên bán</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-danger">
+                                    <div class="card-header bg-danger text-white">
+                                        <h6 class="mb-0"><i class="mdi mdi-alert-circle mr-2"></i>Sản phẩm hết hạn</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="text-danger">{{ getExpiredStock() }}</h4>
+                                        <p class="text-muted mb-0">Cần xử lý</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Thêm loading state -->
+                        <div class="text-center" *ngIf="!selectedProduct">
+                            <i class="mdi mdi-loading mdi-spin mr-2"></i>Đang tải dữ liệu...
+                        </div>              </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i class="mdi mdi-close mr-1"></i>Đóng
+                        </button>
+                        <button type="button" class="btn btn-warning" (click)="printStockReport()">
+                            <i class="mdi mdi-printer mr-1"></i>In báo cáo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

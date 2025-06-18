@@ -7,6 +7,7 @@ import { CategoryComponent } from './components/category/category.component';
 import { OrderComponent } from './components/order/order.component';
 import { AuthGuard } from './service/auth.guard';
 import { OrderDetailComponent } from './components/order-detail/order-detail.component';
+import { ProductRemainComponent } from './components/product-remain/product-remain.component';
 
 const routes: Routes = [
   {
@@ -34,10 +35,16 @@ const routes: Routes = [
     component: ProductComponent,
   },
   {
+    path: 'product-remain',
+    canActivate: [AuthGuard],
+    component: ProductRemainComponent,
+  },
+  {
     path: 'order',
     canActivate: [AuthGuard],
     component: OrderComponent,
   },
+
   {
     path: 'order-detail',
     canActivate: [AuthGuard],
