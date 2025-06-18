@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashBoardComponent implements OnInit {
   ngOnInit(): void {
+    // localStorage.removeItem('token'); 
     // Load charts sau khi component init
     setTimeout(() => {
       this.initCharts();

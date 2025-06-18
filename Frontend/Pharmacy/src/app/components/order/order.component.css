@@ -149,7 +149,8 @@
     padding: 25px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    border-left: 5px solid #3498db;
+    border-left: 5px solid #39db34;
+    border-right: 5px solid #39db34;
   }
   
   .order-card:hover {
@@ -293,7 +294,7 @@
   .order-total {
     text-align: center;
     padding: 15px;
-    background: linear-gradient(135deg, #44a377 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #64eb64 0%, #4ba24f 100%);
     color: white;
     border-radius: 10px;
     margin-bottom: 20px;

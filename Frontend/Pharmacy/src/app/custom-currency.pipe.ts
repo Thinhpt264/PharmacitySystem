@@ -10,6 +10,6 @@ export class CustomCurrencyPipe implements PipeTransform {
     const formattedValue = value
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    return `${formattedValue} VND`;
+    return `${formattedValue} VNĐ`;
   }
 }

@@ -7235,7 +7235,8 @@ ul.wp-block-latest-posts.is-grid.alignwide {
 
 .product-price {
   color: var(--ltn__heading-color);
-  font-weight: 600; }
+  font-weight: 600; 
+}
 
 .product-price del {
   opacity: 0.6;

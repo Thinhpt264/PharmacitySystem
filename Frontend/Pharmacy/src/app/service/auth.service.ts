@@ -10,12 +10,12 @@ export class AuthService {
 
   constructor(private router: Router) {}
 
-  // Lưu thông tin người dùng vào session
+  // Lưu thông tin người dùng vào sessionStorage (THAY ĐỔI Ở ĐÂY)
   login(token: any): void {
-    localStorage.setItem(this.SESSION_KEY, token);
+    sessionStorage.setItem(this.SESSION_KEY, token); // sessionStorage thay vì localStorage
   }
 
-  // Lấy thông tin người dùng từ session
+  // Lấy thông tin người dùng từ sessionStorage (THAY ĐỔI Ở ĐÂY)
   getAccount(): any {
     const token = this.getToken();
     console.log(token);
@@ -28,6 +28,7 @@ export class AuthService {
       return null;
     }
   }
+
   getUsername(): string | null {
     const account = this.getAccount();
     return account ? account.sub : null;
@@ -35,11 +36,11 @@ export class AuthService {
 
   getEmail(): string | null {
     const account = this.getAccount();
-    return account ? account.getEmail : null;
+    return account ? account.email : null; // Sửa từ getEmail thành email
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.SESSION_KEY);
+    return sessionStorage.getItem(this.SESSION_KEY); // sessionStorage thay vì localStorage
   }
 
   getPhone() {
@@ -61,11 +62,12 @@ export class AuthService {
     }
   }
 
-  // Xoá session (đăng xuất)
+  // Xoá session (đăng xuất) (THAY ĐỔI Ở ĐÂY)
   logout(): void {
-    localStorage.removeItem(this.SESSION_KEY);
+    sessionStorage.removeItem(this.SESSION_KEY); // sessionStorage thay vì localStorage
     this.router.navigate(['/login']);
   }
+
   getId() {
     const account = this.getAccount();
     return account ? account.id : null;
