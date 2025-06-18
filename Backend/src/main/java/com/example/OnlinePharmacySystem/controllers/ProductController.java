@@ -11,7 +11,9 @@ import java.util.Map;
 import com.example.OnlinePharmacySystem.Ultis.ApiResponse;
 import com.example.OnlinePharmacySystem.entities.Image;
 import com.example.OnlinePharmacySystem.services.ImageService;
+import com.example.OnlinePharmacySystem.services.InventoryItemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +31,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/products")
 @Slf4j
+@RequiredArgsConstructor
 public class ProductController {
-	@Autowired
-	private ProductService productService;
-	@Autowired
-	private ImageService imageService;
 
-	@Autowired
-	private ModelMapper modelMapper ;
+	private final ProductService productService;
+	private final ImageService imageService;
+	private final InventoryItemService inventoryItemService;
 	
 	 @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<List<ProductDTO>> getAll() {
@@ -175,5 +175,45 @@ public class ProductController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ApiResponse<>(false, "Lỗi khi xóa sản phẩm"));
 		}
+	}
+
+	@GetMapping(value = "/get_quantityRemaining/{id}",produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse<Integer>> findQuantityById(@PathVariable int id) {
+		try {
+			int quantityRemaining  = inventoryItemService.getTotalQuantityRemaining(id);
+			return ResponseEntity.ok(new ApiResponse<>(true, "lấy số lượng thành công", quantityRemaining));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse<>(false, "lấy số lượng thất bại"));
+		}
+
+	}
+	@GetMapping(value = "/expired-qty/{id}",produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse<Integer>> getExpiredQty(@PathVariable int id) {
+		try {
+			int quantityRemaining  = inventoryItemService.getExpiredQuantityByProductId(id);
+			return ResponseEntity.ok(new ApiResponse<>(true, "lấy số lượng hết hạn thành công", quantityRemaining));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse<>(false, "lấy số lượng hết hạn thất bại"));
+		}
+
+	}
+	@GetMapping(value = "/expiring-qty/{id}",produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse<Integer>> getExpiringQty(@PathVariable int id) {
+		try {
+			int quantityRemaining  = inventoryItemService.getExpiringQuantityByProduct(id);
+			return ResponseEntity.ok(new ApiResponse<>(true, "lấy số lượng sắp hết hạn thành công", quantityRemaining));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse<>(false, "lấy số lượng sắp hết hạn thất bại"));
+		}
+
 	}
 }

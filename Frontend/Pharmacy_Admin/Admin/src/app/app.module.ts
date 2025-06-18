@@ -26,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipModule } from 'primeng/tooltip';
 import { OrderDetailComponent } from './components/order-detail/order-detail.component';
 import { OrderDetailService } from './service/order-detail.service';
+import { ProductRemainComponent } from './components/product-remain/product-remain.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { OrderDetailService } from './service/order-detail.service';
     LoginComponent,
     EmplyeeComponent,
     CategoryComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    ProductRemainComponent,
   ],
   imports: [
     BrowserModule,

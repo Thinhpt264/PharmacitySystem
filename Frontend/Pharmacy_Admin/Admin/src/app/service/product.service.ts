@@ -49,6 +49,30 @@ export class ProductService {
       )
     );
   }
+
+  async getQuantityRemaining(productId: any): Promise<any> {
+    return await lastValueFrom(
+      this.httpClient.get(
+        this.baseUrl.getBaseUrl() +
+          'api/v1/products/get_quantityRemaining/' +
+          productId
+      )
+    );
+  }
+  async getQuantityExpiried(productId: any): Promise<any> {
+    return await lastValueFrom(
+      this.httpClient.get(
+        this.baseUrl.getBaseUrl() + 'api/v1/products/expired-qty/' + productId
+      )
+    );
+  }
+  async getQuantityExpiring(productId: any): Promise<any> {
+    return await lastValueFrom(
+      this.httpClient.get(
+        this.baseUrl.getBaseUrl() + 'api/v1/products/expiring-qty/' + productId
+      )
+    );
+  }
   // Lọc sản phẩm theo giá và thương hiệu
   // Hàm lọc sản phẩm theo giá và thương hiệu
   async filterProducts(

@@ -12,10 +12,7 @@ export class AppComponent implements OnInit {
   showLayout = true;
   title = '';
   account: any = {};
-  constructor(
-    private router: Router,
-    private authService: AuthService
-  ) { }
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
     // Check current route and set layout visibility
@@ -72,6 +69,9 @@ export class AppComponent implements OnInit {
     window.location.href = 'login'; // Redirect to Google
   }
   gotoDelivery() {
-  window.location.href = 'register'; // Redirect to Google
+    window.location.href = 'register'; // Redirect to Google
+  }
+  gotoProductRemain() {
+    window.location.href = 'product-remain'; // Redirect to Google
   }
 }

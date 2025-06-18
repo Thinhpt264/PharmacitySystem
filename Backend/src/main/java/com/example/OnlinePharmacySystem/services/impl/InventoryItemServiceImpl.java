@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -46,4 +47,26 @@ public class InventoryItemServiceImpl implements InventoryItemService {
         return true;
 
     }
+
+    @Override
+    public int getTotalQuantityRemaining(int productId) {
+        return inventoryItemRepository.findByProductIdOrderByExpiryDateAsc(productId)
+                .stream()
+                .mapToInt(InventoryItem::getQuantityRemaining)
+                .sum();
+    }
+
+    @Override
+    public int getExpiredQuantityByProductId(int productId) {
+        return inventoryItemRepository.sumExpiredQuantityByProduct(productId, LocalDate.now());
+    }
+
+    @Override
+    public int getExpiringQuantityByProduct(int productId) {
+        LocalDate today     = LocalDate.now();
+        LocalDate threshold = today.plusDays(14);
+        return inventoryItemRepository.sumExpiringQuantityByProduct(productId, today, threshold);
+    }
+
+
 }
