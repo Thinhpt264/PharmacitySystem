@@ -167,7 +167,7 @@
   "xac_nhan_email": "Vui lòng xác nhận email của bạn để hoàn tất đơn hàng.",
   "trang_chu_quay_lai": "Quay lại trang chủ",
   "danh_gia_khach_hang": "Đánh giá khách hàng",
-  "danh_gia": "đánh giá",
+  "danh_gia": "Đánh giá",
   "nguoi_dung": "Người dùng",
   "vua_xong": "Vừa xong",
   "tra_loi": "Trả lời",
@@ -180,5 +180,9 @@
   "nhap_binh_luan": "Nhập nội dung bình luận...",
   "nhap_ten": "Nhập tên của bạn...",
   "nhap_email": "Nhập email của bạn...",
-  "gui_binh_luan": "Gửi bình luận"
+  "gui_binh_luan": "Gửi bình luận",
+ 
+  "chia_se":" Chia sẻ",
+  "tong_quan": "Tổng quan",
+  "san_pham_lien_quan": "Sản phẩm liên quan"
 }

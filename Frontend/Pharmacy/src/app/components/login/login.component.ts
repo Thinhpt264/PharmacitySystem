@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/service/account.service';
 import { MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private authService: AuthService // Sử dụng AuthService để quản lý đăng nhập
   ) {}
 
   ngOnInit(): void {}
@@ -33,16 +35,18 @@ export class LoginComponent implements OnInit {
         if (response.status === true) {
           this.messageService.add({
             severity: 'success',
-            summary: 'Thành công',
+            summary: 'Thành công', 
             detail: 'Đăng nhập thành công! Chuyển về trang chủ',
           });
-
-          localStorage.setItem('token', response.token);
-          // sessionStorage.setItem('account', JSON.stringify(response.account));
-          // this.account = response.account
+        
+          // Sử dụng AuthService thay vì trực tiếp sessionStorage
+          this.authService.login(response.token);
+          // sessionStorage.setItem('token', response.token); // Lưu token vào sessionStorage
           setTimeout(() => {
             window.location.href = '/home';
+            // this.router.navigate(['/home']);
           }, 1500);
+        
         } else if (response.message === false) {
           this.messageService.add({
             severity: 'error',

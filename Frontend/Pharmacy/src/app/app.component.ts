@@ -5,6 +5,7 @@ import { BaseUrlService } from './service/baseUrl.service';
 import { filter, Subscription } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from './service/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private baseUrl: BaseUrlService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private translate: TranslateService // Thêm TranslateService
+    private translate: TranslateService,
+    private authService: AuthService // Thêm AuthService để quản lý đăng nhập // Thêm TranslateService
   ) {
     // Thiết lập ngôn ngữ mặc định
     translate.setDefaultLang('vi');
@@ -90,29 +92,25 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   loadSession() {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      try {
-        this.account = JSON.parse(atob(token.split('.')[1]));
-        this.account.username = this.account.sub;
-        console.log(this.account);
-      } catch {
-        this.account = {};
-      }
+    if (this.authService.isLoggedIn()) {
+      this.account = this.authService.getAccount();
+      this.account.username = this.account.sub; // Giữ nguyên logic này
+      console.log('✅ App Component - Loaded account:', this.account);
+    } else {
+      this.account = {};
+      console.log('❌ App Component - No valid session');
     }
   }
 
   logout() {
-    // Sử dụng translate cho confirm message
     const confirmMessage = this.translate.instant('xac_nhan_dang_xuat');
     const confirmed = confirm(
       confirmMessage || 'Bạn có chắc chắn muốn đăng xuất không?'
     );
     if (confirmed) {
-      localStorage.removeItem('token');
+      this.authService.logout(); // Dùng AuthService thay vì xóa localStorage
       this.account = {};
-      this.router.navigate(['/login']);
+      // AuthService.logout() đã redirect rồi, không cần router.navigate
     }
   }
 
