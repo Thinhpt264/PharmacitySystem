@@ -101,4 +101,50 @@ export class ProductService {
   getCachedProducts(): any[] {
     return this.products;
   }
+  async createProduct(
+    productDTO: any,
+    mainImage: File,
+    extraImages?: File[]
+  ): Promise<any> {
+    const formData = new FormData();
+
+    // 1. Đưa productDTO thành JSON string
+    formData.append('product', JSON.stringify(productDTO));
+
+    // 2. Ảnh chính
+    formData.append('file', mainImage);
+
+    // 3. Ảnh phụ (nếu có)
+    if (extraImages && extraImages.length) {
+      extraImages.forEach((img, idx) => {
+        // key phải khớp @RequestPart("images") bên backend
+        formData.append('images', img);
+      });
+    }
+
+    // 4. Gửi request
+    return await lastValueFrom(
+      this.httpClient.post<any>(
+        this.baseUrl.getBaseUrl() + 'api/v1/products',
+        formData
+      )
+    );
+  }
+  delete(product: any): Promise<any> {
+    return lastValueFrom(
+      this.httpClient.post(
+        this.baseUrl.getBaseUrl() + 'api/v1/products1',
+        product
+      )
+    );
+  }
+
+  create(product: any): Promise<any> {
+    return lastValueFrom(
+      this.httpClient.post(
+        this.baseUrl.getBaseUrl() + 'api/v1/products1',
+        product
+      )
+    );
+  }
 }

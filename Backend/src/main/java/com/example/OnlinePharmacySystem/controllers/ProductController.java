@@ -63,8 +63,10 @@ public class ProductController {
 	}
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponse<ProductDTO>> save(
-			@RequestParam("product") String productJson,
-			@RequestParam("file") MultipartFile file) {
+			@RequestPart("product") String productJson,
+			@RequestPart("file") MultipartFile file,
+			@RequestPart(value = "images", required = false) List<MultipartFile> images
+	) {
 
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -87,6 +89,27 @@ public class ProductController {
 			ProductDTO savedProduct = productService.save(product);
 			Image image = new Image("Product", savedProduct.getId(), "images/product/", fileName);
 			imageService.saveImage(image);
+			for (int i = 0; i < images.size(); i++) {
+				MultipartFile img = images.get(i);
+				 fileName = System.currentTimeMillis() + "_" + img.getOriginalFilename();
+				 imagePath = Paths.get(uploadDir, fileName);
+				Files.copy(img.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+
+
+				// 4. Ghi record vào bảng Image
+				Image imageEntity = new Image(
+						"Product",
+						savedProduct.getId(),                   // sẽ gán productId sau khi lưu product
+						"images/product/",
+						fileName
+				);
+				// chúng ta lưu tạm, nhưng cần productId → hoán đổi sang bước sau
+				imageService.saveImage(imageEntity);
+				log.info("✅ Ảnh phụ đã được lưu thành công: " + fileName);
+			}
+
+
+
 
 
 			return ResponseEntity.ok(new ApiResponse<>(true, "Lưu sản phẩm thành công", product));

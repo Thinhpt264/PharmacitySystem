@@ -13,7 +13,7 @@ import java.util.List;
 public interface ImageRepository extends JpaRepository<Image, Integer> {
 
     @Query("SELECT i FROM Image i WHERE i.objectId = :objectId AND i.tableName = :tableName")
-    public Image findByObjectId(@Param("objectId") Integer objectId, @Param("tableName") String tableName);
+     List<Image> findByObjectId(@Param("objectId") Integer objectId, @Param("tableName") String tableName);
 	
 
 }

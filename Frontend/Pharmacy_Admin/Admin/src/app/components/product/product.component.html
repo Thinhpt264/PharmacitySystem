@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="page-title-box">
                 <div class="page-title-right">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProductModal">
                         <i class="mdi mdi-plus mr-1"></i>Thêm sản phẩm
                     </button>
                 </div>
@@ -29,7 +29,6 @@
                                 <th>Tên sản phẩm</th>
                                 <th>Danh mục</th>
                                 <th>Giá</th>
-
                                 <th>Tồn kho</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
@@ -40,10 +39,11 @@
                                 <td>{{ product.id }}</td>
                                 <td style="padding: 10px;">
                                     <img [src]="product.imageUrl" alt="{{ product.name }}" class="img-thumbnail"
-                                        style="width: 80px; height: 80px; object-fit: cover;  display: block;">
+                                        style="width: 80px; height: 80px; object-fit: cover; display: block;">
                                 </td>
                                 <td pTooltip="{{ product.name }}" tooltipPosition="top" style="cursor: pointer;">
-                                    {{ product.name.length > 60 ? (product.name | slice:0:40) + '...' : product.name }}                       </td>
+                                    {{ product.name.length > 60 ? (product.name | slice:0:40) + '...' : product.name }}
+                                </td>
                                 <td>{{ product.categoryName }}</td>
                                 <td>{{ product.price | currency:'VND':'symbol':'1.0-0' }}</td>
                                 <td>{{ product.quantity }}</td>
@@ -68,3 +68,356 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Thêm sản phẩm -->
+<div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">
+                    <i class="mdi mdi-plus-circle mr-2"></i>Thêm sản phẩm mới
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="productForm" (ngSubmit)="addProduct()">
+                    <div class="row">
+                        <!-- Cột trái -->
+                        <div class="col-md-6">
+                            <!-- Tên sản phẩm -->
+                            <div class="form-group">
+                                <label for="productName">Tên sản phẩm <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="productName" formControlName="name"
+                                    placeholder="Nhập tên sản phẩm">
+                                <div class="invalid-feedback"
+                                    *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+                                    Tên sản phẩm là bắt buộc
+                                </div>
+                            </div>
+
+                            <!-- Danh mục -->
+                            <div class="form-group">
+                                <label for="category">Danh mục <span class="text-danger">*</span></label>
+                                <p-dropdown [options]="categories" optionLabel="categoryName" optionValue="id"
+                                    placeholder="Chọn danh mục" formControlName="categoryId" [filter]="true"
+                                    filterBy="categoryName" [showClear]="true" styleClass="w-100">
+                                </p-dropdown>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="brand">Thương hiệu <span class="text-danger">*</span></label>
+                                <p-dropdown [options]="brands" optionLabel="name" optionValue="id"
+                                    placeholder="Chọn thương hiệu" formControlName="brandId" [filter]="true"
+                                    filterBy="name" [showClear]="true" styleClass="w-100">
+                                </p-dropdown>
+                            </div>
+
+                            <!-- Giá tiền -->
+                            <div class="form-group">
+                                <label for="price">Giá tiền (VND) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="price" formControlName="price"
+                                    placeholder="Nhập giá sản phẩm" min="0">
+                                <div class="invalid-feedback"
+                                    *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+                                    Giá sản phẩm là bắt buộc và phải lớn hơn 0
+                                </div>
+                            </div>
+
+                        <!-- Loại -->
+                        <div class="form-group">
+                            <label for="type">Loại sản phẩm</label>
+                            <select class="form-control" id="type" formControlName="type">
+                                <option value="">Chọn loại sản phẩm</option>
+                                <option *ngFor="let type of productTypes" [value]="type.value">
+                                    {{ type.label }}
+                                </option>
+                            </select>
+                        </div>
+
+
+                            <!-- Mô tả -->
+                            <div class="form-group">
+                                <label for="description">Mô tả</label>
+                                <input type="text" class="form-control" id="description" formControlName="description"
+                                    placeholder="Nhập mô tả ngắn về sản phẩm">
+                                </div>
+
+                            <!-- Tên nhà máy -->
+                            <div class="form-group">
+                                <label for="manufacturer">Tên nhà máy</label>
+                                <input type="text" class="form-control" id="manufacturer" formControlName="manufacturer"
+                                    placeholder="Nhập tên nhà sản xuất">
+                            </div>
+
+                            <!-- Hình ảnh chính -->
+                            <div class="form-group">
+                                <label for="image">Hình ảnh chính</label>
+                                <div class="custom-file-container">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="image"
+                                            (change)="onImageSelected($event)" accept="image/*">
+                                        <label class="custom-file-label" for="image">
+                                            <i class="mdi mdi-cloud-upload mr-2"></i>
+                                            {{ selectedFile ? selectedFile.name : 'Chọn hình ảnh chính...' }}
+                                        </label>
+                                    </div>
+                                    <small class="form-text text-muted mt-2">
+                                        <i class="mdi mdi-information-outline mr-1"></i>
+                                        Chỉ chấp nhận file ảnh (JPG, PNG, GIF). Kích thước tối đa 5MB.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cột phải -->
+                        <div class="col-md-6">
+                            <!-- Thành phần -->
+                            <div class="form-group">
+                                <label for="ingredients">Thành phần</label>
+                                <textarea class="form-control" id="ingredients" formControlName="ingredients" rows="3"
+                                    placeholder="Nhập thành phần chính của sản phẩm"></textarea>
+                            </div>
+
+                            <!-- Ghi chú -->
+                            <div class="form-group">
+                                <label for="notes">Ghi chú</label>
+                                <textarea class="form-control" id="notes" formControlName="notes" rows="3"
+                                    placeholder="Nhập ghi chú thêm"></textarea>
+                            </div>
+
+                            <!-- Hướng dẫn sử dụng -->
+                            <div class="form-group">
+                                <label for="usage">Hướng dẫn sử dụng</label>
+                                <textarea class="form-control" id="usage" formControlName="usage" rows="4"
+                                    placeholder="Nhập hướng dẫn sử dụng chi tiết"></textarea>
+                            </div>
+
+                            <!-- Cách đóng gói -->
+                            <div class="form-group">
+                                <label for="packaging">Cách đóng gói</label>
+                                <textarea class="form-control" id="packaging" formControlName="packaging" rows="3"
+                                    placeholder="Nhập thông tin về đóng gói (VD: Hộp 20 viên, Chai 100ml...)"></textarea>
+                            </div>
+
+                            <!-- Hình ảnh mô tả -->
+                            <div class="form-group">
+                                <label>Hình ảnh mô tả</label>
+                                <div class="description-images-container">
+                                    <!-- Upload button -->
+                                    <div class="upload-section">
+                                        <button type="button" class="btn btn-outline-primary btn-upload"
+                                            (click)="triggerDescriptionImageUpload()">
+                                            <i class="mdi mdi-plus mr-2"></i>Thêm hình ảnh mô tả
+                                        </button>
+                                        <input type="file" id="descriptionImages"
+                                            (change)="onDescriptionImagesSelected($event)" accept="image/*" multiple
+                                            style="display: none;">
+                                    </div>
+
+                                    <!-- Selected images preview -->
+                                    <div class="selected-images-preview" *ngIf="selectedDescriptionImages.length > 0">
+                                        <div class="images-grid">
+                                            <div class="image-item"
+                                                *ngFor="let image of selectedDescriptionImages; let i = index">
+                                                <div class="image-wrapper">
+                                                    <img [src]="image.preview" [alt]="image.name" class="preview-image">
+                                                    <div class="image-overlay">
+                                                        <button type="button"
+                                                            class="btn btn-sm btn-danger remove-image-btn"
+                                                            (click)="removeDescriptionImage(i)" title="Xóa ảnh">
+                                                            <i class="mdi mdi-close"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="image-name">{{ image.name }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <small class="form-text text-muted mt-2">
+                                        <i class="mdi mdi-information-outline mr-1"></i>
+                                        Chọn nhiều hình ảnh mô tả sản phẩm. Tối đa 10 ảnh, mỗi ảnh không quá 5MB.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="mdi mdi-close mr-1"></i>Hủy
+                </button>
+                <button type="button" class="btn btn-primary" (click)="addProduct()"
+                    [disabled]="productForm.invalid || isSubmitting">
+                    <i class="mdi mdi-loading mdi-spin mr-1" *ngIf="isSubmitting"></i>
+                    <i class="mdi mdi-check mr-1" *ngIf="!isSubmitting"></i>
+                    {{ isSubmitting ? 'Đang lưu...' : 'Thêm sản phẩm' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom styles cho upload components */
+    .custom-file-container {
+        position: relative;
+    }
+
+    .custom-file {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 45px;
+        margin-bottom: 0;
+    }
+
+    .custom-file-input {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: 45px;
+        margin: 0;
+        opacity: 0;
+    }
+
+    .custom-file-label {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+        height: 45px;
+        padding: 0.75rem 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #6c757d;
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .custom-file-label:hover {
+        background-color: #f8f9fa;
+        border-color: #007bff;
+    }
+
+    .custom-file-input:focus~.custom-file-label {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    /* Description images styles */
+    .description-images-container {
+        border: 1px solid #e3e6f0;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #f8f9fc;
+    }
+
+    .upload-section {
+        margin-bottom: 15px;
+    }
+
+    .btn-upload {
+        border-style: dashed;
+        border-width: 2px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-upload:hover {
+        background-color: #007bff;
+        color: white;
+        border-style: solid;
+    }
+
+    .selected-images-preview {
+        margin-top: 15px;
+    }
+
+    .images-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px;
+    }
+
+    .image-item {
+        text-align: center;
+    }
+
+    .image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 2px solid #e3e6f0;
+        transition: all 0.3s ease;
+    }
+
+    .image-wrapper:hover {
+        border-color: #007bff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+    }
+
+    .preview-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .image-overlay {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .image-wrapper:hover .image-overlay {
+        opacity: 1;
+    }
+
+    .remove-image-btn {
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 12px;
+    }
+
+    .image-name {
+        margin-top: 8px;
+        font-size: 11px;
+        color: #6c757d;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 120px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .images-grid {
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+        }
+
+        .image-wrapper {
+            height: 80px;
+        }
+    }
+</style>
