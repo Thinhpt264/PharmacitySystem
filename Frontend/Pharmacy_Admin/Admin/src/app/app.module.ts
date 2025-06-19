@@ -27,6 +27,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { OrderDetailComponent } from './components/order-detail/order-detail.component';
 import { OrderDetailService } from './service/order-detail.service';
 import { ProductRemainComponent } from './components/product-remain/product-remain.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { BrandService } from './service/brand.service';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,7 @@ import { ProductRemainComponent } from './components/product-remain/product-rema
     ToastModule,
     BrowserAnimationsModule,
     TooltipModule,
+    DropdownModule,
   ],
   providers: [
     BaseUrlService,
@@ -62,6 +65,7 @@ import { ProductRemainComponent } from './components/product-remain/product-rema
     MessageService,
     AuthInterceptor,
     OrderDetailService,
+    BrandService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

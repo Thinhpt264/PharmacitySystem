@@ -8,6 +8,7 @@ import com.example.OnlinePharmacySystem.repositories.ViewStatRepository;
 import com.example.OnlinePharmacySystem.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -22,6 +23,8 @@ import com.example.OnlinePharmacySystem.entities.Product;
 public class ProductServiceImpl implements ProductService {
 	private final ProductRepository productRepository;
 	private final ModelMapper mapper;
+	private CacheManager cacheManager;
+
 	private final ViewStatRepository viewStatRepository;
 
 	@Override
@@ -44,9 +47,11 @@ public class ProductServiceImpl implements ProductService {
 				.collect(Collectors.toList());
 	}
 	@CachePut(value = "PRODUCT_CACHE", key = "#result.id")
-		public ProductDTO save(ProductDTO product) {
+	@CacheEvict(value = "PRODUCT_CACHE", key = "'allProducts'")
+	public ProductDTO save(ProductDTO product) {
 		Product product1 = mapper.map(product, Product.class);
 		Product saved = productRepository.save(product1);
+
 		return mapper.map(saved, ProductDTO.class);
 	}
 

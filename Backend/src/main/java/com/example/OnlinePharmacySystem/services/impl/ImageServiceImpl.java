@@ -6,6 +6,8 @@ import com.example.OnlinePharmacySystem.services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ImageServiceImpl implements ImageService {
 
@@ -13,7 +15,11 @@ public class ImageServiceImpl implements ImageService {
     private ImageRepository imageRepository;
     @Override
     public Image getImageByObjectId(Integer id, String tableName) {
-        return imageRepository.findByObjectId(id, tableName);
+        List<Image> images = imageRepository.findByObjectId(id, tableName);
+        if (images.isEmpty()) return null;
+
+        // Trả về ảnh đầu tiên, hoặc bạn có thể lọc theo ảnh chính (main), ví dụ:
+        return images.get(0);
     }
 
     @Override
