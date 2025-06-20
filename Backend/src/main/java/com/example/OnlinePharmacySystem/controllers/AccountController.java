@@ -41,10 +41,9 @@ public class AccountController {
 	@Autowired
 	private JwtUtils jwtUtils;
 
-
-
 	@Autowired
 	private AuthenticationManager authenticationManager;
+
 	@GetMapping(value = "/", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Account>> findAll() {
 		try {
