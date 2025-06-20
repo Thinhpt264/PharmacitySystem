@@ -41,18 +41,16 @@ public class SecurityConfiguration {
 								"/api/v1/brands/**",
 								"/api/v1/categories/**",
 								"/api/v1/image/**",
-								"/api/v1/warehouses/**",
-								"/api/v1/orderDetails/**",
-								"/api/v1/orders/**",
-								"/api/v1/deliveryInfo/**",
-								"/api/v1/comments/product/**",
 								"/images/**",
+								"/api/v1/orders/**",
 								"/api/payment/vnPay-callback",
 								"/assets/images/**",
 								"/swagger-ui/**",
 								"/v3/api-docs/**",
 								"/swagger-ui.html"
 						).permitAll()
+						.requestMatchers("/api/v1/warehouses/**").hasAnyRole("ADMIN")
+
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		                .anyRequest().authenticated() // đóng tất cả API
 		            )
