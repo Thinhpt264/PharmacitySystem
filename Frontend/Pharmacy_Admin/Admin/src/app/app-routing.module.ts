@@ -8,7 +8,8 @@ import { OrderComponent } from './components/order/order.component';
 import { AuthGuard } from './service/auth.guard';
 import { OrderDetailComponent } from './components/order-detail/order-detail.component';
 import { ProductRemainComponent } from './components/product-remain/product-remain.component';
-
+import { DrugPredictionComponent } from './components/drug-prediction/drug-prediction.component';
+import { PromotionComponent } from './components/promotion/promotion.component';
 const routes: Routes = [
   {
     path: '',
@@ -50,6 +51,17 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     component: OrderDetailComponent,
   },
+  {
+    path: 'drug-prediction',
+    canActivate: [AuthGuard],
+    component : DrugPredictionComponent
+  },
+  {
+    path: 'promotion',
+    canActivate: [AuthGuard],
+    component: PromotionComponent,
+  }
+
 ];
 
 @NgModule({

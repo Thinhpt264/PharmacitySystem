@@ -29,7 +29,10 @@ import { OrderDetailService } from './service/order-detail.service';
 import { ProductRemainComponent } from './components/product-remain/product-remain.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { BrandService } from './service/brand.service';
-
+import { DrugPredictionComponent } from './components/drug-prediction/drug-prediction.component';
+import { PredictionService } from './service/prediction.service';
+import { PromotionComponent } from './components/promotion/promotion.component';
+import { PromotionService } from './service/promotion.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +45,9 @@ import { BrandService } from './service/brand.service';
     CategoryComponent,
     OrderDetailComponent,
     ProductRemainComponent,
+    DrugPredictionComponent,
+    PromotionComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -66,6 +72,9 @@ import { BrandService } from './service/brand.service';
     AuthInterceptor,
     OrderDetailService,
     BrandService,
+    PredictionService,
+    PromotionService,
+    
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
