@@ -1,33 +1,56 @@
 <div class="drug-prediction-container">
   <h2>Tìm thuốc theo triệu chứng</h2>
-  
+
   <div class="input-group">
     <label for="symptoms">Nhập các triệu chứng (cách nhau bằng dấu phẩy):</label>
-    <input type="text" id="symptoms" [(ngModel)]="symptoms" 
-           placeholder="Ví dụ: headache, nausea, dizziness">
+    <input
+      type="text"
+      id="symptoms"
+      [(ngModel)]="symptoms"
+      (keypress)="onKeyPress($event)"
+      placeholder="Ví dụ: đau đầu, buồn nôn, chóng mặt"
+    />
     <button (click)="predictDrugs()" [disabled]="isLoading">
-      {{ isLoading ? 'Đang tìm kiếm...' : 'Tìm thuốc' }}
+      <span *ngIf="!isLoading">Tìm thuốc</span>
+      <div *ngIf="isLoading" class="loading">
+        <div class="spinner"></div>Đang tìm kiếm...
+      </div>
     </button>
   </div>
 
-  <div *ngIf="error" class="error-message">
-    {{ error }}
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
   </div>
 
-  <div *ngIf="suggestedDrugs.length > 0" class="results-container">
+  <div *ngIf="results.length > 0" class="results-container success-animation">
     <h3>Kết quả đề xuất:</h3>
-    
-    <div class="drug-card" *ngFor="let drug of suggestedDrugs">
-      <div class="drug-header">
-        <h4>{{ drug.drug_name }}</h4>
-        <span class="rating">Đánh giá: {{ drug.rating }}/10</span>
-      </div>
-      
-      <div class="side-effects">
-        <h5>Tác dụng phụ: 
-            {{ drug.medical_condition }}
-        </h5>
-        
+    <div id="drugResults">
+      <div class="drug-card" *ngFor="let drug of results; let i = index" [style.animationDelay]="i * 0.1 + 's'">
+        <div class="drug-header">
+          <h4>Tên thuốc: {{ drug.drug_name }}</h4>
+        </div>
+        <div class="drug-header">
+          <h5>Nhóm thuốc: {{ drug.drug_classes }}</h5>
+        </div>
+        <div class="side-effects">
+          <h5>Tình trạng bệnh lý:
+            <span class="medical-condition">{{ drug.medical_condition }}</span>
+          </h5>
+        </div>
+        <div class="side-effects" *ngIf="drug.drug_link">
+          <h5>Thông tin về thuốc:
+            <a [href]="drug.drug_link" target="_blank" rel="noopener noreferrer" class="medical-link">
+              {{ drug.drug_link }}
+            </a>
+          </h5>
+        </div>
+        <div class="side-effects" *ngIf="drug.medical_condition_url">
+          <h5>Thông tin về tình trạng bệnh lý:
+            <a [href]="drug.medical_condition_url" target="_blank" rel="noopener noreferrer" class="medical-link">
+              {{ drug.medical_condition_url }}
+            </a>
+          </h5>
+        </div>
       </div>
     </div>
   </div>

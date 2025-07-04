@@ -1,4 +1,3 @@
-// src/app/components/drug-prediction/drug-prediction.component.ts
 import { Component } from '@angular/core';
 import { PredictionService } from 'src/app/service/prediction.service';
 
@@ -9,30 +8,43 @@ import { PredictionService } from 'src/app/service/prediction.service';
 })
 export class DrugPredictionComponent {
   symptoms: string = '';
-  suggestedDrugs: any[] = [];
+  results: any[] = []; 
   isLoading: boolean = false;
-  error: string | null = null;
+  errorMessage: string | null = null;
 
-  constructor(private predictionService: PredictionService) { }
+  constructor(private predictionService: PredictionService) {}
 
-  async predictDrugs() {
+  predictDrugs(): void {
     if (!this.symptoms.trim()) {
-      this.error = 'Vui lòng nhập ít nhất một triệu chứng';
+      this.errorMessage = 'Vui lòng nhập ít nhất một triệu chứng';
       return;
     }
 
     this.isLoading = true;
-    this.error = null;
-    const symptomsArray = this.symptoms.split(',').map(s => s.trim());
+    this.errorMessage = null;
+    this.results = [];
 
-    try {
-      const response = await this.predictionService.predictDrugs(symptomsArray);
-      this.suggestedDrugs = response.suggested_drugs || [];
-    } catch (error) {
-      this.error = 'Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại.';
-      console.error('API Error:', error);
-    } finally {
-      this.isLoading = false;
+    const symptomsArray = this.symptoms
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => s);
+
+    this.predictionService.predictDrugs(symptomsArray).subscribe({
+      next: (response) => {
+        this.results = response?.suggested_drugs || [];
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại.';
+        console.error('API Error:', err);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  onKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && !this.isLoading) {
+      this.predictDrugs();
     }
   }
 }
