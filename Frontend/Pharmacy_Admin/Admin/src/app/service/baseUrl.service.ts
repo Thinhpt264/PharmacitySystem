@@ -5,7 +5,7 @@ export class BaseUrlService {
   private baseUrl: string = 'http://localhost:8083/';
   private imageUrl: string = 'http://localhost:8083/assets/images/';
   private productUrl: string = 'http://localhost:8083/assets/images/product/';
-  private baseUrlPrediction: string = 'http://127.0.0.1:8082/';
+  private baseUrlPrediction: string = 'http://127.0.0.1:8889/';
   getBaseUrl(): string {
     return this.baseUrl;
   }
