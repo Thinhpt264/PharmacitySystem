@@ -1,19 +1,30 @@
-<h2>Danh sách Khuyến mãi</h2>
-
-<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; margin-bottom: 20px;">
+<h2>📋 Danh sách Khuyến mãi</h2>
+<button
+  class="btn btn-success mb-3"
+  data-toggle="modal"
+  data-target="#addPromotionModal"
+>
+  <i class="mdi mdi-plus-circle mr-1"></i> Thêm khuyến mãi
+</button>
+<table
+  border="1"
+  cellpadding="8"
+  cellspacing="0"
+  style="width: 100%; margin-bottom: 20px"
+>
   <thead>
     <tr>
       <th>ID</th>
       <th>Tên khuyến mãi</th>
-        <th>Tên sản phẩm áp dụng</th>
+      <th>Sản phẩm</th>
       <th>Loại</th>
       <th>Trạng thái</th>
       <th>Giá trị giảm</th>
-      <th>Từ ngày</th>
-      <th>Đến ngày</th>
-      <th>Mã coupon</th>
+      <th>Bắt đầu</th>
+      <th>Kết thúc</th>
+      <th>Mã Coupon</th>
       <th>Số lượng</th>
-      <th>Còn lại</th>
+      <th>Đã dùng</th>
       <th>Thao tác</th>
     </tr>
   </thead>
@@ -21,21 +32,25 @@
     <tr *ngFor="let promo of promotions">
       <td>{{ promo.id }}</td>
       <td>{{ promo.promotionName }}</td>
-        <td>{{ promo.productName }}</td>
-
+      <td>{{ promo.productName }}</td>
       <td>{{ promo.promotionType }}</td>
       <td>{{ promo.status }}</td>
       <td>
-        {{ promo.discountValue }}{{ promo.isPercentageDiscount ? '₫' : '%' }} 
+        {{ promo.discountValue }}{{ promo.isPercentageDiscount ? "%" : "₫" }}
       </td>
       <td>{{ promo.startDate }}</td>
       <td>{{ promo.endDate }}</td>
       <td>{{ promo.couponCode }}</td>
-        <td>{{ promo.quantity }}</td>
-<td>{{ promo.quantity - promo.currentQuantity }}</td>
-
+      <td>{{ promo.quantity }}</td>
+      <td>{{ promo.quantity - promo.currentQuantity }}</td>
       <td>
-        <button (click)="viewPromotion(promo.id)">Xem/Sửa</button>
+        <button
+          (click)="viewPromotion(promo.id)"
+          data-toggle="modal"
+          data-target="#editPromotionModal"
+        >
+          Sửa
+        </button>
         <button (click)="deletePromotion(promo.id)">Xóa</button>
       </td>
     </tr>
@@ -44,83 +59,347 @@
 
 <hr />
 
-<h3>Thêm khuyến mãi mới</h3>
-<form (ngSubmit)="createPromotion()">
-  <label>Tên:</label>
-  <input [(ngModel)]="newPromotion.promotionName" name="name" required /><br />
+<div
+  class="modal fade"
+  id="addPromotionModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addPromotionModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="addPromotionModalLabel">
+          <i class="mdi mdi-sale mr-2"></i>➕ Thêm khuyến mãi mới
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
-  <label>Loại:</label>
-  <select [(ngModel)]="newPromotion.promotionType" name="type">
-    <option value="SALE">SALE</option>
-    <option value="COUPON">COUPON</option>
-  </select><br />
+      <!-- Body -->
+      <div class="modal-body">
+        <form (ngSubmit)="createPromotion()" #promotionForm="ngForm">
+          <div class="row">
+            <!-- Cột trái -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Tên khuyến mãi:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="newPromotion.promotionName"
+                  name="promotionName"
+                  required
+                />
+              </div>
 
-  <label>Trạng thái:</label>
-  <select [(ngModel)]="newPromotion.status" name="status">
-    <option value="ACTIVE">ACTIVE</option>
-    <option value="INACTIVE">INACTIVE</option>
-    <option value="EXPIRED">EXPIRED</option>
-  </select><br />
+              <div class="form-group">
+                <label>Sản phẩm áp dụng:</label>
+                <select
+                  class="form-control"
+                  [(ngModel)]="newPromotion.productId"
+                  name="productId"
+                  required
+                >
+                  <option value="" disabled selected>
+                    -- Chọn sản phẩm --
+                  </option>
+                  <option *ngFor="let p of products" [value]="p.id">
+                    {{ p.name }}
+                  </option>
+                </select>
+              </div>
 
-  <label>Giảm giá:</label>
-  <input type="number" [(ngModel)]="newPromotion.discountValue" name="discount" /><br />
+              <div class="form-group">
+                <label>Loại khuyến mãi:</label>
+                <select
+                  class="form-control"
+                  [(ngModel)]="newPromotion.promotionType"
+                  name="promotionType"
+                >
+                  <option value="DISCOUNT">DISCOUNT</option>
+                  <option value="FREE_SHIP">FREE_SHIP</option>
+                </select>
+              </div>
 
-  <label>Là % giảm giá?</label>
-  <input type="checkbox" [(ngModel)]="newPromotion.isPercentageDiscount" name="isPercent" /><br />
+              <div class="form-group">
+                <label>Trạng thái:</label>
+                <select
+                  class="form-control"
+                  [(ngModel)]="newPromotion.status"
+                  name="status"
+                >
+                  <option value="ACTIVE">ACTIVE</option>
+                  <option value="INACTIVE">INACTIVE</option>
+                  <option value="EXPIRED">EXPIRED</option>
+                  <option value="UPCOMING">UPCOMING</option>
+                </select>
+              </div>
 
-  <label>Ngày bắt đầu:</label>
-  <input type="date" [(ngModel)]="newPromotion.startDate" name="startDate" /><br />
+              <div class="form-group">
+                <label>Giá trị giảm:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="newPromotion.discountValue"
+                  name="discountValue"
+                />
+              </div>
 
-  <label>Ngày kết thúc:</label>
-  <input type="date" [(ngModel)]="newPromotion.endDate" name="endDate" /><br />
+              <div class="form-group form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [(ngModel)]="newPromotion.isPercentageDiscount"
+                  name="isPercentageDiscount"
+                  id="isPercentageDiscount"
+                />
+                <label class="form-check-label" for="isPercentageDiscount"
+                  >Là % giảm?</label
+                >
+              </div>
+            </div>
 
-  <label>Số lượng:</label>
-  <input type="number" [(ngModel)]="newPromotion.quantity" name="quantity" /><br />
+            <!-- Cột phải -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Ngày bắt đầu:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  [(ngModel)]="newPromotion.startDate"
+                  name="startDate"
+                />
+              </div>
 
-  <label>Mã Coupon:</label>
-  <input type="text" [(ngModel)]="newPromotion.couponCode" name="coupon" /><br />
+              <div class="form-group">
+                <label>Ngày kết thúc:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  [(ngModel)]="newPromotion.endDate"
+                  name="endDate"
+                />
+              </div>
 
-  <button type="submit">Tạo khuyến mãi</button>
-</form>
+              <div class="form-group">
+                <label>Số lượng:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="newPromotion.quantity"
+                  name="quantity"
+                />
+              </div>
 
+              <div class="form-group">
+                <label>Mã Coupon:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="newPromotion.couponCode"
+                  name="couponCode"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="mdi mdi-close mr-1"></i>Hủy
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="promotionForm.invalid"
+          (click)="createPromotion()"
+        >
+          <i class="mdi mdi-check mr-1"></i>Tạo khuyến mãi
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 <hr />
+<!-- Sua khuyen mai -->
+<div
+  class="modal fade"
+  id="editPromotionModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editPromotionModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" *ngIf="selectedPromotion">
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPromotionModalLabel">
+          <i class="mdi mdi-pencil mr-2"></i>✏️ Sửa khuyến mãi ID
+          {{ selectedPromotion.id }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
-<div *ngIf="selectedPromotion">
-  <h3>Sửa khuyến mãi ID {{ selectedPromotion.id }}</h3>
+      <!-- Body -->
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <div class="row">
+            <!-- Cột trái -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Tên khuyến mãi:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="selectedPromotion.promotionName"
+                  name="editPromotionName"
+                  required
+                />
+              </div>
 
-  <label>Tên:</label>
-  <input [(ngModel)]="selectedPromotion.promotionName" /><br />
+              <div class="form-group">
+                <label>Sản phẩm áp dụng:</label>
+                <select
+                  class="form-control"
+                  [(ngModel)]="selectedPromotion.productId"
+                  name="editProductId"
+                  required
+                >
+                  <option value="" disabled>-- Chọn sản phẩm --</option>
+                  <option *ngFor="let p of products" [value]="p.id">
+                    {{ p.name }}
+                  </option>
+                </select>
+              </div>
 
-  <label>Loại:</label>
-  <select [(ngModel)]="selectedPromotion.promotionType">
-    <option value="SALE">SALE</option>
-    <option value="COUPON">COUPON</option>
-  </select><br />
+              <div class="form-group">
+                <label>Loại khuyến mãi:</label>
+                <select
+                  class="form-control"
+                  [(ngModel)]="selectedPromotion.promotionType"
+                  name="editPromotionType"
+                >
+                  <option value="DISCOUNT">DISCOUNT</option>
+                  <option value="FREE_SHIP">FREE_SHIP</option>
+                </select>
+              </div>
 
-  <label>Trạng thái:</label>
-  <select [(ngModel)]="selectedPromotion.status">
-    <option value="ACTIVE">ACTIVE</option>
-    <option value="INACTIVE">INACTIVE</option>
-    <option value="EXPIRED">EXPIRED</option>
-  </select><br />
+              <div class="form-group">
+                <label>Trạng thái:</label>
+                <select
+                  class="form-control"
+                  [(ngModel)]="selectedPromotion.status"
+                  name="editStatus"
+                >
+                  <option value="ACTIVE">ACTIVE</option>
+                  <option value="INACTIVE">INACTIVE</option>
+                  <option value="EXPIRED">EXPIRED</option>
+                  <option value="UPCOMING">UPCOMING</option>
+                </select>
+              </div>
 
-  <label>Giảm giá:</label>
-  <input type="number" [(ngModel)]="selectedPromotion.discountValue" /><br />
+              <div class="form-group">
+                <label>Giá trị giảm:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="selectedPromotion.discountValue"
+                  name="editDiscountValue"
+                />
+              </div>
 
-  <label>Là % giảm giá?</label>
-  <input type="checkbox" [(ngModel)]="selectedPromotion.isPercentageDiscount" /><br />
+              <div class="form-group form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [(ngModel)]="selectedPromotion.isPercentageDiscount"
+                  name="editIsPercentageDiscount"
+                  id="editIsPercentageDiscount"
+                />
+                <label class="form-check-label" for="editIsPercentageDiscount">
+                  Là % giảm?
+                </label>
+              </div>
+            </div>
 
-  <label>Ngày bắt đầu:</label>
-  <input type="date" [(ngModel)]="selectedPromotion.startDate" /><br />
+            <!-- Cột phải -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Ngày bắt đầu:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  [(ngModel)]="selectedPromotion.startDate"
+                  name="editStartDate"
+                />
+              </div>
 
-  <label>Ngày kết thúc:</label>
-  <input type="date" [(ngModel)]="selectedPromotion.endDate" /><br />
+              <div class="form-group">
+                <label>Ngày kết thúc:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  [(ngModel)]="selectedPromotion.endDate"
+                  name="editEndDate"
+                />
+              </div>
 
-  <label>Số lượng:</label>
-  <input type="number" [(ngModel)]="selectedPromotion.quantity" /><br />
+              <div class="form-group">
+                <label>Số lượng:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="selectedPromotion.quantity"
+                  name="editQuantity"
+                />
+              </div>
 
-  <label>Mã Coupon:</label>
-  <input type="text" [(ngModel)]="selectedPromotion.couponCode" /><br />
+              <div class="form-group">
+                <label>Mã Coupon:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="selectedPromotion.couponCode"
+                  name="editCouponCode"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
 
-  <button (click)="updatePromotion()">Cập nhật</button>
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="mdi mdi-close mr-1"></i>Hủy
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="updatePromotion()"
+        >
+          <i class="mdi mdi-check mr-1"></i>Cập nhật
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
