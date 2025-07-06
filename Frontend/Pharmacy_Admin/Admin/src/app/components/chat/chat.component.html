@@ -1,0 +1,41 @@
+<div class="chat-container">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h3>Đoạn chat</h3>
+    </div>
+    <div class="user-list">
+      <div *ngFor="let user of users" class="user-item" [ngClass]="{'active': user === selectedUser}" (click)="selectUser(user)">
+        <div class="user-avatar">{{ getInitials(user) }}</div>
+        <div class="user-info">
+          <span class="user-name">{{ user }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chat-window" *ngIf="selectedUser; else noChat">
+    <div class="chat-header">
+      <div class="chat-header-avatar">{{ getInitials(selectedUser) }}</div>
+      <h3>{{ selectedUser }}</h3>
+    </div>
+    <div class="messages" #messagesContainer>
+      <div *ngFor="let message of messages" class="message" [ngClass]="{'msg-admin': message.sender === 'admin', 'msg-user': message.sender !== 'admin'}">
+        <div class="message-content">
+          <div class="message-text">{{ message.content }}</div>
+          <div class="message-time">{{ formatTime(message.timestamp) }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="input-area">
+      <input type="text" class="message-input" placeholder="Nhập tin nhắn..." [(ngModel)]="newMessage" (keypress)="handleKeyPress($event)">
+      <button class="send-btn" (click)="sendMessage()">📤</button>
+    </div>
+  </div>
+  <ng-template #noChat>
+    <div class="no-chat">
+      <div>
+        <h3>👋 Chào mừng!</h3>
+        <p>Chọn một người dùng để bắt đầu chat</p>
+      </div>
+    </div>
+  </ng-template>
+</div>
