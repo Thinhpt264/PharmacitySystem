@@ -1,6 +1,7 @@
 <div *ngIf="showLayout">
   <p-toast></p-toast>
   <p-confirmDialog></p-confirmDialog>
+  
   <!-- HEADER AREA START (header-3) -->
   <header class="ltn__header-area ltn__header-3 section-bg-6---">
 
@@ -244,9 +245,7 @@
                           <li><a (click)="goToServices()">{{ 'y_te' | translate }}</a></li>
                         </ul>
                       </li>
-                      <li class="menu-icon">
-                        <a (click)="goToContact()">{{ 'lien_he' | translate }}</a>
-                      </li>
+                     
                     </ul>
                   </div>
                 </nav>
@@ -405,6 +404,7 @@
     </div>
   </footer>
   <!-- FOOTER AREA END -->
+   <app-chat></app-chat> 
 </div>
 
 <router-outlet *ngIf="!showLayout"></router-outlet>
