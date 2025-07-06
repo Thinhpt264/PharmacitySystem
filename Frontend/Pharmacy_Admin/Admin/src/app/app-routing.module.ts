@@ -10,6 +10,7 @@ import { OrderDetailComponent } from './components/order-detail/order-detail.com
 import { ProductRemainComponent } from './components/product-remain/product-remain.component';
 import { DrugPredictionComponent } from './components/drug-prediction/drug-prediction.component';
 import { PromotionComponent } from './components/promotion/promotion.component';
+import { WareHouseComponent } from './components/warehouse/warehouse.component';
 const routes: Routes = [
   {
     path: '',
@@ -60,6 +61,11 @@ const routes: Routes = [
     path: 'promotion',
     canActivate: [AuthGuard],
     component: PromotionComponent,
+  },
+  {
+    path: 'warehouse',
+    canActivate: [AuthGuard],
+    component: WareHouseComponent,
   }
 
 ];

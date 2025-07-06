@@ -74,6 +74,9 @@ export class AppComponent implements OnInit {
   gotoProductRemain() {
     window.location.href = 'product-remain'; // Redirect to Google
   }
+  gotoWareHouse() {
+    window.location.href = 'warehouse'; // Redirect to warehouse
+  }
   gotoDrugPrediction() {
     window.location.href = 'drug-prediction'; // Redirect to drug prediction
 } 

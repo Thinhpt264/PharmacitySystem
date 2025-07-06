@@ -8,10 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MimeTypeUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/warehouses")
@@ -32,5 +31,18 @@ public class WareHouseController {
                     .body(new ApiResponse<>(false, "Lỗi khi nhập kho: " + e.getMessage(), null));
         }
     }
+    @GetMapping()
+    public ResponseEntity<ApiResponse<List<ImportBatchDTO>>> getAllImportBatches() {
+        try {
+            List<ImportBatchDTO> result = importBatchService.findAllImportBatch();
+            return ResponseEntity.ok(new ApiResponse<>(true, "Lấy danh sách thành công", result));
+        } catch (Exception e) {
+            log.error("❌ Lỗi Lấy danh sách nhập kho: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Lỗi khi nhập kho: " + e.getMessage(), null));
+        }
+    }
+
+
 
 }

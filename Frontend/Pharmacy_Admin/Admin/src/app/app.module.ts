@@ -33,6 +33,8 @@ import { DrugPredictionComponent } from './components/drug-prediction/drug-predi
 import { PredictionService } from './service/prediction.service';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { PromotionService } from './service/promotion.service';
+import { WareHouseService } from './service/warehouse.service';
+import { WareHouseComponent } from './components/warehouse/warehouse.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +47,7 @@ import { PromotionService } from './service/promotion.service';
     CategoryComponent,
     OrderDetailComponent,
     ProductRemainComponent,
+    WareHouseComponent,
     DrugPredictionComponent,
     PromotionComponent,
     
@@ -64,6 +67,7 @@ import { PromotionService } from './service/promotion.service';
     BaseUrlService,
     ProductService,
     CategoryService,
+    WareHouseService,
     OrderService,
     AccountService,
     AuthService,

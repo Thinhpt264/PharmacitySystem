@@ -44,12 +44,13 @@ public class SecurityConfiguration {
 								"/images/**",
 								"/api/v1/orders/**",
 								"/api/payment/vnPay-callback",
+								"/api/v1/warehouses/**",
 								"/assets/images/**",
 								"/swagger-ui/**",
 								"/v3/api-docs/**",
 								"/swagger-ui.html"
 						).permitAll()
-						.requestMatchers("/api/v1/warehouses/**").hasAnyRole("ADMIN")
+//						.requestMatchers("/api/v1/warehouses/**").hasAnyRole("ADMIN")
 
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		                .anyRequest().authenticated() // đóng tất cả API

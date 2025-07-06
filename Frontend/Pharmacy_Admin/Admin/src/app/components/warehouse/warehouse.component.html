@@ -1,0 +1,234 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <!-- Nút mở modal nhập lô hàng -->
+                    <button type="button" class="btn btn-primary" (click)="openAddBatchModal()">
+                        <i class="mdi mdi-plus mr-1"></i>Nhập Lô Hàng Mới
+                    </button>
+                </div>
+                <h4 class="page-title">Quản lý Kho Hàng</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title">Danh sách lô Hàng</h4>
+                    <p class="text-muted font-13 mb-4">
+                        Quản lý tất cả lô hàng trong hệ thống
+                    </p>
+
+                    <table id="basic-datatable" class="table dt-responsive nowrap w-100" >
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Mã Lô Hàng</th>
+                                <th>Tên Nhà Cung Cấp</th>
+                                <th>Ngày Nhập</th>
+                                <th>Ghi Chú Lô Hàng</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let bath of batchs">
+                                <td>{{bath.id}}</td>
+                                <td>{{bath.batchCode}}</td>
+                                <td>{{bath.supplierName}}</td>
+                                <td>
+                                    {{bath.importDate}}
+                                </td>
+                                <td>
+                                     {{bath.note}}
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-info"  data-toggle="modal"
+                                            data-target="#stockDetailModal" title="Xem chi tiết lô hàng"  (click)="showBatchDetails(bath)">
+                                            <i class="mdi mdi-information"></i>
+                                        </button>
+                                    <button class="btn btn-sm btn-outline-primary mr-1">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger">
+                                        <i class="mdi mdi-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Nhập Lô Hàng Mới -->
+<div class="modal fade" id="addBatchModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="mdi mdi-plus mr-2"></i>
+          Thêm Lô Hàng Mới
+        </h5>
+        <button type="button" class="close text-white" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (ngSubmit)="submitAddBatch()" #batchForm="ngForm">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><b>Mã Lô Hàng <span class="text-danger">*</span></b></label>
+                <input type="text" class="form-control" [(ngModel)]="addBatchForm.batchCode" name="batchCode" required />
+              </div>
+              <div class="form-group">
+                <label><b>Tên Nhà Cung Cấp <span class="text-danger">*</span></b></label>
+                <input type="text" class="form-control" [(ngModel)]="addBatchForm.supplierName" name="supplierName" required />
+              </div>
+              <div class="form-group">
+                <label><b>Ngày Nhập <span class="text-danger">*</span></b></label>
+                <input type="date" class="form-control" [(ngModel)]="addBatchForm.importDate" name="importDate" required />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><b>Ghi Chú Lô Hàng</b></label>
+                <textarea class="form-control" [(ngModel)]="addBatchForm.note" name="note" rows="5"></textarea>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="form-group">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label><b>Danh sách sản phẩm nhập kho</b></label>
+              <button type="button" class="btn btn-success btn-sm" (click)="addBatchItem()">
+                <i class="mdi mdi-plus"></i> Thêm sản phẩm
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm align-middle mb-0">
+                <thead class="thead-light">
+                  <tr>
+                    <th style="width: 30px;">#</th>
+                    <th style="min-width: 180px;">Sản phẩm <span class="text-danger">*</span></th>
+                    <th style="width: 120px;">Số lượng <span class="text-danger">*</span></th>
+                    <th style="width: 150px;">Ngày hết hạn <span class="text-danger">*</span></th>
+                    <th style="width: 40px;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of addBatchForm.items; let i = index">
+                    <td>{{i+1}}</td>
+                    <td>
+                      <select class="form-control" [(ngModel)]="item.productId" name="productId{{i}}" required>
+                        <option value="">-- Chọn sản phẩm --</option>
+                        <option *ngFor="let p of productList" [value]="p.id">{{p.name}}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <input type="number" min="1" class="form-control" [(ngModel)]="item.quantity" name="quantity{{i}}" required />
+                    </td>
+                    <td>
+                      <input type="date" class="form-control" [(ngModel)]="item.expiryDate" name="expiryDate{{i}}" required />
+                    </td>
+                
+                    <td>
+                      <button type="button" class="btn btn-danger btn-sm" (click)="removeBatchItem(i)">
+                        <i class="mdi mdi-delete"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="addBatchForm.items.length === 0">
+                    <td colspan="7" class="text-center text-muted">Chưa có sản phẩm nào</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!batchForm.form.valid || addBatchForm.items.length === 0">
+            <i class="mdi mdi-content-save"></i> Lưu lô hàng
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+        <!-- Modal Chi tiết tồn kho -->
+        <div class="modal fade" id="stockDetailModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">
+                  <i class="mdi mdi-package-variant mr-2"></i>
+                  Chi tiết tồn kho – Lô {{ selectedBatch?.batchCode }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <!-- Bảng InventoryItem -->
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Item ID</th>
+                      <th>Ảnh SP</th>
+                      <th>Tên SP</th>
+                      <th>HSD</th>
+                      <th>SL Nhập</th>
+                      <th>SL Còn lại</th>
+                      <th>Trạng thái</th>
+                    </tr>
+                  </thead>
+                 <tbody>
+                    <tr *ngFor="let it of stockDetails">
+                      <td>{{ it.id }}</td>
+                      <td style="width: 80px; padding: 4px;">
+                          <img
+                            [src]="it.productImageUrl"
+                            class="img-thumbnail"
+                            style="width: 60px; height: 60px; object-fit: cover;"
+                          />
+                        </td>
+                        <td>{{ it.productName }}</td>
+                      <td>{{ it.expiryDate | date:'dd/MM/yyyy' }}</td>
+                      <td>{{ it.quantity }}</td>
+                      <td>{{ it.quantityRemaining }}</td>
+                      <td>
+                        <span
+                          class="badge"
+                          [ngClass]="it.status === 1 ? 'badge-success' : 'badge-secondary'"
+                        >
+                          {{ it.status === 1 ? 'Active' : 'Inactive' }}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div *ngIf="stockDetails.length === 0" class="text-center text-muted">
+                  Không có mục nào
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Đóng
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

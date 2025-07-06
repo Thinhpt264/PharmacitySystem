@@ -61,4 +61,12 @@ public class ImportServiceImpl implements ImportService {
         savedDTO.setItems(savedItemDTOs);
         return savedDTO;
     }
+
+    @Override
+    public List<ImportBatchDTO> findAllImportBatch() {
+        List<Importbatch> importbatchList = importBatchRepository.findAll();
+        return importbatchList.stream()
+             .map(ib -> modelMapper.map(ib, ImportBatchDTO.class))
+             .collect(Collectors.toList());
+    }
 }

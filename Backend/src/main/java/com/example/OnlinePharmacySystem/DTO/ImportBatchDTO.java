@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ImportBatchDTO {
+    private int id;
     private String batchCode;
     private String supplierName;
     private String note;

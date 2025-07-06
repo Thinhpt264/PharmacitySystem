@@ -52,7 +52,7 @@ export class ProductRemainComponent implements OnInit, AfterViewInit {
         this.products = res;
         console.log('Products loaded:', res);
 
-        // Gọi findImageForObj trước
+        // Gọi findImageForObj trước  
         this.findImageForObj();
 
         // Sau đó map quantity cho từng product
