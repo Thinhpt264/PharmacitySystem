@@ -69,6 +69,8 @@ const routes: Routes = [
     path: 'warehouse',
     canActivate: [AuthGuard],
     component: WareHouseComponent,
+  },
+  {
 
     path: 'chat',
     canActivate: [AuthGuard],
