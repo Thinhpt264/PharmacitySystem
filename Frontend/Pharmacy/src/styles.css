@@ -25,3 +25,10 @@
   :host ::ng-deep .p-toast.p-toast-error {
     background-color: #f8e1e1 !important; /* Màu nền cho error */
   }
+  .custom-chat-dialog.p-dialog {
+  position: fixed !important;
+  bottom: 100px;
+  right: 100px;
+  margin: 0 !important;
+  transform: none !important;
+}

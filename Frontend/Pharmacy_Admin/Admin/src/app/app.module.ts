@@ -33,8 +33,11 @@ import { DrugPredictionComponent } from './components/drug-prediction/drug-predi
 import { PredictionService } from './service/prediction.service';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { PromotionService } from './service/promotion.service';
+
 import { WareHouseService } from './service/warehouse.service';
 import { WareHouseComponent } from './components/warehouse/warehouse.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { ChatService } from './service/chat.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,6 +53,7 @@ import { WareHouseComponent } from './components/warehouse/warehouse.component';
     WareHouseComponent,
     DrugPredictionComponent,
     PromotionComponent,
+    ChatComponent,
     
   ],
   imports: [
@@ -78,6 +82,8 @@ import { WareHouseComponent } from './components/warehouse/warehouse.component';
     BrandService,
     PredictionService,
     PromotionService,
+    ChatService,
+
     
     {
       provide: HTTP_INTERCEPTORS,

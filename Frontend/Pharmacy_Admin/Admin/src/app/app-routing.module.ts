@@ -11,6 +11,8 @@ import { ProductRemainComponent } from './components/product-remain/product-rema
 import { DrugPredictionComponent } from './components/drug-prediction/drug-prediction.component';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { WareHouseComponent } from './components/warehouse/warehouse.component';
+import { ChatComponent } from './components/chat/chat.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -63,10 +65,16 @@ const routes: Routes = [
     component: PromotionComponent,
   },
   {
+
     path: 'warehouse',
     canActivate: [AuthGuard],
     component: WareHouseComponent,
+
+    path: 'chat',
+    canActivate: [AuthGuard],
+    component : ChatComponent, // Assuming you have a ChatComponent
   }
+
 
 ];
 

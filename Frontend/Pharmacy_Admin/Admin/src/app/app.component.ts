@@ -83,4 +83,7 @@ export class AppComponent implements OnInit {
   gotoPromotion() {
     window.location.href = 'promotion'; // Redirect to promotion
 }
+gotoChat() {
+    window.location.href = 'chat'; // Redirect to chat    
+}
 }

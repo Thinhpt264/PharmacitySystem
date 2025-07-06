@@ -57,6 +57,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { LanguageService } from './service/language.service';
 import { CommentService } from './service/comment.service';
+import { ChatComponent } from './components/chat/chat.component';
+import { ButtonModule } from 'primeng/button';
 
 // Factory function cho TranslateHttpLoader
 export function HttpLoaderFactory(http: HttpClient) {
@@ -85,6 +87,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ThankYouComponent,
     OrderComponent,
     UserInfoComponent,
+    ChatComponent
+   
   ],
   imports: [
     BrowserModule,
@@ -95,11 +99,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     SliderModule,
     CommonModule,
     DropdownModule,
+    
     BrowserAnimationsModule,
     OverlayPanelModule,
     ToastModule,
     ConfirmDialogModule,
     DialogModule,
+    ButtonModule,
     ReactiveFormsModule,
     // Thêm TranslateModule với cấu hình
     TranslateModule.forRoot({
