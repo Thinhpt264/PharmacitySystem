@@ -11,7 +11,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InventoryItemDTO {
+    private int id; 
     private Integer productId;
     private Integer quantity;
     private LocalDate expiryDate;
+    private int quantityRemaining;
+    private int status;
 }

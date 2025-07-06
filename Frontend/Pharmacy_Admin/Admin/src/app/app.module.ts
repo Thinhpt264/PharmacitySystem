@@ -33,6 +33,9 @@ import { DrugPredictionComponent } from './components/drug-prediction/drug-predi
 import { PredictionService } from './service/prediction.service';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { PromotionService } from './service/promotion.service';
+
+import { WareHouseService } from './service/warehouse.service';
+import { WareHouseComponent } from './components/warehouse/warehouse.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatService } from './service/chat.service';
 @NgModule({
@@ -47,6 +50,7 @@ import { ChatService } from './service/chat.service';
     CategoryComponent,
     OrderDetailComponent,
     ProductRemainComponent,
+    WareHouseComponent,
     DrugPredictionComponent,
     PromotionComponent,
     ChatComponent,
@@ -67,6 +71,7 @@ import { ChatService } from './service/chat.service';
     BaseUrlService,
     ProductService,
     CategoryService,
+    WareHouseService,
     OrderService,
     AccountService,
     AuthService,
