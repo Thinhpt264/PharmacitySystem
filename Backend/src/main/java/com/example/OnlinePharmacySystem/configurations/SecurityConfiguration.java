@@ -48,7 +48,9 @@ public class SecurityConfiguration {
 								"/assets/images/**",
 								"/swagger-ui/**",
 								"/v3/api-docs/**",
-								"/swagger-ui.html"
+								"/swagger-ui.html",
+									"/api/messages/**",
+								"/chat/**"
 						).permitAll()
 //						.requestMatchers("/api/v1/warehouses/**").hasAnyRole("ADMIN")
 

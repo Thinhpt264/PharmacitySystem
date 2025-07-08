@@ -1,5 +1,6 @@
 package com.example.OnlinePharmacySystem.controllers;
 
+import com.example.OnlinePharmacySystem.DTO.ChatDTO;
 import com.example.OnlinePharmacySystem.entities.Account;
 import com.example.OnlinePharmacySystem.entities.Message;
 import com.example.OnlinePharmacySystem.repositories.AccountRepository;
@@ -9,8 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/messages")
@@ -34,36 +38,35 @@ public class MessageController {
     }
 
 
-    @PostMapping("/to-admin")
-    public ResponseEntity<?> sendMessageToAdmin(@RequestBody Message message) {
-        Optional<Account> adminUser = accountRepository.findByUsername("admin");
 
-        if (adminUser.isEmpty()) {
-            return ResponseEntity.badRequest().body("Admin user not found");
+    @GetMapping()
+    public ResponseEntity<?> getConversationUsers(@RequestParam int userId) {
+        List<Message> messages = messageRepository.findAllBySenderIdOrReceiverId(userId, userId);
+
+        Set<Integer> partnerIds = new HashSet<>();
+        for (Message msg : messages) {
+            if (msg.getSenderId() != null && msg.getSenderId() != userId) {
+                partnerIds.add(msg.getSenderId());
+            }
+            if (msg.getReceiverId() != null && msg.getReceiverId() != userId) {
+                partnerIds.add(msg.getReceiverId());
+            }
         }
 
+        List<Account> partners = accountRepository.findAllById(partnerIds);
 
-        message.setReceiverId((long) adminUser.get().getId());
+        return ResponseEntity.ok(
+                partners.stream()
+                        .map(acc -> new ChatDTO(acc.getId(), acc.getUsername(), acc.getEmail()))
+                        .collect(Collectors.toList())
+        );
 
-        Message saved = messageRepository.save(message);
-
-
-        messagingTemplate.convertAndSend("/topic/messages/" + message.getReceiverId(), saved);
-
-        return ResponseEntity.ok(saved);
     }
-    @GetMapping("/with-admin")
-    public ResponseEntity<?> getMessagesWithAdmin(@RequestParam int userId) {
-        Optional<Account> adminAccount = accountRepository.findByUsername("admin");
-
-        if (adminAccount.isEmpty()) {
-            return ResponseEntity.badRequest().body("Admin account not found");
-        }
-
-        int adminId = adminAccount.get().getId();
-
-        List<Message> messages = messageRepository.findConversationBetweenAccounts(userId, adminId);
+    @GetMapping("/conversation-detail")
+    public ResponseEntity<?> getConversationDetail(@RequestParam int userId, @RequestParam int partnerId) {
+        List<Message> messages = messageRepository.findConversationBetweenAccounts(userId, partnerId);
 
         return ResponseEntity.ok(messages);
     }
+
 }

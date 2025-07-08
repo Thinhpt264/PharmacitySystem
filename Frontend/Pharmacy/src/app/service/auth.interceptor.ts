@@ -21,6 +21,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (isValidJWT) {
       const cloned = req.clone({
         headers: req.headers.set('Authorization', 'Bearer ' + token),
+        withCredentials: true, // Thêm tùy chọn này nếu cần thiết
       });
       return next.handle(cloned);
     }
