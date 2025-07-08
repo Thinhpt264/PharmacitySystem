@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
-    List<Message> findBySenderIdAndReceiverId(Long senderId, Long receiverId);
+    List<Message> findAllBySenderIdOrReceiverId(int senderId, int receiverId);
 
 
     @Query("SELECT m FROM Message m WHERE " +

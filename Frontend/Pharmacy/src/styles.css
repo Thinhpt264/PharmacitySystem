@@ -27,8 +27,8 @@
   }
   .custom-chat-dialog.p-dialog {
   position: fixed !important;
-  bottom: 100px;
-  right: 100px;
+  bottom: 20px;
+  right: 120px;
   margin: 0 !important;
   transform: none !important;
 }

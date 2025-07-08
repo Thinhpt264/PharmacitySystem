@@ -50,7 +50,7 @@ import { ThankYouComponent } from './components/thank-you/thank-you.component';
 import { OrderComponent } from './components/order/order.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { DeliveryInforService } from './service/delivery-info.service';
-
+import { ChatService } from './service/chat.service';
 // Thêm imports cho ngx-translate
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -132,6 +132,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DeliveryInforService,
     LanguageService,
     CommentService,
+    ChatService,
 
     {
       provide: HTTP_INTERCEPTORS,

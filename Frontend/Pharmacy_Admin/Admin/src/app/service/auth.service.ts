@@ -31,7 +31,10 @@ export class AuthService {
   getRole(): String | null {
   return this.getAccount()?.role ?? null;
   }
-
+   getId() {
+    const account = this.getAccount();
+    return account ? account.id : null;
+  }
   
   getUsername(): string | null {
     return this.getAccount()?.username || null;

@@ -17,8 +17,8 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long senderId;
-    private Long receiverId;
+    private Integer senderId;
+    private Integer receiverId;
     private String content;
     private LocalDateTime timestamp = LocalDateTime.now();
 }
