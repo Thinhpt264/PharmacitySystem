@@ -29,6 +29,7 @@
                                 <th>Tên sản phẩm</th>
                                 <th>Danh mục</th>
                                 <th>Giá</th>
+
                                 <th>Tồn kho</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
@@ -45,7 +46,25 @@
                                     {{ product.name.length > 60 ? (product.name | slice:0:40) + '...' : product.name }}
                                 </td>
                                 <td>{{ product.categoryName }}</td>
-                                <td>{{ product.price | currency:'VND':'symbol':'1.0-0' }}</td>
+                                <td>
+
+                                    <ng-container *ngIf="product.discountedPrice != null; else normalPrice">
+                                        <span style="text-decoration: line-through; color: gray;">
+                                            {{ product.price | currency:'VND':'symbol':'1.0-0' }}
+                                        </span><br />
+                                        <span class="text-danger font-weight-bold">
+                                            {{ product.discountedPrice | currency:'VND':'symbol':'1.0-0' }}
+                                        </span>
+                                    </ng-container>
+
+
+                                    <ng-template #normalPrice>
+                                        <span class="text-dark font-weight-bold">
+                                            {{ product.price | currency:'VND':'symbol':'1.0-0' }}
+                                        </span>
+                                    </ng-template>
+                                </td>
+
                                 <td>{{ product.quantity }}</td>
                                 <td>
                                     <span class="badge">
@@ -126,16 +145,16 @@
                                 </div>
                             </div>
 
-                        <!-- Loại -->
-                        <div class="form-group">
-                            <label for="type">Loại sản phẩm</label>
-                            <select class="form-control" id="type" formControlName="type">
-                                <option value="">Chọn loại sản phẩm</option>
-                                <option *ngFor="let type of productTypes" [value]="type.value">
-                                    {{ type.label }}
-                                </option>
-                            </select>
-                        </div>
+                            <!-- Loại -->
+                            <div class="form-group">
+                                <label for="type">Loại sản phẩm</label>
+                                <select class="form-control" id="type" formControlName="type">
+                                    <option value="">Chọn loại sản phẩm</option>
+                                    <option *ngFor="let type of productTypes" [value]="type.value">
+                                        {{ type.label }}
+                                    </option>
+                                </select>
+                            </div>
 
 
                             <!-- Mô tả -->
@@ -143,7 +162,7 @@
                                 <label for="description">Mô tả</label>
                                 <input type="text" class="form-control" id="description" formControlName="description"
                                     placeholder="Nhập mô tả ngắn về sản phẩm">
-                                </div>
+                            </div>
 
                             <!-- Tên nhà máy -->
                             <div class="form-group">

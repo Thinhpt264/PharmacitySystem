@@ -4,21 +4,40 @@ import { BaseUrlService } from 'src/app/service/baseUrl.service';
 import { ProductService } from 'src/app/service/product.service';
 import { CategoryService } from 'src/app/service/category.service';
 import { BrandService } from 'src/app/service/brand.service';
-
+import { isAfter, isBefore } from 'date-fns'; 
+import { PromotionService } from 'src/app/service/promotion.service';
 declare var $: any;
-
+export interface Product {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  quantity: number;
+  status: string;
+  discountedPrice?: number; 
+}
+export interface Promotion {
+  productName: string;
+  discountValue: number;
+  percentageDiscount: boolean;
+  startDate: string;
+  endDate: string;
+  status: string;
+}
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
 })
+
 export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private productService: ProductService,
     private baseUrl: BaseUrlService,
     private categoryService: CategoryService,
     private fb: FormBuilder,
-    private brandService: BrandService
+    private brandService: BrandService,
+    private promotionService: PromotionService
   ) {}
 
   products: any[] = [];
@@ -111,37 +130,39 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   findAll() {
-    this.productService
-      .findAll()
-      .then((res) => {
-        this.products = res;
-        console.log('Products loaded:', res);
+  Promise.all([
+    this.productService.findAll(),
+    this.promotionService.findAll(), 
+  ])
+    .then(([products, promotions]) => {
+      // Map PromotionResponseDTO[] to Promotion[]
+      const mappedPromotions = promotions.map((p: any) => ({
+        productName: p.productName,
+        discountValue: p.discountValue,
+        percentageDiscount: p.percentageDiscount ?? false,
+        startDate: p.startDate,
+        endDate: p.endDate,
+        status: p.status,
+      }));
+      this.products = this.combinePromotionsWithProducts(products, mappedPromotions);
+      this.findImageForObj();
 
-        this.findImageForObj();
-
-        this.products.forEach((product) => {
-          this.productService
-            .getQuantityRemaining(product.id)
-            .then((res) => {
-              console.log('Quantity for product', product.id, ':', res.data);
-              product.quantity = res.data;
-            })
-            .catch((error) => {
-              console.error(
-                'Error getting quantity for product',
-                product.id,
-                ':',
-                error
-              );
-              product.quantity = 0;
-            });
-        });
-      })
-      .catch((error) => {
-        console.error('Error loading products:', error);
-        this.products = [];
+      this.products.forEach((product) => {
+        this.productService
+          .getQuantityRemaining(product.id)
+          .then((res) => {
+            product.quantity = res.data;
+          })
+          .catch(() => {
+            product.quantity = 0;
+          });
       });
-  }
+    })
+    .catch((error) => {
+      console.error('Error loading products or promotions:', error);
+      this.products = [];
+    });
+}
 
   onImageSelected(event: any) {
     const file = event.target.files[0];
@@ -385,4 +406,28 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
   }
+  combinePromotionsWithProducts(products: Product[], promotions: Promotion[]): Product[] {
+  const today = new Date();
+
+  return products.map(product => {
+    const promotion = promotions.find(p =>
+      p.productName === product.name &&
+      p.status === 'ACTIVE' &&
+      new Date(p.startDate) <= today &&
+      new Date(p.endDate) >= today
+    );
+
+    if (promotion) {
+      const discountedPrice = promotion.percentageDiscount
+        ? product.price - (product.price * promotion.discountValue / 100)
+        : product.price - promotion.discountValue;
+
+      return { ...product, discountedPrice };
+    }
+
+    return product;
+  });
+}
+
+  
 }
